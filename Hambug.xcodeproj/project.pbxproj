@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		915BC6072E3CF1620062B78E /* SwiftHEXColors in Frameworks */ = {isa = PBXBuildFile; productRef = 915BC6062E3CF1620062B78E /* SwiftHEXColors */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		915BC5E12E3CB9B80062B78E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -45,6 +49,11 @@
 			path = HambugUITests;
 			sourceTree = "<group>";
 		};
+		915BC5FD2E3CBD5A0062B78E /* Projects */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Projects;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				915BC6072E3CF1620062B78E /* SwiftHEXColors in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +85,7 @@
 		915BC5C92E3CB9B50062B78E = {
 			isa = PBXGroup;
 			children = (
+				915BC5FD2E3CBD5A0062B78E /* Projects */,
 				915BC5D42E3CB9B50062B78E /* Hambug */,
 				915BC5E32E3CB9B80062B78E /* HambugTests */,
 				915BC5ED2E3CB9B80062B78E /* HambugUITests */,
@@ -109,9 +120,11 @@
 			);
 			fileSystemSynchronizedGroups = (
 				915BC5D42E3CB9B50062B78E /* Hambug */,
+				915BC5FD2E3CBD5A0062B78E /* Projects */,
 			);
 			name = Hambug;
 			packageProductDependencies = (
+				915BC6062E3CF1620062B78E /* SwiftHEXColors */,
 			);
 			productName = Hambug;
 			productReference = 915BC5D22E3CB9B50062B78E /* Hambug.app */;
@@ -195,6 +208,9 @@
 			);
 			mainGroup = 915BC5C92E3CB9B50062B78E;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				915BC6052E3CF1620062B78E /* XCRemoteSwiftPackageReference "SwiftHEXColors" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 915BC5D32E3CB9B50062B78E /* Products */;
 			projectDirPath = "";
@@ -407,7 +423,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -416,10 +432,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Debug;
@@ -446,7 +463,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -455,10 +472,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2,7";
+				TARGETED_DEVICE_FAMILY = 1;
 				XROS_DEPLOYMENT_TARGET = 2.5;
 			};
 			name = Release;
@@ -593,6 +611,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		915BC6052E3CF1620062B78E /* XCRemoteSwiftPackageReference "SwiftHEXColors" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/thii/SwiftHEXColors.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		915BC6062E3CF1620062B78E /* SwiftHEXColors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 915BC6052E3CF1620062B78E /* XCRemoteSwiftPackageReference "SwiftHEXColors" */;
+			productName = SwiftHEXColors;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 915BC5CA2E3CB9B50062B78E /* Project object */;
 }
