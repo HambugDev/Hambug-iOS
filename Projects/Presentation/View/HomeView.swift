@@ -34,6 +34,7 @@ struct HomeView: View {
     }
 }
 
+// 상단 헤더 - 로고, 알림
 struct HeaderBar: View {
     var body: some View {
         HStack(spacing: 10) {
@@ -44,13 +45,6 @@ struct HeaderBar: View {
                 print(#file, #line, #function, "알림 탭")
             }) {
                 Image(systemName: "bell.fill")
-            }
-            .foregroundColor(.black)
-            
-            Button(action: {
-                print(#file, #line, #function, "마이 탭")
-            }) {
-                Image(systemName: "person.fill")
             }
             .foregroundColor(.black)
             
@@ -84,52 +78,15 @@ struct PopularPostsView: View {
             Rectangle()
                 .frame(height: 1)
                 .cornerRadius(10)
+                .padding(.horizontal, -30)
             
-            PostView()
-            PostView()
+            ListPostView()
+            ListPostView()
             
         }
         .padding()
         .background(.white)
         .cornerRadius(16)
-        
-    }
-}
-
-struct PostView: View {
-    var body: some View {
-        VStack {
-            HStack {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("글 제목")
-                        .fontWeight(.bold)
-                        .font(.system(size: 20))
-                    
-                    HStack {
-                        Text("03.02")
-                        Text("12:22")
-                        
-                        Image(systemName: "heart.fill")
-                        Text("11")
-                        
-                        Image(systemName: "bubble.fill")
-                        Text("6")
-                        
-                    }
-                }
-                
-                Spacer()
-                
-                Rectangle()
-                    .frame(width: 60, height: 60)
-                    .foregroundColor(.gray)
-            }
-            
-            Rectangle()
-                .frame(height: 1)
-                .cornerRadius(10)
-            
-        }
         
     }
 }
