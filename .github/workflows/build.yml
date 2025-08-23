@@ -22,7 +22,7 @@ jobs:
     - name: Build project
       run: |
         xcodebuild -project "Hambug.xcodeproj" \
-          -scheme "MyRoutine" \
+          -scheme "Hambug" \
           -configuration Debug \
           -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.1" \
           build
