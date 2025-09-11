@@ -7,45 +7,56 @@
 
 import SwiftUI
 
-struct ListPostView: View {
+struct PostView: View {
+    
+    var postItem: PostModel
+    
+    init(postItem: PostModel) {
+        self.postItem = postItem
+    }
+    
     var body: some View {
         VStack(alignment: .center) {
             HStack {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("글 제목")
-                        .fontWeight(.bold)
-                        .font(.system(size: 20))
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(postItem.title)
+                        .pretendard(.title(.t2))
                     
                     HStack {
-                        Text("03.02")
-                        Text("12:22")
+                        Text("게시판")
+                            .pretendard(.caption(.emphasis))
+                            .foregroundColor(.primaryHambugRed)
                         
-                        Image(systemName: "heart.fill")
-                        Text("11")
+                        Text("·")
+                            .foregroundColor(.bgG200)
                         
-                        Image(systemName: "bubble.fill")
-                        Text("6")
-                        
+                        HStack(spacing: 5) {
+                            Text(postItem.date)
+                                .pretendard(.caption(.emphasis))
+                                .foregroundColor(.iconG600)
+                            
+                            Text(postItem.time)
+                                .pretendard(.caption(.emphasis))
+                                .foregroundColor(.iconG600)
+                        }
                     }
                 }
                 
                 Spacer()
                 
                 Rectangle()
-                    .frame(width: 60, height: 60)
+                    .frame(width: 56, height: 56)
+                    .cornerRadius(8)
                     .foregroundColor(.gray)
             }
-            
-            Rectangle()
-                .frame(height: 1)
-                .cornerRadius(10)
-            
         }
         .padding()
         .background(.white)
-        
     }
 }
+
+
+
 
 struct FeedPostView: View {
     var body: some View {
@@ -58,10 +69,10 @@ struct FeedPostView: View {
                 Text("제목이 들어가는 자리입니다.")
                     .fontWeight(.bold)
                     .font(.system(size: 20))
-                    .frame(maxWidth: .infinity, alignment: .leading) // 👈 이 부분을 추가
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Text("내용이 들어가는 자리입니다. 내용이 들어가는 자리입니다. 내용이 들어가는 자리입니다. 내용이 들어가는 자리입니다.")
-                    .frame(maxWidth: .infinity, alignment: .leading) // 👈 이 부분을 추가
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(maxWidth: .infinity)
             
@@ -73,19 +84,20 @@ struct FeedPostView: View {
 
 
 #Preview {
-    
     ZStack {
         Color.gray
-        
         VStack {
-            ListPostView()
-                .padding()
+            PostView(
+                postItem: PostModel(
+                    postCodableItem: PostCodableItem(
+                        id: 1, title: "글 제목입니다.", content: "글 내용입니다.", createdAt: Date(), updatedAt: Date()
+                    )
+                )
+            )
+            .padding()
             
             FeedPostView()
                 .padding()
-            
         }
-        
     }
-    
 }

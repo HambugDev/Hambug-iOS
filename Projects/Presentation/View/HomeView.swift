@@ -13,7 +13,7 @@ struct HomeView: View {
     var body: some View {
         
         ZStack {
-            Color(UIColor(hexCode: "#F4F5F7"))
+            Color(UIColor(hexCode: "#F8F8F7"))
             
             VStack {
                 HeaderBar()
@@ -72,16 +72,16 @@ struct PopularPostsView: View {
             HStack {
                 Text("인기글")
                 Spacer()
-                Image(systemName: "chevron.right")
             }
             
-            Rectangle()
-                .frame(height: 1)
-                .cornerRadius(10)
-                .padding(.horizontal, -30)
             
-            ListPostView()
-            ListPostView()
+            PostView(
+                postItem: PostModel(
+                    postCodableItem: PostCodableItem(
+                        id: 1, title: "글 제목입니다.", content: "글 내용입니다.", createdAt: Date(), updatedAt: Date()
+                    )
+                )
+            )
             
         }
         .padding()
