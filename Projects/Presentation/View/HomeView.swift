@@ -56,16 +56,6 @@ struct HeaderBar: View {
     }
 }
 
-
-struct SuggestView: View {
-    var body: some View {
-        VStack {
-            Text("추천 햄버거 페이지")
-        }
-        .frame(maxWidth: .infinity, minHeight: 300)
-    }
-}
-
 struct PopularPostsView: View {
     var body: some View {
         VStack(spacing: 10) {
