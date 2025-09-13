@@ -9,17 +9,17 @@ import SwiftUI
 
 struct PostView: View {
     
-    var postItem: PostModel
+    var postModel: PostModel
     
-    init(postItem: PostModel) {
-        self.postItem = postItem
+    init(postModel: PostModel) {
+        self.postModel = postModel
     }
     
     var body: some View {
         VStack(alignment: .center) {
             HStack {
                 VStack(alignment: .leading, spacing: 6) {
-                    Text(postItem.title)
+                    Text(postModel.title)
                         .pretendard(.title(.t2))
                     
                     HStack {
@@ -31,11 +31,11 @@ struct PostView: View {
                             .foregroundColor(.bgG200)
                         
                         HStack(spacing: 5) {
-                            Text(postItem.date)
+                            Text(postModel.date)
                                 .pretendard(.caption(.emphasis))
                                 .foregroundColor(.iconG600)
                             
-                            Text(postItem.time)
+                            Text(postModel.time)
                                 .pretendard(.caption(.emphasis))
                                 .foregroundColor(.iconG600)
                         }
@@ -88,7 +88,7 @@ struct FeedPostView: View {
         Color.gray
         VStack {
             PostView(
-                postItem: PostModel(
+                postModel: PostModel(
                     postCodableItem: PostCodableItem(
                         id: 1, title: "글 제목입니다.", content: "글 내용입니다.", createdAt: Date(), updatedAt: Date()
                     )
