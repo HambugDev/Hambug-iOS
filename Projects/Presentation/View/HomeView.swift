@@ -9,20 +9,25 @@ import SwiftUI
 
 struct HomeView: View {
     
+    var viewModel: HomeViewModel
+    
+    init(viewModel: HomeViewModel) {
+        self.viewModel = viewModel
+    }
+    
     
     var body: some View {
         
         ZStack {
-            Color(UIColor(hexCode: "#F4F5F7"))
+            Color(UIColor(hexCode: "#F8F8F7"))
             
             VStack {
                 HeaderBar()
                 
                 ScrollView {
                     SuggestView()
-                        .background(.white)
                     
-                    PopularPostsView()
+                    PopularPostsView(postItems: viewModel.postModels)
                         .padding()
                 }
                 
@@ -56,43 +61,103 @@ struct HeaderBar: View {
     }
 }
 
-
-struct SuggestView: View {
-    var body: some View {
-        VStack {
-            Text("추천 햄버거 페이지")
-        }
-        .frame(maxWidth: .infinity, minHeight: 300)
-    }
-}
-
 struct PopularPostsView: View {
+    
+    var postItems: [PostModel]
+    
+    init(postItems: [PostModel]) {
+        self.postItems = postItems
+    }
+    
+    
     var body: some View {
         VStack(spacing: 10) {
             HStack {
                 Text("인기글")
                 Spacer()
-                Image(systemName: "chevron.right")
             }
             
-            Rectangle()
-                .frame(height: 1)
-                .cornerRadius(10)
-                .padding(.horizontal, -30)
-            
-            ListPostView()
-            ListPostView()
-            
+            ForEach(postItems) { post in
+                PostView(postModel: post)
+            }
         }
         .padding()
         .background(.white)
         .cornerRadius(16)
+        .shadow(radius: 6)
         
+    }
+}
+
+class HomeViewModel: ObservableObject {
+    
+    var useCase: HomeViewUseCase
+    @Published var postModels: [PostModel] = []
+    
+    init(useCase: HomeViewUseCase) {
+        self.useCase = useCase
+        fetchPopularPosts()
+    }
+    
+    
+    func fetchPopularPosts() {
+        self.postModels = self.useCase.fetchPopularPosts()
+    }
+}
+
+class HomeViewUseCase {
+    
+    var repository: HomeViewRepository
+    
+    init(repository: HomeViewRepository) {
+        self.repository = repository
+    }
+    
+    func fetchPopularPosts() -> [PostModel] {
+        self.repository.fetchPopularPosts()
+    }
+}
+
+protocol HomeViewRepository {
+    func fetchPopularPosts() -> [PostModel]
+}
+
+class DummyHomeViewRepositoryImpl: HomeViewRepository {
+    
+    func fetchPopularPosts() -> [PostModel] {
+        return [
+            PostCodableItem(id: 1, title: "글 제목입니다.1", content: "글 내용입니다.1", createdAt: Date(), updatedAt: Date()),
+            PostCodableItem(id: 2, title: "글 제목입니다.2", content: "글 내용입니다.2", createdAt: Date(), updatedAt: Date()),
+            PostCodableItem(id: 3, title: "글 제목입니다.3", content: "글 내용입니다.3", createdAt: Date(), updatedAt: Date()),
+            PostCodableItem(id: 4, title: "글 제목입니다.4", content: "글 내용입니다.4", createdAt: Date(), updatedAt: Date()),
+            PostCodableItem(id: 5, title: "글 제목입니다.5", content: "글 내용입니다.5", createdAt: Date(), updatedAt: Date())
+        ].map {
+            PostModel(postCodableItem: $0)
+        }
+    }
+}
+
+
+class DIContainer {
+    static let shared = DIContainer()
+    
+    init() {}
+    
+    var homeViewRepository: HomeViewRepository {
+        DummyHomeViewRepositoryImpl()
+    }
+    
+    var homeViewUseCase: HomeViewUseCase {
+        HomeViewUseCase(repository: homeViewRepository)
+    }
+    
+    var homeViewModel: HomeViewModel {
+        HomeViewModel(useCase: homeViewUseCase)
     }
 }
 
 
 
 #Preview {
-    HomeView()
+    HomeView(viewModel: DIContainer.shared.homeViewModel)
 }
