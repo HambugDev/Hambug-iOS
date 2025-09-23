@@ -16,7 +16,7 @@ struct PostCodableItem: Codable {
 }
 
 
-struct PostModel {
+struct PostModel: Identifiable {
     var postCodableItem: PostCodableItem
     
     init(postCodableItem: PostCodableItem) {

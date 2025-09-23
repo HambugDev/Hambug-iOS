@@ -26,9 +26,8 @@ struct HomeView: View {
                 
                 ScrollView {
                     SuggestView()
-                        .background(.white)
                     
-                    PopularPostsView(postItems: viewModel.fetchPopularPosts())
+                    PopularPostsView(postItems: viewModel.postModels)
                         .padding()
                 }
                 
@@ -78,19 +77,14 @@ struct PopularPostsView: View {
                 Spacer()
             }
             
-            
-//            PostView(
-//                postItem: PostModel(
-//                    postCodableItem: PostCodableItem(
-//                        id: 1, title: "글 제목입니다.", content: "글 내용입니다.", createdAt: Date(), updatedAt: Date()
-//                    )
-//                )
-//            )
-            
+            ForEach(postItems) { post in
+                PostView(postModel: post)
+            }
         }
         .padding()
         .background(.white)
         .cornerRadius(16)
+        .shadow(radius: 6)
         
     }
 }
@@ -98,16 +92,16 @@ struct PopularPostsView: View {
 class HomeViewModel: ObservableObject {
     
     var useCase: HomeViewUseCase
-    @Published var postModels: [PostModel]
+    @Published var postModels: [PostModel] = []
     
     init(useCase: HomeViewUseCase) {
         self.useCase = useCase
-        self.postModels = useCase.fetchPopularPosts()
+        fetchPopularPosts()
     }
     
     
-    func fetchPopularPosts() -> [PostModel] {
-        self.useCase.fetchPopularPosts()
+    func fetchPopularPosts() {
+        self.postModels = self.useCase.fetchPopularPosts()
     }
 }
 
@@ -134,7 +128,9 @@ class DummyHomeViewRepositoryImpl: HomeViewRepository {
         return [
             PostCodableItem(id: 1, title: "글 제목입니다.1", content: "글 내용입니다.1", createdAt: Date(), updatedAt: Date()),
             PostCodableItem(id: 2, title: "글 제목입니다.2", content: "글 내용입니다.2", createdAt: Date(), updatedAt: Date()),
-            PostCodableItem(id: 3, title: "글 제목입니다.3", content: "글 내용입니다.3", createdAt: Date(), updatedAt: Date())
+            PostCodableItem(id: 3, title: "글 제목입니다.3", content: "글 내용입니다.3", createdAt: Date(), updatedAt: Date()),
+            PostCodableItem(id: 4, title: "글 제목입니다.4", content: "글 내용입니다.4", createdAt: Date(), updatedAt: Date()),
+            PostCodableItem(id: 5, title: "글 제목입니다.5", content: "글 내용입니다.5", createdAt: Date(), updatedAt: Date())
         ].map {
             PostModel(postCodableItem: $0)
         }
