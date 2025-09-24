@@ -43,18 +43,14 @@ struct HomeView: View {
 struct HeaderBar: View {
     var body: some View {
         HStack(spacing: 10) {
-            Image(systemName: "signature")
+            Image("hambug_icon")
+                .resizable()
+                .frame(width: 30, height: 30)
+            
+            Text("햄버그")
+                .pretendard(.title(.t1))
+                .foregroundColor(.primaryHambugRed)
             Spacer()
-            
-            Button(action: {
-                print(#file, #line, #function, "알림 탭")
-            }) {
-                Image(systemName: "bell.fill")
-            }
-            .foregroundColor(.black)
-            
-            
-            
         }
         .padding()
         
