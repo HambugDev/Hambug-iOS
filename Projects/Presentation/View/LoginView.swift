@@ -27,18 +27,26 @@ struct LoginView: View {
                     .pretendard(.heading(.h1))
                 
             }
-            .offset(y: maxHeight / -5)
+            .offset(y: maxHeight / -7)
             
             
-            VStack {
+            VStack(spacing: 15) {
                 Text("SNS 게정으로 간편 가입하기")
                     .pretendard(.body(.small))
                     .foregroundColor(.secondary)
                 
-                
+                VStack {
+                    SNSLoginButton(.kakao) {
+                        print("action()")
+                    }
+                    
+                    SNSLoginButton(.apple) {
+                        print("action()")
+                    }
+                }
                 
             }
-            .offset(y: maxHeight / 6)
+            .offset(y: maxHeight / 4)
         }
     }
     
@@ -48,10 +56,28 @@ struct LoginView: View {
             Image("hambug_logo")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 160)
+                .frame(width: 170)
                 
             Spacer()
         }
+    }
+}
+
+
+enum LoginType: String {
+    case kakao = "카카오"
+    case apple = "Apple"
+    
+    var logoName: String {
+        self == .kakao ? "kakao" : "apple"
+    }
+    
+    var fontColor: Color {
+        self == .kakao ? .textG900 : .white
+    }
+    
+    var bgColor: Color {
+        self == .kakao ? .kakaoBtnYellow : .black
     }
 }
 
