@@ -18,7 +18,7 @@ struct SplashView: View {
         }
         .task {
             try? await Task.sleep(for: .seconds(1))
-            appStateManager.state = .onboarding
+            appStateManager.completeSplash()
         }
     }
 }
