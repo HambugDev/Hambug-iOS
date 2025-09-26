@@ -7,16 +7,16 @@
 
 import Foundation
 
-enum TextStyle {
+public enum TextStyle {
     case heading(TextStyle.Heading)
     case title(TextStyle.Title)
     case body(TextStyle.Body)
     case caption(TextStyle.Caption)
     
-    enum Heading { case h1, h2, h3 }
-    enum Title { case t1, t2 }
-    enum Body { case base, bEmphasis, small, sEmphasis }
-    enum Caption { case base, emphasis }
+    public enum Heading { case h1, h2, h3 }
+    public enum Title { case t1, t2 }
+    public enum Body { case base, bEmphasis, small, sEmphasis }
+    public enum Caption { case base, emphasis }
     
     // MARK: - 폰트에 의존하지 않는 스타일 정의
     private var styleSpec: (weight: FontWeight, size: CGFloat) {
