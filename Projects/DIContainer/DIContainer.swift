@@ -6,3 +6,22 @@
 //
 
 import Foundation
+
+
+final class DIContainer {
+    static let shared = DIContainer()
+    
+    init() {}
+    
+    var homeViewRepository: HomeViewRepository {
+        DummyHomeViewRepositoryImpl()
+    }
+    
+    var homeViewUseCase: HomeViewUseCase {
+        HomeViewUseCase(repository: homeViewRepository)
+    }
+    
+    var homeViewModel: HomeViewModel {
+        HomeViewModel(useCase: homeViewUseCase)
+    }
+}

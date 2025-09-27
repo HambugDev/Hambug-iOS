@@ -6,3 +6,19 @@
 //
 
 import Foundation
+
+final class HomeViewModel: ObservableObject {
+    
+    let useCase: HomeViewUseCase
+    @Published var postModels: [PostModel] = []
+    
+    init(useCase: HomeViewUseCase) {
+        self.useCase = useCase
+        fetchPopularPosts()
+    }
+    
+    
+    func fetchPopularPosts() {
+        self.postModels = self.useCase.fetchPopularPosts()
+    }
+}

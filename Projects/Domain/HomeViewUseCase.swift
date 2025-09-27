@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+class HomeViewUseCase {
+    
+    let repository: HomeViewRepository
+    
+    init(repository: HomeViewRepository) {
+        self.repository = repository
+    }
+    
+    func fetchPopularPosts() -> [PostModel] {
+        self.repository.fetchPopularPosts()
+    }
+}

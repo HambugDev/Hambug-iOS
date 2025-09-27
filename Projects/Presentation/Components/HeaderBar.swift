@@ -7,9 +7,20 @@
 
 import SwiftUI
 
+// 상단 헤더 - 로고, 알림
 struct HeaderBar: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack(spacing: 10) {
+            Image("hambug_icon")
+                .resizable()
+                .frame(width: 30, height: 30)
+            
+            Text("햄버그")
+                .pretendard(.title(.t1))
+                .foregroundColor(.primaryHambugRed)
+            Spacer()
+        }
+        .padding()
     }
 }
 
