@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     struct Storage {
         static let hasSeenOnboarding = "hasSeenOnboarding"
     }
