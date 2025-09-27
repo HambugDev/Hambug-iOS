@@ -7,22 +7,25 @@
 
 import Foundation
 
-enum AppState: Equatable {
+public enum AppState: Equatable {
     case splash
     case onboarding
     case login
     case main
 }
 
+
+@available(iOS, introduced: 17.0)
 @Observable
-class AppStateManager {
-    var state: AppState = .splash
+public final class AppStateManager {
+    private var state: AppState = .splash
+    public var currentState: AppState { state }
     
-    var isOnboardingCompleted: Bool {
+    public var isOnboardingCompleted: Bool {
         UserDefaults.standard.bool(forKey: .Storage.hasSeenOnboarding)
     }
     
-    func completeSplash() {
+    public func completeSplash() {
         if isOnboardingCompleted {
             state = .login
         } else {
@@ -31,8 +34,10 @@ class AppStateManager {
     }
     
     // 온보딩 완료
-    func completeOnboarding() {
+    public func completeOnboarding() {
         UserDefaults.standard.set(true, forKey: .Storage.hasSeenOnboarding)
         state = .login
     }
+    
+    public init() {}
 }
