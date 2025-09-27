@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Managers
 
 @main
 struct HambugApp: App {
@@ -24,7 +25,7 @@ fileprivate struct RootView: View {
     
     var body: some View {
         Group {
-            switch appStateManager.state {
+            switch appStateManager.currentState {
             case .splash:
                 SplashView()
                 

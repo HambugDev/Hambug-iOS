@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Managers
 
 struct OnboardingView: View {
     @Environment(AppStateManager.self) var appStateManager
