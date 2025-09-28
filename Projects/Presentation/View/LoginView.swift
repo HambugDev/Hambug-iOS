@@ -7,12 +7,20 @@
 
 import SwiftUI
 
+import KakaoSDKUser
+
 struct LoginView: View {
+    
+    @Environment(AppStateManager.self) var appStateManager
+    
     var body: some View {
         ZStack {
+            Color(.bgYellow)
+                .ignoresSafeArea()
             logoImage
             introView
         }
+        
     }
     
     var introView: some View {
@@ -23,6 +31,8 @@ struct LoginView: View {
             VStack(spacing: 6) {
                 Text("안녕하세요.")
                     .pretendard(.heading(.h1))
+                    .foregroundColor(.black)
+                
                 TextWithColoredSubstring(originalText: "햄버그입니다 :)", coloredSubstring: "햄버그")
                     .pretendard(.heading(.h1))
                 
@@ -33,11 +43,11 @@ struct LoginView: View {
             VStack(spacing: 15) {
                 Text("SNS 게정으로 간편 가입하기")
                     .pretendard(.body(.small))
-                    .foregroundColor(.secondary)
+                    .foregroundColor(.borderG400)
                 
                 VStack {
                     SNSLoginButton(.kakao) {
-                        print("action()")
+                        loginWithKakao()
                     }
                     
                     SNSLoginButton(.apple) {
@@ -61,6 +71,33 @@ struct LoginView: View {
             Spacer()
         }
     }
+    
+    func loginWithKakao() {
+        if UserApi.isKakaoTalkLoginAvailable() {
+            // 카카오톡 앱으로 로그인
+            UserApi.shared.loginWithKakaoTalk { token, error in
+                if let token = token {
+                    print("accessToken: \(token.accessToken)")
+                    // 이때 서버로 액세스 토큰 전송
+                    appStateManager.state = .main
+                    
+                } else {
+                    print("error: \(error!)")
+                }
+            }
+        } else {
+            // 카카오 계정 웹뷰 로그인
+            UserApi.shared.loginWithKakaoAccount { token, error in
+                if let token = token {
+                    print("accessToken: \(token.accessToken)")
+                } else {
+                    print("error: \(error!)")
+                }
+            }
+        }
+    }
+    
+    
 }
 
 

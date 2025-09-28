@@ -21,6 +21,7 @@ struct PostView: View {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(postModel.title)
                         .pretendard(.title(.t2))
+                        .foregroundColor(.textG800)
                     
                     HStack {
                         Text("게시판")

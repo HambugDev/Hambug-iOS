@@ -22,9 +22,15 @@ class AppStateManager {
         UserDefaults.standard.bool(forKey: .Storage.hasSeenOnboarding)
     }
     
+    // 사용자 기기에 로그인이 되어있는 상태인지 체크
+    var isLoginCompleted: Bool {
+        return false
+    }
+    
     func completeSplash() {
         if isOnboardingCompleted {
-            state = .login
+//        state = .login
+            state = isLoginCompleted ? .main : .login
         } else {
             state = .onboarding
         }
@@ -33,6 +39,7 @@ class AppStateManager {
     // 온보딩 완료
     func completeOnboarding() {
         UserDefaults.standard.set(true, forKey: .Storage.hasSeenOnboarding)
-        state = .login
+//        state = .login
+        state = isLoginCompleted ? .main : .login
     }
 }

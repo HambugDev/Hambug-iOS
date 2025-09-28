@@ -29,6 +29,7 @@ struct HomeView: View {
                     PopularPostsView(postItems: viewModel.postModels)
                         .padding()
                 }
+                .safeAreaPadding(.bottom, 100)
             }
             .padding(.top, 50)
         }
@@ -51,6 +52,7 @@ struct PopularPostsView: View {
         VStack(spacing: 10) {
             HStack {
                 Text("인기글")
+                    .foregroundColor(.textG800)
                 Spacer()
             }
             
