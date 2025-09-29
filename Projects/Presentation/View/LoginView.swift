@@ -8,6 +8,7 @@
 import SwiftUI
 
 import KakaoSDKUser
+import Alamofire
 
 struct LoginView: View {
     
@@ -79,6 +80,10 @@ struct LoginView: View {
                 if let token = token {
                     print("accessToken: \(token.accessToken)")
                     // 이때 서버로 액세스 토큰 전송
+                    
+                    
+                    
+                    
                     appStateManager.state = .main
                     
                 } else {
@@ -90,6 +95,7 @@ struct LoginView: View {
             UserApi.shared.loginWithKakaoAccount { token, error in
                 if let token = token {
                     print("accessToken: \(token.accessToken)")
+                    self.fetchUserProfile(accessToken: token.accessToken)
                 } else {
                     print("error: \(error!)")
                 }
@@ -97,9 +103,53 @@ struct LoginView: View {
         }
     }
     
-    
+    func fetchUserProfile(accessToken: String) {
+        let headers: HTTPHeaders = [
+            "Authorization" : "Bearer \(accessToken)"
+        ]
+        
+        AF.request(NetworkService.shared.auth, method: .get, headers: headers)
+            .validate()
+            .responseDecodable(of: UserResponse.self) { response in
+                switch response.result {
+                case .success(let profile):
+                    print(profile)
+                case .failure(let error):
+                    print(error)
+                }
+            }
+    }
 }
 
+struct UserResponse: Codable {
+    let success: Bool
+    let data: UserResponseData
+    let message: String
+}
+
+struct UserResponseData: Codable {
+    let userId: Int64
+    let email: String
+    let name: String
+    let nickname: String
+    let profileImageUrl: String
+    let loginType: String
+    let role: String
+    let kakao: Bool
+}
+
+final class NetworkService {
+    
+    static let shared = NetworkService()
+    
+    init() {}
+    
+    let base = "https://hambug.p-e.kr/api/v1"
+    var baseUrl: URL { URL(string: base)! }
+    
+    var auth: String { base + "/auth/me" }
+    var authUrl: URL { URL(string: auth)! }
+}
 
 enum LoginType: String {
     case kakao = "카카오"
@@ -122,3 +172,4 @@ enum LoginType: String {
 #Preview {
     LoginView()
 }
+
