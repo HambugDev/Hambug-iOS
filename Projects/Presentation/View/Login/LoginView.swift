@@ -48,7 +48,9 @@ struct LoginView: View {
                 
                 VStack {
                     SNSLoginButton(.kakao) {
-                        loginWithKakao()
+                        loginWithKakao {
+                            appStateManager.state = .main
+                        }
                     }
                     
                     SNSLoginButton(.apple) {
@@ -73,18 +75,22 @@ struct LoginView: View {
         }
     }
     
-    func loginWithKakao() {
+    func loginWithKakao(completion: @escaping () -> Void) {
         if UserApi.isKakaoTalkLoginAvailable() {
             // 카카오톡 앱으로 로그인
             UserApi.shared.loginWithKakaoTalk { token, error in
                 if let token = token {
                     print("accessToken: \(token.accessToken)")
                     // 이때 서버로 액세스 토큰 전송
-                    
-                    
-                    
-                    
-                    appStateManager.state = .main
+                    self.fetchUserProfile(accessToken: token.accessToken) { result in
+                        switch result {
+                        case .success(let profile):
+                            print(profile)
+                            completion()
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
                     
                 } else {
                     print("error: \(error!)")
@@ -95,7 +101,15 @@ struct LoginView: View {
             UserApi.shared.loginWithKakaoAccount { token, error in
                 if let token = token {
                     print("accessToken: \(token.accessToken)")
-                    self.fetchUserProfile(accessToken: token.accessToken)
+                    self.fetchUserProfile(accessToken: token.accessToken) { result in
+                        switch result {
+                        case .success(let profile):
+                            print(profile)
+                            completion()
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
                 } else {
                     print("error: \(error!)")
                 }
@@ -103,53 +117,32 @@ struct LoginView: View {
         }
     }
     
-    func fetchUserProfile(accessToken: String) {
+    func fetchUserProfile(accessToken: String, completion: @escaping (Result<UserResponse, Error>) -> Void) {
         let headers: HTTPHeaders = [
             "Authorization" : "Bearer \(accessToken)"
         ]
         
-        AF.request(NetworkService.shared.auth, method: .get, headers: headers)
+        AF.request(Endpoint.auth.urlString, method: .get, headers: headers)
             .validate()
             .responseDecodable(of: UserResponse.self) { response in
                 switch response.result {
                 case .success(let profile):
+                    // TODO: 여기서 유저 데이터 저장하기
                     print(profile)
+                    completion(.success(profile))
+                    
                 case .failure(let error):
-                    print(error)
+                    completion(.failure(error))
                 }
             }
     }
 }
 
-struct UserResponse: Codable {
-    let success: Bool
-    let data: UserResponseData
-    let message: String
+
+class LoginViewModel {
+    
 }
 
-struct UserResponseData: Codable {
-    let userId: Int64
-    let email: String
-    let name: String
-    let nickname: String
-    let profileImageUrl: String
-    let loginType: String
-    let role: String
-    let kakao: Bool
-}
-
-final class NetworkService {
-    
-    static let shared = NetworkService()
-    
-    init() {}
-    
-    let base = "https://hambug.p-e.kr/api/v1"
-    var baseUrl: URL { URL(string: base)! }
-    
-    var auth: String { base + "/auth/me" }
-    var authUrl: URL { URL(string: auth)! }
-}
 
 enum LoginType: String {
     case kakao = "카카오"
@@ -173,3 +166,23 @@ enum LoginType: String {
     LoginView()
 }
 
+enum Endpoint {
+    case auth
+}
+
+extension Endpoint {
+    var urlString: String {
+        switch self {
+        case .auth:
+            return .makeForEndPoint("/auth/me")
+        }
+    }
+}
+
+extension String {
+    static let baseURL = "https://hambug.p-e.kr/api/v1"
+    
+    static func makeForEndPoint(_ endPoint: String) -> String {
+        baseURL + endPoint
+    }
+}

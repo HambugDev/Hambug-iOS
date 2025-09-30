@@ -52,15 +52,15 @@ struct PostModel: Identifiable {
         switch postCodableItem.createdAt.compare(postCodableItem.updatedAt) {
             
         case .orderedSame:
-            print("createdAt == updatedAt")
+//            print("createdAt == updatedAt")
             return dateFormatter.string(from: postCodableItem.createdAt)
             
         case .orderedDescending:
-            print("createdAt < updatedAt")
+//            print("createdAt < updatedAt")
             return dateFormatter.string(from: postCodableItem.updatedAt)
             
         case .orderedAscending:
-            print("createdAt > updatedAt")
+//            print("createdAt > updatedAt")
             return dateFormatter.string(from: postCodableItem.updatedAt)
         }
     }
