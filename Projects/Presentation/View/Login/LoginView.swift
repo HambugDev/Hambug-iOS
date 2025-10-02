@@ -56,6 +56,7 @@ struct LoginView: View {
                     SNSLoginButton(.apple) {
                         print("action()")
                     }
+                    
                 }
                 
             }
@@ -136,6 +137,10 @@ struct LoginView: View {
                 }
             }
     }
+    
+    
+    
+    
 }
 
 

@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import AuthenticationServices
 
 struct SNSLoginButton: View {
     let width = UIScreen.main.bounds.width * 0.8
@@ -20,23 +21,29 @@ struct SNSLoginButton: View {
     }
     
     var body: some View {
-        Button {
-            action()
-        } label: {
-            HStack {
-                Image(loginType.logoName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 26)
+        
+        switch loginType {
+        case .kakao:
+            Button {
+                action()
+            } label: {
+                HStack {
+                    Image(loginType.logoName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 26)
+                        
                     
-                
-                Text("\(loginType.rawValue) 로그인")
-                    .foregroundColor(loginType.fontColor)
-                    .pretendard(.title(.t2))
+                    Text("\(loginType.rawValue) 로그인")
+                        .foregroundColor(loginType.fontColor)
+                        .pretendard(.title(.t2))
+                }
+                .frame(width: width, height: 50)
+                .background(loginType.bgColor)
+                .cornerRadius(14)
             }
-            .frame(width: width, height: 50)
-            .background(loginType.bgColor)
-            .cornerRadius(14)
+        case .apple:
+            SignInWithAppleButton()
         }
     }
 }
