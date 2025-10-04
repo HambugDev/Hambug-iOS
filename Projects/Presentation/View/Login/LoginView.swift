@@ -7,12 +7,16 @@
 
 import SwiftUI
 
+import AuthenticationServices
 import KakaoSDKUser
 import Alamofire
+
 
 struct LoginView: View {
     
     @Environment(AppStateManager.self) var appStateManager
+    
+    let viewModel = LoginViewModel()
     
     var body: some View {
         ZStack {
@@ -47,16 +51,17 @@ struct LoginView: View {
                     .foregroundColor(.borderG400)
                 
                 VStack {
-                    SNSLoginButton(.kakao) {
-                        loginWithKakao {
+                    SNSLoginButton(.kakao {
+                        viewModel.loginWithKakao {
                             appStateManager.state = .main
                         }
-                    }
+                    })
                     
-                    SNSLoginButton(.apple) {
-                        print("action()")
-                    }
-                    
+                    SNSLoginButton(.apple(
+                        viewModel.loginWithApple {
+                            appStateManager.state = .main
+                        }
+                    ))
                 }
                 
             }
@@ -75,6 +80,35 @@ struct LoginView: View {
             Spacer()
         }
     }
+    
+}
+
+
+class LoginViewModel {
+    
+    func loginWithApple(completion: @escaping () -> Void) -> AppleLogionHandler {
+        AppleLogionHandler(
+            onRequest: { request in
+                request.requestedScopes = [.fullName, .email]
+            },
+            onCompletion: { result in
+                switch result {
+                case .success(let authorization):
+                    if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
+                       let identityToken = appleIDCredential.identityToken,
+                       let tokenString = String(data: identityToken, encoding: .utf8) {
+                        
+                        print("Apple identity token: \(tokenString)")
+                        // 이 토큰을 서버로 전송해서 로그인 처리
+                        completion()
+                    }
+                case .failure(let error):
+                    print("Apple login error: \(error)")
+                }
+            }
+        )
+    }
+    
     
     func loginWithKakao(completion: @escaping () -> Void) {
         if UserApi.isKakaoTalkLoginAvailable() {
@@ -137,34 +171,47 @@ struct LoginView: View {
                 }
             }
     }
-    
-    
-    
-    
 }
 
-
-class LoginViewModel {
-    
+struct AppleLogionHandler {
+    var onRequest: (ASAuthorizationAppleIDRequest) -> Void
+    var onCompletion: (Result<ASAuthorization, Error>) -> Void
 }
 
+enum LoginType {
+    case kakao(() -> Void)
+    case apple(AppleLogionHandler)
 
-enum LoginType: String {
-    case kakao = "카카오"
-    case apple = "Apple"
-    
+    var loginText: String {
+        switch self {
+        case .kakao: return "카카오"
+        case .apple: return "Apple"
+        }
+    }
+
     var logoName: String {
-        self == .kakao ? "kakao" : "apple"
+        switch self {
+        case .kakao: return "kakao"
+        case .apple: return "apple"
+        }
     }
-    
+
     var fontColor: Color {
-        self == .kakao ? .textG900 : .white
+        switch self {
+        case .kakao: return .textG900
+        case .apple: return .white
+        }
     }
-    
+
     var bgColor: Color {
-        self == .kakao ? .kakaoBtnYellow : .black
+        switch self {
+        case .kakao: return .kakaoBtnYellow
+        case .apple: return .black
+        }
     }
 }
+
+
 
 
 #Preview {
@@ -191,3 +238,4 @@ extension String {
         baseURL + endPoint
     }
 }
+

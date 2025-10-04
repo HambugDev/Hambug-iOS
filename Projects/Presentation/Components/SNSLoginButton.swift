@@ -13,19 +13,19 @@ struct SNSLoginButton: View {
     let width = UIScreen.main.bounds.width * 0.8
     
     var loginType: LoginType
-    var action: () -> Void
+//    var action: () -> Void
     
-    init(_ loginType: LoginType, action: @escaping () -> Void) {
+    init(_ loginType: LoginType/*, action: @escaping () -> Void*/) {
         self.loginType = loginType
-        self.action = action
+//        self.action = action
     }
     
     var body: some View {
         
         switch loginType {
-        case .kakao:
+        case .kakao(let kakaoAction):
             Button {
-                action()
+                kakaoAction()
             } label: {
                 HStack {
                     Image(loginType.logoName)
@@ -34,7 +34,7 @@ struct SNSLoginButton: View {
                         .frame(width: 26)
                         
                     
-                    Text("\(loginType.rawValue) 로그인")
+                    Text("\(loginType.loginText) 로그인")
                         .foregroundColor(loginType.fontColor)
                         .pretendard(.title(.t2))
                 }
@@ -42,8 +42,11 @@ struct SNSLoginButton: View {
                 .background(loginType.bgColor)
                 .cornerRadius(14)
             }
-        case .apple:
-            SignInWithAppleButton()
+        case .apple(let handler):
+            SignInWithAppleButton(
+                onRequest: handler.onRequest,
+                onCompletion: handler.onCompletion
+            )
         }
     }
 }
