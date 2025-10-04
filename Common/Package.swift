@@ -13,10 +13,36 @@ let package = Package(
             name: "Managers",
             targets: ["Managers"]
         ),
+        .library(
+            name: "DesignSystem",
+            targets: ["DesignSystem"]
+        ),
     ],
     targets: [
         .target(
             name: "Managers"
+        ),
+        .target(
+            name: "DesignSystem",
+            resources: [
+                .process("Color.xcassets")
+            ]
+        ),
+        .executableTarget(
+            name: "DesignSystemGeneratorTool",
+            path: "Plugins/DesignSystemGeneratorTool"
+        ),
+        .plugin(
+            name: "DesignSystemGenerator",
+            capability: .command(
+                intent: .custom(verb: "generate-colors", description: "Generate color constants from xcassets"),
+                permissions: [
+                    .writeToPackageDirectory(reason: "Generate DesignSystem+Color.swift file")
+                ]
+            ),
+            dependencies: [
+                "DesignSystemGeneratorTool"
+            ]
         ),
     ]
 )
