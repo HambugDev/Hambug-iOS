@@ -28,21 +28,17 @@ let package = Package(
                 .process("Color.xcassets")
             ]
         ),
-        .executableTarget(
-            name: "DesignSystemGeneratorTool",
-            path: "Plugins/DesignSystemGeneratorTool"
-        ),
         .plugin(
-            name: "DesignSystemGenerator",
+            name: "ColorGenerator",
             capability: .command(
-                intent: .custom(verb: "generate-colors", description: "Generate color constants from xcassets"),
+                intent: .custom(
+                    verb: "generate-colors",
+                    description: "Generate color constants from xcassets"
+                ),
                 permissions: [
                     .writeToPackageDirectory(reason: "Generate DesignSystem+Color.swift file")
                 ]
-            ),
-            dependencies: [
-                "DesignSystemGeneratorTool"
-            ]
+            )
         ),
     ]
 )
