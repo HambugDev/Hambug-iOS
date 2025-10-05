@@ -47,6 +47,8 @@ struct SNSLoginButton: View {
                 onRequest: handler.onRequest,
                 onCompletion: handler.onCompletion
             )
+            .frame(width: width, height: 50)
+            .cornerRadius(14)
         }
     }
 }
