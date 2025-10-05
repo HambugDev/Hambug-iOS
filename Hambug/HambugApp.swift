@@ -7,10 +7,16 @@
 
 import SwiftUI
 import Managers
+import DesignSystem
 
 @main
 struct HambugApp: App {
     @State private var appStateManager: AppStateManager = .init()
+    
+    init() {
+        FontManager.registerAllFonts()
+    }
+    
     var body: some Scene {
         WindowGroup {
             RootView()

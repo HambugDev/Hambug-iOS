@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-extension View {
+public extension View {
     // MARK: - font, linespacing 적용되어있음 (기본값: Pretendard)
     func pretendard(_ style: TextStyle) -> some View {
         let pretendardProvider = PretendardProvider()

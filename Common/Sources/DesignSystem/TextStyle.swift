@@ -51,7 +51,7 @@ public enum TextStyle {
     }
     
     // MARK: - FontProvider를 받아서 FontStyle 생성
-    func getFontStyle(with provider: FontProvider) -> FontStyle {
+    public func getFontStyle(with provider: FontProvider) -> FontStyle {
         let spec = styleSpec
         let fontName = spec.weight.getFontName(from: provider)
         return FontStyle(.custom(fontName), size: spec.size)
