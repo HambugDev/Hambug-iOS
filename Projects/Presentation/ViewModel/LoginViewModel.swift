@@ -89,17 +89,6 @@ class LoginViewModel {
     }
 }
 
-class LoginUseCase {
-    let repository: LoginRepository
-    
-    init(repository: LoginRepository) {
-        self.repository = repository
-    }
-    
-    func fetchUserProfile(accessToken: String, completion: @escaping (Result<UserResponse, Error>) -> Void) {
-        self.repository.fetchUserProfile(accessToken: accessToken, completion: completion)
-    }
-}
 
 
 
@@ -120,6 +109,7 @@ class LoginRepositoryImpl: LoginRepository {
                 case .success(let profile):
                     // TODO: 여기서 유저 데이터 저장하기
                     print(profile)
+                    
                     completion(.success(profile))
                     
                 case .failure(let error):
