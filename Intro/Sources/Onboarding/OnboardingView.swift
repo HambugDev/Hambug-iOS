@@ -18,14 +18,14 @@ public struct OnboardingView: View {
     
     public var body: some View {
         ZStack {
-            Color(.yellow)
+            Color.bgYellow
                 .ignoresSafeArea()
             VStack {
                 Spacer()
                 
                 VStack {
                     Text(buildAttributedString())
-//                        .pretendard(.heading(.h2))
+                        .pretendard(.heading(.h2))
                         .multilineTextAlignment(.center)
                 }
                 
@@ -47,16 +47,16 @@ public struct OnboardingView: View {
                 Spacer()
                     .frame(height: 40)
                 
-//                PrimaryButton(
-//                    title: "다음",
-//                    style: .title(.t2)
-//                ) {
-//                    if currentStep < steps.count - 1 {
-//                        currentStep += 1
-//                    } else {
-//                        appStateManager.completeOnboarding()
-//                    }
-//                }
+                PrimaryButton(
+                    title: "다음",
+                    style: .title(.t2)
+                ) {
+                    if currentStep < steps.count - 1 {
+                        currentStep += 1
+                    } else {
+                        appStateManager.completeOnboarding()
+                    }
+                }
             }
             
             
