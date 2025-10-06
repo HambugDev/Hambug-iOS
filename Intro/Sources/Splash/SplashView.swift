@@ -6,14 +6,16 @@
 //
 
 import SwiftUI
+import DesignSystem
 import Managers
 
-struct SplashView: View {
+@available(iOS, introduced: 17.0)
+public struct SplashView: View {
     @Environment(AppStateManager.self) var appStateManager
     
-    var body: some View {
+    public var body: some View {
         ZStack {
-            Color(.bgYellow)
+            Color.bgYellow
                 .ignoresSafeArea()
             Image(.splashLogo)
         }
@@ -22,8 +24,13 @@ struct SplashView: View {
             appStateManager.completeSplash()
         }
     }
+    
+    public init() {}
 }
 
+@available(iOS, introduced: 17.0)
 #Preview {
+    let appStateManager = AppStateManager()
     SplashView()
+        .environment(appStateManager)
 }

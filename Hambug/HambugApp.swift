@@ -8,6 +8,8 @@
 import SwiftUI
 import Managers
 import DesignSystem
+import Splash
+import Onboarding
 
 @main
 struct HambugApp: App {
