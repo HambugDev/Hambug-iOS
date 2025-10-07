@@ -24,4 +24,17 @@ final class DIContainer {
     var homeViewModel: HomeViewModel {
         HomeViewModel(useCase: homeViewUseCase)
     }
+    
+    var loginRepository: LoginRepository {
+        LoginRepositoryImpl()
+    }
+    
+    var loginUseCase: LoginUseCase {
+        LoginUseCase(repository: loginRepository)
+    }
+    
+    var loginViewModel: LoginViewModel {
+        LoginViewModel(useCase: loginUseCase)
+    }
+    
 }

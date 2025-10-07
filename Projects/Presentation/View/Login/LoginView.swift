@@ -13,7 +13,7 @@ struct LoginView: View {
     
     @Environment(AppStateManager.self) var appStateManager
     
-    let viewModel = LoginViewModel()
+    let viewModel = DIContainer.shared.loginViewModel
     
     var body: some View {
         ZStack {

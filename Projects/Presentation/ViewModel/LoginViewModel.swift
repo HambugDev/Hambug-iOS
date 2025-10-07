@@ -33,7 +33,15 @@ class LoginViewModel {
                         
                         print("Apple identity token: \(tokenString)")
                         // 이 토큰을 서버로 전송해서 로그인 처리
-                        completion()
+                        self.fetchUserProfile(accessToken: tokenString) { result in
+                            switch result {
+                            case .success(let profile):
+                                print(profile)
+                                completion()
+                            case .failure(let error):
+                                print(error)
+                            }
+                        }
                     }
                 case .failure(let error):
                     print("Apple login error: \(error)")
