@@ -10,6 +10,7 @@ import Foundation
 import Alamofire
 import AuthenticationServices
 import KakaoSDKUser
+import KakaoSDKAuth
 
 class LoginViewModel {
     
@@ -51,44 +52,30 @@ class LoginViewModel {
     }
 
     func loginWithKakao(completion: @escaping () -> Void) {
+        
+        let loginHandler: (OAuthToken?, Error?) -> Void = { token, error in
+            guard let token = token else {
+                if let error = error { print("error: \(error)") }
+                return
+            }
+            print("accessToken: \(token.accessToken)")
+            self.fetchUserProfile(accessToken: token.accessToken) { result in
+                switch result {
+                case .success(let profile):
+                    print(profile)
+                    completion()
+                case .failure(let error):
+                    print(error)
+                }
+            }
+        }
+        
         if UserApi.isKakaoTalkLoginAvailable() {
             // 카카오톡 앱으로 로그인
-            UserApi.shared.loginWithKakaoTalk { token, error in
-                if let token = token {
-                    print("accessToken: \(token.accessToken)")
-                    // 이때 서버로 액세스 토큰 전송
-                    self.fetchUserProfile(accessToken: token.accessToken) { result in
-                        switch result {
-                        case .success(let profile):
-                            print(profile)
-                            completion()
-                        case .failure(let error):
-                            print(error)
-                        }
-                    }
-                    
-                } else {
-                    print("error: \(error!)")
-                }
-            }
+            UserApi.shared.loginWithKakaoTalk(completion: loginHandler)
         } else {
             // 카카오 계정 웹뷰 로그인
-            UserApi.shared.loginWithKakaoAccount { token, error in
-                if let token = token {
-                    print("accessToken: \(token.accessToken)")
-                    self.fetchUserProfile(accessToken: token.accessToken) { result in
-                        switch result {
-                        case .success(let profile):
-                            print(profile)
-                            completion()
-                        case .failure(let error):
-                            print(error)
-                        }
-                    }
-                } else {
-                    print("error: \(error!)")
-                }
-            }
+            UserApi.shared.loginWithKakaoAccount(completion: loginHandler)
         }
     }
     

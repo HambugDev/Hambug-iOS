@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import AuthenticationServices
 
 class LoginUseCase {
     let repository: LoginRepository
@@ -17,4 +18,6 @@ class LoginUseCase {
     func fetchUserProfile(accessToken: String, completion: @escaping (Result<UserResponse, Error>) -> Void) {
         self.repository.fetchUserProfile(accessToken: accessToken, completion: completion)
     }
+    
+    
 }
