@@ -8,9 +8,11 @@
 import Foundation
 import AuthenticationServices
 import KakaoSDKAuth
+import KakaoSDKUser
 
 class LoginUseCase {
     let repository: LoginRepository
+    
     
     init(repository: LoginRepository) {
         self.repository = repository
@@ -38,6 +40,7 @@ class LoginUseCase {
                             switch result {
                             case .success(let profile):
                                 print(profile)
+                                UserDefaultsManager.shared.saveUserData(profile)
                                 completion()
                             case .failure(let error):
                                 print(error)
@@ -63,6 +66,7 @@ class LoginUseCase {
                 switch result {
                 case .success(let profile):
                     print(profile)
+                    UserDefaultsManager.shared.saveUserData(profile)
                     completion()
                 case .failure(let error):
                     print(error)
@@ -78,5 +82,7 @@ class LoginUseCase {
             UserApi.shared.loginWithKakaoAccount(completion: loginHandler)
         }
     }
+    
+    
     
 }
