@@ -22,4 +22,13 @@ class UserDefaultsManager {
             UserDefaults.standard.set(data, forKey: UserDefaultsType.userResponse.rawValue)
         }
     }
+    
+    func loadUserData() -> UserResponse? {
+        guard
+            let savedData = UserDefaults.standard.data(forKey: UserDefaultsType.userResponse.rawValue),
+            let decoded = try? JSONDecoder().decode(UserResponse.self, from: savedData)
+        else { return nil }
+        
+        return decoded
+    }
 }
