@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Font Provider Protocol
-protocol FontProvider {
+public protocol FontProvider {
     var regular: String { get }
     var medium: String { get }
     var semiBold: String { get }
@@ -16,18 +16,20 @@ protocol FontProvider {
 }
 
 // MARK: - Pretendard Font Provider
-struct PretendardProvider: FontProvider {
-    let regular: String = "Pretendard-Regular"
-    let medium: String = "Pretendard-Medium"
-    let semiBold: String = "Pretendard-SemiBold"
-    let bold: String? = nil
+public struct PretendardProvider: FontProvider {
+    public let regular: String = "Pretendard-Regular"
+    public let medium: String = "Pretendard-Medium"
+    public let semiBold: String = "Pretendard-SemiBold"
+    public let bold: String? = nil
+    
+    public init() {}
 }
 
 // MARK: - Font Weight Enum
-enum FontWeight {
+public enum FontWeight {
     case regular, medium, semiBold, bold
     
-    func getFontName(from provider: FontProvider) -> String {
+    public func getFontName(from provider: FontProvider) -> String {
         switch self {
         case .regular: return provider.regular
         case .medium: return provider.medium

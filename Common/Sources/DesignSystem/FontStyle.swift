@@ -15,11 +15,11 @@ public enum FontType: Equatable {
 
 // MARK: - TextStyle 혹은 직접 활용도 가능하끔 구조 작성
 public struct FontStyle {
-    let font: Font
-    let fontSize: CGFloat
-    let lineHeight: CGFloat
+    public let font: Font
+    public let fontSize: CGFloat
+    public let lineHeight: CGFloat
     
-    init(
+    public init(
         _ family: FontType = .system(.regular),
         size: CGFloat = 16,
         lineHeight: CGFloat = 1.5,
@@ -30,6 +30,8 @@ public struct FontStyle {
         case .system(let weight):
             self.font = .system(size: size, weight: weight)
         case .custom(let fontName):
+            // Bundle.module에서 폰트 등록 후 사용
+            FontManager.registerFontIfNeeded(fontName)
             self.font = .custom(fontName, size: size)
         }
 

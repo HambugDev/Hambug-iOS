@@ -25,7 +25,7 @@ let package = Package(
         .target(
             name: "DesignSystem",
             resources: [
-                .process("Color.xcassets")
+                .process("Resources")
             ]
         ),
         .plugin(

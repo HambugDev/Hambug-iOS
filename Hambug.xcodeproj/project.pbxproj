@@ -10,6 +10,8 @@
 		915BC6072E3CF1620062B78E /* SwiftHEXColors in Frameworks */ = {isa = PBXBuildFile; productRef = 915BC6062E3CF1620062B78E /* SwiftHEXColors */; };
 		B52285C92E88469C00678ECC /* Managers in Frameworks */ = {isa = PBXBuildFile; productRef = B52285C82E88469C00678ECC /* Managers */; };
 		B52286032E884E5B00678ECC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B52286022E884E5B00678ECC /* DesignSystem */; };
+		B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3402E92CB6100575CDA /* Onboarding */; };
+		B57DE3432E92CB6100575CDA /* Splash in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3422E92CB6100575CDA /* Splash */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +36,7 @@
 		915BC5E02E3CB9B80062B78E /* HambugTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HambugTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		915BC5EA2E3CB9B80062B78E /* HambugUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HambugUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52285C62E8844BD00678ECC /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Common; sourceTree = "<group>"; };
+		B52285CA2E88485900678ECC /* Intro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Intro; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -77,7 +80,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B57DE3432E92CB6100575CDA /* Splash in Frameworks */,
 				B52286032E884E5B00678ECC /* DesignSystem in Frameworks */,
+				B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */,
 				B52285C92E88469C00678ECC /* Managers in Frameworks */,
 				915BC6072E3CF1620062B78E /* SwiftHEXColors in Frameworks */,
 			);
@@ -103,6 +108,7 @@
 		915BC5C92E3CB9B50062B78E = {
 			isa = PBXGroup;
 			children = (
+				B52285CA2E88485900678ECC /* Intro */,
 				B52285C62E8844BD00678ECC /* Common */,
 				915BC5FD2E3CBD5A0062B78E /* Projects */,
 				915BC5D42E3CB9B50062B78E /* Hambug */,
@@ -154,6 +160,8 @@
 				915BC6062E3CF1620062B78E /* SwiftHEXColors */,
 				B52285C82E88469C00678ECC /* Managers */,
 				B52286022E884E5B00678ECC /* DesignSystem */,
+				B57DE3402E92CB6100575CDA /* Onboarding */,
+				B57DE3422E92CB6100575CDA /* Splash */,
 			);
 			productName = Hambug;
 			productReference = 915BC5D22E3CB9B50062B78E /* Hambug.app */;
@@ -667,6 +675,14 @@
 		B52286022E884E5B00678ECC /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignSystem;
+		};
+		B57DE3402E92CB6100575CDA /* Onboarding */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Onboarding;
+		};
+		B57DE3422E92CB6100575CDA /* Splash */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Splash;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

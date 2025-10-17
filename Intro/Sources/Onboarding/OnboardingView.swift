@@ -6,17 +6,19 @@
 //
 
 import SwiftUI
+import DesignSystem
 import Managers
 
-struct OnboardingView: View {
+@available(iOS, introduced: 17.0)
+public struct OnboardingView: View {
     @Environment(AppStateManager.self) var appStateManager
     @State private var currentStep: Int = 0
     
     private let steps: [OnboardingStep] = OnboardingStep.onboardingSteps
     
-    var body: some View {
+    public var body: some View {
         ZStack {
-            Color(.bgYellow)
+            Color.bgYellow
                 .ignoresSafeArea()
             VStack {
                 Spacer()
@@ -61,6 +63,8 @@ struct OnboardingView: View {
         }
     }
     
+    public init() {}
+    
     private func buildAttributedString() -> AttributedString {
         let currentData = steps[currentStep]
         let fullText = currentData.title + currentData.highlightedText + currentData.subTitle
@@ -73,7 +77,7 @@ struct OnboardingView: View {
         // 강조 텍스트 색상 적용
         if !currentData.highlightedText.isEmpty,
            let range = attributedString.range(of: currentData.highlightedText) {
-            attributedString[range].foregroundColor = Color.primaryHambugRed
+            attributedString[range].foregroundColor = Color.red
         }
         
         return attributedString
@@ -122,13 +126,14 @@ fileprivate struct PageIndicatorBar: View {
     
     var body: some View {
         RoundedRectangle(cornerRadius: 2)
-            .fill(isActive ? Color.primaryHambugRed : Color.gray.opacity(0.3))
+            .fill(isActive ? Color.red : Color.gray.opacity(0.3))
             .frame(width: width, height: 4)
             .animation(.easeInOut(duration: 0.3), value: width)
             .animation(.easeInOut(duration: 0.3), value: isActive)
     }
 }
 
+@available(iOS, introduced: 17.0)
 #Preview {
     let appStateManager: AppStateManager = .init()
     OnboardingView()
