@@ -13,11 +13,9 @@ struct SNSLoginButton: View {
     let width = UIScreen.main.bounds.width * 0.8
     
     var loginType: LoginType
-//    var action: () -> Void
     
-    init(_ loginType: LoginType/*, action: @escaping () -> Void*/) {
+    init(_ loginType: LoginType) {
         self.loginType = loginType
-//        self.action = action
     }
     
     var body: some View {

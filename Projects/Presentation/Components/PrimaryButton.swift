@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+// 로그인 버튼
 public struct PrimaryButton: View {
     private let titleKey: String
     private let titleStyle: TextStyle

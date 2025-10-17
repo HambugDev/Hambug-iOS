@@ -7,7 +7,7 @@
 
 import Foundation
 
-class HomeViewUseCase {
+final class HomeViewUseCase {
     
     let repository: HomeViewRepository
     

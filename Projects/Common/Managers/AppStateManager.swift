@@ -24,7 +24,7 @@ class AppStateManager {
     
     // 사용자 기기에 로그인이 되어있는 상태인지 체크
     var isLoginCompleted: Bool {
-        return false
+        UserDefaultsManager.shared.loadUserData() == nil ? false : true
     }
     
     func completeSplash() {

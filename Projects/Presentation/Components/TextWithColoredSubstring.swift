@@ -8,7 +8,9 @@
 import Foundation
 import SwiftUI
 
-
+/*
+ 문자열중 특정 부분의 색을 다르게 하기 위한 구조체
+ */
 struct TextWithColoredSubstring: View {
     var originalText: String
     var coloredSubstring: String
