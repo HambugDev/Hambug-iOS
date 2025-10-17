@@ -36,7 +36,6 @@
 		915BC5E02E3CB9B80062B78E /* HambugTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HambugTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		915BC5EA2E3CB9B80062B78E /* HambugUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HambugUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B52285C62E8844BD00678ECC /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Common; sourceTree = "<group>"; };
-		B52285CA2E88485900678ECC /* Intro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Intro; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -108,7 +107,6 @@
 		915BC5C92E3CB9B50062B78E = {
 			isa = PBXGroup;
 			children = (
-				B52285CA2E88485900678ECC /* Intro */,
 				B52285C62E8844BD00678ECC /* Common */,
 				915BC5FD2E3CBD5A0062B78E /* Projects */,
 				915BC5D42E3CB9B50062B78E /* Hambug */,
