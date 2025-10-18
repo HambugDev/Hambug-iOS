@@ -11,6 +11,7 @@
 		B52286032E884E5B00678ECC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B52286022E884E5B00678ECC /* DesignSystem */; };
 		B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3402E92CB6100575CDA /* Onboarding */; };
 		B57DE3432E92CB6100575CDA /* Splash in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3422E92CB6100575CDA /* Splash */; };
+		B5C346492EA33BBF002354DF /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B5C346482EA33BBF002354DF /* KakaoSDKAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +84,7 @@
 				B52286032E884E5B00678ECC /* DesignSystem in Frameworks */,
 				B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */,
 				B52285C92E88469C00678ECC /* Managers in Frameworks */,
+				B5C346492EA33BBF002354DF /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -159,6 +161,7 @@
 				B52286022E884E5B00678ECC /* DesignSystem */,
 				B57DE3402E92CB6100575CDA /* Onboarding */,
 				B57DE3422E92CB6100575CDA /* Splash */,
+				B5C346482EA33BBF002354DF /* KakaoSDKAuth */,
 			);
 			productName = Hambug;
 			productReference = 915BC5D22E3CB9B50062B78E /* Hambug.app */;
@@ -675,6 +678,11 @@
 		B57DE3422E92CB6100575CDA /* Splash */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Splash;
+		};
+		B5C346482EA33BBF002354DF /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
