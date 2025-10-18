@@ -1,15 +1,23 @@
 {
-  "originHash" : "a06fc864b1a580dd8bd63a2b190c1e6a70d291efce3f3c0e4b071fd225fe0d47",
   "pins" : [
     {
-      "identity" : "swifthexcolors",
+      "identity" : "alamofire",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/thii/SwiftHEXColors.git",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
       "state" : {
-        "revision" : "1f886cb20fedda14a5ac75efd09bc99c95b43a18",
-        "version" : "1.4.1"
+        "revision" : "513364f870f6bfc468f9d2ff0a95caccc10044c5",
+        "version" : "5.10.2"
+      }
+    },
+    {
+      "identity" : "kakao-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kakao/kakao-ios-sdk",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e14a8d1fad75645fd5677a295a8b1956ebd14d3d"
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
