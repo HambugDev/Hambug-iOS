@@ -12,10 +12,12 @@ import AuthenticationServices
 struct SNSLoginButton: View {
     let width = UIScreen.main.bounds.width * 0.8
     
-    var loginType: LoginType
+    private let loginType: LoginType
     
     init(_ loginType: LoginType) {
         self.loginType = loginType
+
+
     }
     
     var body: some View {

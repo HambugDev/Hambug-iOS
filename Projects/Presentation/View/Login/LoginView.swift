@@ -13,7 +13,11 @@ struct LoginView: View {
     
     @Environment(AppStateManager.self) var appStateManager
     
-    let viewModel = DIContainer.shared.loginViewModel
+    private let viewModel: LoginViewModel
+    
+    init(viewModel: LoginViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         ZStack {
@@ -122,7 +126,7 @@ enum LoginType {
 
 
 
-#Preview {
-    LoginView()
-}
+//#Preview {
+//    LoginView()
+//}
 

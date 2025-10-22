@@ -52,7 +52,7 @@ fileprivate struct RootView: View {
                 OnboardingView()
                 
             case .login:
-                LoginView()
+                LoginView(viewModel: DIContainer.shared.loginViewModel)
                 
             case .main:
                 ContentView()

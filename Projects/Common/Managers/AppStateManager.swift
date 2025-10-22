@@ -29,7 +29,6 @@ class AppStateManager {
     
     func completeSplash() {
         if isOnboardingCompleted {
-//        state = .login
             state = isLoginCompleted ? .main : .login
         } else {
             state = .onboarding
@@ -39,7 +38,6 @@ class AppStateManager {
     // 온보딩 완료
     func completeOnboarding() {
         UserDefaults.standard.set(true, forKey: .Storage.hasSeenOnboarding)
-//        state = .login
         state = isLoginCompleted ? .main : .login
     }
 }

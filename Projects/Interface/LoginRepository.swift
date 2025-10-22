@@ -23,7 +23,6 @@ class LoginRepositoryImpl: LoginRepository {
             .responseDecodable(of: UserResponse.self) { response in
                 switch response.result {
                 case .success(let profile):
-                    // TODO: 여기서 유저 데이터 저장하기
                     print(profile)
                     
                     completion(.success(profile))
