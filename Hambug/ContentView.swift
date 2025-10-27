@@ -19,12 +19,21 @@ struct ContentView: View {
                 }
                 .tag(0)
             
-            CommunityView()
-                .tabItem {
-                    Image(systemName: "person.2.fill")
-                    Text("커뮤니티")
-                }
-                .tag(1)
+#if DEBUG
+          CommunityView(container: CommunityDIContainer(isMock: true))
+            .tabItem {
+              Image(systemName: "person.2.fill")
+              Text("커뮤니티")
+            }
+            .tag(1)
+#else
+          CommunityView(container: CommunityDIContainer())
+            .tabItem {
+              Image(systemName: "person.2.fill")
+              Text("커뮤니티")
+            }
+            .tag(1)
+#endif
         }
     }
 }
