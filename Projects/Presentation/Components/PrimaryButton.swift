@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// 로그인 버튼
+/// 재사용 가능한 로그인 버튼 컴포넌트
 public struct PrimaryButton: View {
     private let titleKey: String
     private let titleStyle: TextStyle

@@ -18,7 +18,7 @@ struct HomeView: View {
     var body: some View {
         
         ZStack {
-            Color(UIColor(hexCode: "#F8F8F7"))
+            Color.bgG100
             
             VStack {
                 HeaderBar()

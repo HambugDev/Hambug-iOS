@@ -18,11 +18,17 @@ class LoginUseCase {
         self.repository = repository
     }
     
-    func fetchUserProfile(accessToken: String, completion: @escaping (Result<UserResponse, Error>) -> Void) {
+    func fetchUserProfile(
+        accessToken: String,
+        completion: @escaping (Result<UserResponse, Error>) -> Void
+    ) {
         self.repository.fetchUserProfile(accessToken: accessToken, completion: completion)
     }
     
-    func loginWithApple(completion: @escaping () -> Void) -> AppleLogionHandler {
+    func loginWithApple(
+        onSccuess: @escaping () -> Void,
+        onFailure: @escaping () -> Void
+    ) -> AppleLogionHandler {
         AppleLogionHandler(
             onRequest: { request in
                 request.requestedScopes = [.fullName, .email]
@@ -41,20 +47,25 @@ class LoginUseCase {
                             case .success(let profile):
                                 print(profile)
                                 UserDefaultsManager.shared.saveUserData(profile)
-                                completion()
+                                onSccuess()
                             case .failure(let error):
                                 print(error)
+                                onFailure()
                             }
                         }
                     }
                 case .failure(let error):
                     print("Apple login error: \(error)")
+                    onFailure()
                 }
             }
         )
     }
     
-    func loginWithKakao(completion: @escaping () -> Void) {
+    func loginWithKakao(
+        onSccuess: @escaping () -> Void,
+        onFailure: @escaping () -> Void
+    ) {
         
         let loginHandler: (OAuthToken?, Error?) -> Void = { token, error in
             guard let token = token else {
@@ -67,9 +78,10 @@ class LoginUseCase {
                 case .success(let profile):
                     print(profile)
                     UserDefaultsManager.shared.saveUserData(profile)
-                    completion()
+                    onSccuess()
                 case .failure(let error):
                     print(error)
+                    onFailure()
                 }
             }
         }

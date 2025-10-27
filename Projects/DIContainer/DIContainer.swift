@@ -36,5 +36,4 @@ final class DIContainer {
     var loginViewModel: LoginViewModel {
         LoginViewModel(useCase: loginUseCase)
     }
-    
 }

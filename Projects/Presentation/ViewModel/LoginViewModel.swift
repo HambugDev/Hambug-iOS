@@ -21,12 +21,18 @@ class LoginViewModel {
     }
     
     
-    func loginWithApple(completion: @escaping () -> Void) -> AppleLogionHandler {
-        self.useCase.loginWithApple(completion: completion)
+    func loginWithApple(
+        onSccuess: @escaping () -> Void,
+        onFailure: @escaping () -> Void
+    ) -> AppleLogionHandler {
+        self.useCase.loginWithApple(onSccuess: onSccuess, onFailure: onFailure)
     }
 
-    func loginWithKakao(completion: @escaping () -> Void) {
-        self.useCase.loginWithKakao(completion: completion)
+    func loginWithKakao(
+        onSccuess: @escaping () -> Void,
+        onFailure: @escaping () -> Void
+    ) {
+        self.useCase.loginWithKakao(onSccuess: onSccuess, onFailure: onFailure)
     }
     
    

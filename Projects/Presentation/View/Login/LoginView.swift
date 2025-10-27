@@ -12,8 +12,10 @@ import AuthenticationServices
 struct LoginView: View {
     
     @Environment(AppStateManager.self) var appStateManager
+    @State var failureText: String = ""
     
     private let viewModel: LoginViewModel
+    
     
     init(viewModel: LoginViewModel) {
         self.viewModel = viewModel
@@ -53,16 +55,31 @@ struct LoginView: View {
                 
                 VStack {
                     SNSLoginButton(.kakao {
-                        viewModel.loginWithKakao {
-                            appStateManager.state = .main
-                        }
+                        viewModel.loginWithKakao(
+                            onSccuess: {
+                                appStateManager.state = .main
+                            },
+                            onFailure: {
+                                failureText = "로그인 실패!"
+                            }
+                        )
                     })
                     
                     SNSLoginButton(.apple(
-                        viewModel.loginWithApple {
-                            appStateManager.state = .main
-                        }
+                        viewModel.loginWithApple(
+                            onSccuess: {
+                                appStateManager.state = .main
+                            },
+                            onFailure: {
+                                failureText = "로그인 실패!"
+                            }
+                        )
                     ))
+                    
+                    Text(failureText)
+                        .pretendard(.body(.bEmphasis))
+                        .foregroundColor(.primaryHambugRed)
+                    
                 }
                 
             }
@@ -126,7 +143,7 @@ enum LoginType {
 
 
 
-//#Preview {
-//    LoginView()
-//}
+#Preview {
+    LoginView(viewModel: DIContainer.shared.loginViewModel)
+}
 
