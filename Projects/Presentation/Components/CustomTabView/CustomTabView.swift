@@ -155,7 +155,6 @@ struct RoundedCorner: Shape {
 }
 
 #Preview {
-  CustomTabView(
-    selectedTab: .constant(0)
-  )
+  @Previewable @State var selectedTab = 0
+  CustomTabView(selectedTab: $selectedTab)
 }
