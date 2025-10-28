@@ -16,8 +16,9 @@ struct CommunityWriteView: View {
   @State private var characterCount: Int = 0
   
   private let maxCharacterCount = 10
-  var isCharacterMax: Bool {
-    characterCount == maxCharacterCount
+  
+  private var isCharacterMax: Bool {
+    characterCount >= maxCharacterCount
   }
   enum Category: String, CaseIterable {
     case 자유잡담 = "자유잡담"
@@ -154,16 +155,10 @@ struct CommunityWriteView: View {
           .foregroundColor(.primaryHambugRed)
       }
       
-      if isCharacterMax {
-        HStack {
-          Spacer()
-          Text("내용은 \(maxCharacterCount)자를 넘길 수 없습니다")
-            .pretendard(.caption(.base))
-            .foregroundColor(.textR100)
-        }
-      }
-      
-      BorderTextEditor(maxCharacterCount: 10, content: $content)
+      BorderTextEditor(
+        maxCharacterCount: maxCharacterCount,
+        content: $content
+      )
     }
   }
   
@@ -213,78 +208,6 @@ fileprivate struct CommunityWriteFilterChip: View {
           .fill(Color.white)
           .stroke(isSelected ? Color.primaryHambugRed : Color.borderG300, lineWidth: 1.0)
       )
-  }
-}
-
-struct BottomLineTextField: View {
-  @Binding var title: String
-  
-  var body: some View {
-    TextField("", text: $title)
-      .pretendard(.body(.base))
-      .padding(.horizontal, 16)
-      .padding(.vertical, 14)
-      .overlay(
-        Rectangle()
-          .frame(height: 1)
-          .foregroundColor(Color.borderG400),
-        alignment: .bottom
-      )
-  }
-  
-  init(title: Binding<String>) {
-    self._title = title
-  }
-}
-
-struct BorderTextEditor: View {
-  private let contentPlaceholder = "자유롭게 이야기를 나눠보세요"
-  private let maxCharacterCount: Int
-  
-  @State private var characterCount: Int = 0
-  @Binding var content: String
-  
-  private var isCharacterMax: Bool {
-    characterCount == maxCharacterCount
-  }
-  
-  var body: some View {
-    ZStack(alignment: .topLeading) {
-      RoundedRectangle(cornerRadius: 8)
-        .stroke(isCharacterMax ? Color.borderR100 : Color.borderG400, lineWidth: 1)
-        .background(Color.bgG75)
-        .frame(minHeight: 234)
-      
-      TextEditor(text: $content)
-        .pretendard(.body(.small))
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
-        .background(.clear)
-        .scrollContentBackground(.hidden)
-        .onChange(of: content) { _, newValue in
-          characterCount = newValue.count
-          if newValue.count > maxCharacterCount {
-            content = String(newValue.prefix(maxCharacterCount))
-            characterCount = maxCharacterCount
-          }
-        }
-      
-      if content.isEmpty {
-        Text(contentPlaceholder)
-          .pretendard(.body(.small))
-          .foregroundColor(.borderG300)
-          .padding(.horizontal, 16)
-          .padding(.top, 14)
-      }
-    }
-  }
-  
-  init(
-    maxCharacterCount: Int = 300,
-    content: Binding<String>
-  ) {
-    self.maxCharacterCount = maxCharacterCount
-    self._content = content
   }
 }
 

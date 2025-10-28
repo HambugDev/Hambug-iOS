@@ -55,13 +55,21 @@ struct CommunityDetailView: View {
       }
       .background(Color.bgWhite)
       .overlay(
-        DeleteConfirmationPopup(
+        HambugCommonAlertView(
           isPresented: $showDeletePopup,
-          onConfirm: {
-            dismiss()
+          content: {
+            Text("게시물을 삭제하시겠어요?")
+              .pretendard(.title(.t2))
+              .foregroundStyle(Color.textG900)
+              .padding(.top, 16)
           },
-          onCancel: {
-            // Handle cancel
+          secondaryButton: AlertButton(title: "취소") {
+            print("취소")
+            
+          },
+          primaryButton: AlertButton(title: "삭제") {
+            print("삭제")
+            
           }
         )
         .opacity(showDeletePopup ? 1 : 0)
@@ -196,7 +204,9 @@ struct CommunityDetailView: View {
           
           Spacer()
           
-          EllipsisButton {}
+          EllipsisButton {
+            
+          }
         }
         
         Text(comment.timestamp)

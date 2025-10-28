@@ -12,9 +12,8 @@ struct CommunityReportView: View {
   @Environment(\.dismiss) private var dismiss
   @State private var title: String = ""
   @State private var content: String = ""
-  @State private var characterCount: Int = 0
   
-  private let maxCharacterCount = 2000
+  private let maxCharacterCount = 300
   
   var body: some View {
     NavigationView {
@@ -96,22 +95,10 @@ struct CommunityReportView: View {
           .foregroundColor(.primaryHambugRed)
       }
       
-      ZStack(alignment: .topLeading) {
-        RoundedRectangle(cornerRadius: 8)
-          .stroke(Color.borderG300, lineWidth: 1)
-          .background(Color.bgWhite)
-          .frame(height: 200)
-        
-        if content.isEmpty {
-          Text("내용을 입력해주세요.")
-            .pretendard(.body(.base))
-            .foregroundColor(.textG600)
-            .padding(.horizontal, 16)
-            .padding(.top, 14)
-        }
-        
-        BorderTextEditor(maxCharacterCount: 10, content: $content)
-      }
+      BorderTextEditor(
+        maxCharacterCount: 10,
+        content: $content
+      )
     }
   }
 }

@@ -141,7 +141,7 @@ private func setupURLProtocol() {
         "title": "첫 번째 게시글",
         "content": "이것은 첫 번째 게시글의 상세 내용입니다.",
         "nickName": "햄버거러버",
-        "createdAt": "2024-10-17T10:00:00Z",
+        "createdAt": "2024-10-17T10:00:00.000Z",
         "likeCount": "15",
         "commnetCount": "3"
     ]

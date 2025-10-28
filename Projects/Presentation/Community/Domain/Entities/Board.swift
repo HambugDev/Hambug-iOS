@@ -56,9 +56,32 @@ extension Board {
     self.content = response.content ?? ""
     self.likeCount = response.likeCount
     self.commnetCount = response.commnetCount
-    // ISO 8601 문자열을 Date로 변환
-    let formatter = ISO8601DateFormatter()
-    formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-    self.createdAt = "\(formatter.string(from: response.createdAt))분 전"
+    // Date를 사용자 친화적 형식으로 변환
+    self.createdAt = response.createdAt.timeAgoDisplay()
   }  
+}
+
+// MARK: - Date Extension for Time Ago Display
+extension Date {
+  func timeAgoDisplay() -> String {
+    let now = Date()
+    let timeInterval = now.timeIntervalSince(self)
+    
+    if timeInterval < 60 {
+      return "방금 전"
+    } else if timeInterval < 3600 {
+      let minutes = Int(timeInterval / 60)
+      return "\(minutes)분 전"
+    } else if timeInterval < 86400 {
+      let hours = Int(timeInterval / 3600)
+      return "\(hours)시간 전"
+    } else if timeInterval < 604800 {
+      let days = Int(timeInterval / 86400)
+      return "\(days)일 전"
+    } else {
+      let formatter = DateFormatter()
+      formatter.dateFormat = "MM.dd"
+      return formatter.string(from: self)
+    }
+  }
 }
