@@ -96,7 +96,7 @@ struct CommunityReportView: View {
       }
       
       BorderTextEditor(
-        maxCharacterCount: 10,
+        maxCharacterCount: maxCharacterCount,
         content: $content
       )
     }

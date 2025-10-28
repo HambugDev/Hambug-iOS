@@ -15,7 +15,7 @@ struct CommunityWriteView: View {
   @State private var content: String = ""
   @State private var characterCount: Int = 0
   
-  private let maxCharacterCount = 10
+  private let maxCharacterCount = 300
   
   private var isCharacterMax: Bool {
     characterCount >= maxCharacterCount
