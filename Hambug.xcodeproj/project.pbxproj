@@ -446,7 +446,7 @@
 				CODE_SIGN_ENTITLEMENTS = Hambug/Hambug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FL4QTRRKMD;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -487,7 +487,7 @@
 				CODE_SIGN_ENTITLEMENTS = Hambug/Hambug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = FL4QTRRKMD;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -683,6 +683,22 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKAuth;
+		};
+		B52285C82E88469C00678ECC /* Managers */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Managers;
+		};
+		B52286022E884E5B00678ECC /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		B57DE3402E92CB6100575CDA /* Onboarding */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Onboarding;
+		};
+		B57DE3422E92CB6100575CDA /* Splash */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Splash;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
