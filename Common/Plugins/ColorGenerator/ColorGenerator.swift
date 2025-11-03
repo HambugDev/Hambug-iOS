@@ -11,7 +11,7 @@ import Foundation
 @main
 struct ColorGenerator: CommandPlugin {
     func performCommand(context: PluginContext, arguments: [String]) async throws {
-        let assetsPath = context.package.directory.appending("Sources/DesignSystem/Color.xcassets")
+        let assetsPath = context.package.directory.appending("Sources/DesignSystem/Resources/Color.xcassets")
         let outputPath = context.package.directory.appending("Sources/DesignSystem/DesignSystem+Color.swift")
         
         print("Generating colors from: \(assetsPath)")

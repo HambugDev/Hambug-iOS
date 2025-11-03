@@ -9,13 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
   @State private var selectedTab = 0
-    var body: some View {
-      CustomTabView(
-        selectedTab: $selectedTab
-      )
-    }
+  
+  var body: some View {
+    CustomTabView(
+      selectedTab: $selectedTab
+    )
+  }
 }
-
 
 //MARK: - Preview
 #Preview {
