@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		91580C9E2E8666BF002F83D9 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 91580C9D2E8666BF002F83D9 /* KakaoSDK */; };
+		B52285C92E88469C00678ECC /* Managers in Frameworks */ = {isa = PBXBuildFile; productRef = B52285C82E88469C00678ECC /* Managers */; };
+		B52286032E884E5B00678ECC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B52286022E884E5B00678ECC /* DesignSystem */; };
+		B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3402E92CB6100575CDA /* Onboarding */; };
+		B57DE3432E92CB6100575CDA /* Splash in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3422E92CB6100575CDA /* Splash */; };
+		B5C346492EA33BBF002354DF /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B5C346482EA33BBF002354DF /* KakaoSDKAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,6 +35,8 @@
 		915BC5D22E3CB9B50062B78E /* Hambug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hambug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		915BC5E02E3CB9B80062B78E /* HambugTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HambugTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		915BC5EA2E3CB9B80062B78E /* HambugUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HambugUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B52285C62E8844BD00678ECC /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Common; sourceTree = "<group>"; };
+		B5E822EB2EA2791900F3E10E /* Intro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Intro; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -74,7 +80,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				91580C9E2E8666BF002F83D9 /* KakaoSDK in Frameworks */,
+				B57DE3432E92CB6100575CDA /* Splash in Frameworks */,
+				B52286032E884E5B00678ECC /* DesignSystem in Frameworks */,
+				B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */,
+				B52285C92E88469C00678ECC /* Managers in Frameworks */,
+				B5C346492EA33BBF002354DF /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,10 +108,13 @@
 		915BC5C92E3CB9B50062B78E = {
 			isa = PBXGroup;
 			children = (
+				B5E822EB2EA2791900F3E10E /* Intro */,
+				B52285C62E8844BD00678ECC /* Common */,
 				915BC5FD2E3CBD5A0062B78E /* Projects */,
 				915BC5D42E3CB9B50062B78E /* Hambug */,
 				915BC5E32E3CB9B80062B78E /* HambugTests */,
 				915BC5ED2E3CB9B80062B78E /* HambugUITests */,
+				B52285C72E88469C00678ECC /* Frameworks */,
 				915BC5D32E3CB9B50062B78E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -114,6 +127,13 @@
 				915BC5EA2E3CB9B80062B78E /* HambugUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B52285C72E88469C00678ECC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,7 +157,11 @@
 			);
 			name = Hambug;
 			packageProductDependencies = (
-				91580C9D2E8666BF002F83D9 /* KakaoSDK */,
+				B52285C82E88469C00678ECC /* Managers */,
+				B52286022E884E5B00678ECC /* DesignSystem */,
+				B57DE3402E92CB6100575CDA /* Onboarding */,
+				B57DE3422E92CB6100575CDA /* Splash */,
+				B5C346482EA33BBF002354DF /* KakaoSDKAuth */,
 			);
 			productName = Hambug;
 			productReference = 915BC5D22E3CB9B50062B78E /* Hambug.app */;
@@ -222,7 +246,7 @@
 			mainGroup = 915BC5C92E3CB9B50062B78E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				91580C9C2E8666BF002F83D9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 915BC5D32E3CB9B50062B78E /* Products */;
@@ -422,7 +446,7 @@
 				CODE_SIGN_ENTITLEMENTS = Hambug/Hambug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M3KH86595Z;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -438,7 +462,6 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
-				KAKAO_NATIVE_APP_KEY = 765b405b24399848d2f984e91e2f5687;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -464,7 +487,7 @@
 				CODE_SIGN_ENTITLEMENTS = Hambug/Hambug.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M3KH86595Z;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -480,7 +503,6 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
-				KAKAO_NATIVE_APP_KEY = 765b405b24399848d2f984e91e2f5687;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -504,7 +526,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M3KH86595Z;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -527,7 +549,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M3KH86595Z;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -549,7 +571,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M3KH86595Z;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -571,7 +593,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = M3KH86595Z;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
@@ -630,7 +652,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		91580C9C2E8666BF002F83D9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
+		B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
 			requirement = {
@@ -641,10 +663,42 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		91580C9D2E8666BF002F83D9 /* KakaoSDK */ = {
+		B52285C82E88469C00678ECC /* Managers */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 91580C9C2E8666BF002F83D9 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDK;
+			productName = Managers;
+		};
+		B52286022E884E5B00678ECC /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		B57DE3402E92CB6100575CDA /* Onboarding */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Onboarding;
+		};
+		B57DE3422E92CB6100575CDA /* Splash */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Splash;
+		};
+		B5C346482EA33BBF002354DF /* KakaoSDKAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKAuth;
+		};
+		B52285C82E88469C00678ECC /* Managers */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Managers;
+		};
+		B52286022E884E5B00678ECC /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		B57DE3402E92CB6100575CDA /* Onboarding */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Onboarding;
+		};
+		B57DE3422E92CB6100575CDA /* Splash */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Splash;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

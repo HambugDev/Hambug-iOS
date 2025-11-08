@@ -6,6 +6,10 @@
 //
 
 import SwiftUI
+import Managers
+import DesignSystem
+import Splash
+import Onboarding
 
 // iOS SDK
 import KakaoSDKCommon
@@ -17,6 +21,10 @@ struct HambugApp: App {
     @State private var appStateManager: AppStateManager = .init()
     
     init() {
+        FontManager.registerAllFonts()
+        
+        FontManager.registerAllFonts()
+        
         if let key = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_APP_KEY") as? String {
             print("NATIVE_APP_KEY: ", key)
             KakaoSDK.initSDK(appKey: key)
@@ -44,7 +52,7 @@ fileprivate struct RootView: View {
     
     var body: some View {
         Group {
-            switch appStateManager.state {
+            switch appStateManager.currentState {
             case .splash:
                 SplashView()
                 
