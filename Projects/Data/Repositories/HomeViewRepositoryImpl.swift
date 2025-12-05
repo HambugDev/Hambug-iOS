@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol HomeViewRepository {
-    func fetchPopularPosts() -> [PostModel]
-}
-
 class DummyHomeViewRepositoryImpl: HomeViewRepository {
     
     func fetchPopularPosts() -> [PostModel] {

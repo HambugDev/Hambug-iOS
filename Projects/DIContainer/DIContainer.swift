@@ -18,7 +18,7 @@ final class DIContainer {
     }
     
     var homeViewUseCase: HomeViewUseCase {
-        HomeViewUseCase(repository: homeViewRepository)
+      HomeViewUseCaseImpl(repository: homeViewRepository)
     }
     
     var homeViewModel: HomeViewModel {
@@ -26,11 +26,11 @@ final class DIContainer {
     }
     
     var loginRepository: LoginRepository {
-        LoginRepositoryImpl()
+      LoginRepositoryImpl(networkService: NetworkServiceImpl())
     }
     
     var loginUseCase: LoginUseCase {
-        LoginUseCase(repository: loginRepository)
+        LoginUseCaseImpl(repository: loginRepository)
     }
     
     var loginViewModel: LoginViewModel {
