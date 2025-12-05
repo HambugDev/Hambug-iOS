@@ -57,6 +57,7 @@ public struct OnboardingView: View {
                         appStateManager.completeOnboarding()
                     }
                 }
+                .padding(18)
             }
             
             
