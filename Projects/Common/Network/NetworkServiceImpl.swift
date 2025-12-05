@@ -10,6 +10,8 @@ import Combine
 import Alamofire
 
 final class NetworkServiceImpl: NetworkServiceInterface {
+  static let baseURL: String = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as! String
+  
   // MARK: - Properties
   private let session: Session
   private let decoder: JSONDecoder
