@@ -33,3 +33,4 @@ playground.xcworkspace
 .build/
 **/Package.resolved
 
+*.xcconfig
