@@ -240,11 +240,12 @@
 				};
 			};
 			buildConfigurationList = 915BC5CD2E3CB9B50062B78E /* Build configuration list for PBXProject "Hambug" */;
-			developmentRegion = en;
+			developmentRegion = ko;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
+				ko,
 			);
 			mainGroup = 915BC5C92E3CB9B50062B78E;
 			minimizedProjectReferenceProxies = 1;

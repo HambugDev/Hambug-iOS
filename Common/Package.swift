@@ -17,16 +17,24 @@ let package = Package(
             name: "DesignSystem",
             targets: ["DesignSystem"]
         ),
+        .library(
+            name: "DataSources",
+            targets: ["DataSources"]
+        ),
     ],
     targets: [
         .target(
-            name: "Managers"
+            name: "Managers",
+            dependencies: ["DataSources"]
         ),
         .target(
             name: "DesignSystem",
             resources: [
                 .process("Resources")
             ]
+        ),
+        .target(
+            name: "DataSources"
         ),
         .plugin(
             name: "ColorGenerator",
