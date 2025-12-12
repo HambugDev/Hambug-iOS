@@ -10,91 +10,74 @@ import AuthenticationServices
 import KakaoSDKAuth
 import KakaoSDKUser
 
-class LoginUseCaseImpl: LoginUseCase {
-  let repository: LoginRepository
-  
-  
+final class LoginUseCaseImpl: LoginUseCase {
+  private let repository: LoginRepository
+
   init(repository: LoginRepository) {
     self.repository = repository
   }
-  
-  func fetchUserProfile(
-    accessToken: String,
-    completion: @escaping (Result<UserResponse, Error>) -> Void
-  ) {
-    self.repository.fetchUserProfile(accessToken: accessToken, completion: completion)
-  }
-  
-  func loginWithApple(
-    onSccuess: @escaping () -> Void,
-    onFailure: @escaping () -> Void
-  ) -> AppleLogionHandler {
+
+  func createAppleLoginHandler() -> AppleLogionHandler {
     AppleLogionHandler(
       onRequest: { request in
         request.requestedScopes = [.fullName, .email]
       },
-      onCompletion: { result in
-        switch result {
-        case .success(let authorization):
-          if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
-             let identityToken = appleIDCredential.identityToken,
-             let tokenString = String(data: identityToken, encoding: .utf8) {
-            
-            print("Apple identity token: \(tokenString)")
-            // 이 토큰을 서버로 전송해서 로그인 처리
-            self.fetchUserProfile(accessToken: tokenString) { result in
-              switch result {
-              case .success(let profile):
-                print(profile)
-                //                                UserDefaultsManager.shared.saveUserData(profile)
-                onSccuess()
-              case .failure(let error):
-                print(error)
-                onFailure()
+      onCompletion: { [weak self] result in
+        guard let self = self else { return }
+
+        Task {
+          switch result {
+          case .success(let authorization):
+            if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
+               let identityToken = appleIDCredential.identityToken,
+               let tokenString = String(data: identityToken, encoding: .utf8) {
+
+              print("Apple identity token: \(tokenString)")
+
+              do {
+                // Repository가 토큰 저장 처리 (async/await)
+                try await self.repository.login(
+                  request: .init(provider: .apple, accessToken: tokenString)
+                )
+                print("✅ Apple login successful - tokens saved to Keychain")
+              } catch {
+                print("❌ Apple login failed: \(error)")
               }
             }
+          case .failure(let error):
+            print("❌ Apple login error: \(error)")
           }
-        case .failure(let error):
-          print("Apple login error: \(error)")
-          onFailure()
         }
       }
     )
   }
-  
-  func loginWithKakao(
-    onSccuess: @escaping () -> Void,
-    onFailure: @escaping () -> Void
-  ) {
-    
-    let loginHandler: (OAuthToken?, Error?) -> Void = { token, error in
-      guard let token = token else {
-        if let error = error { print("error: \(error)") }
-        return
-      }
-      print("accessToken: \(token.accessToken)")
-      self.fetchUserProfile(accessToken: token.accessToken) { result in
-        switch result {
-        case .success(let profile):
-          print(profile)
-          //                    UserDefaultsManager.shared.saveUserData(profile)
-          onSccuess()
-        case .failure(let error):
-          print(error)
-          onFailure()
+
+  func loginWithKakao() async throws {
+    let token: OAuthToken = try await withCheckedThrowingContinuation { continuation in
+      let loginHandler: (OAuthToken?, Error?) -> Void = { token, error in
+        if let error = error {
+          print("Kakao login error: \(error)")
+          continuation.resume(throwing: error)
+        } else if let token = token {
+          continuation.resume(returning: token)
         }
       }
+
+      if UserApi.isKakaoTalkLoginAvailable() {
+        // 카카오톡 앱으로 로그인
+        UserApi.shared.loginWithKakaoTalk(completion: loginHandler)
+      } else {
+        // 카카오 계정 웹뷰 로그인
+        UserApi.shared.loginWithKakaoAccount(completion: loginHandler)
+      }
     }
-    
-    if UserApi.isKakaoTalkLoginAvailable() {
-      // 카카오톡 앱으로 로그인
-      UserApi.shared.loginWithKakaoTalk(completion: loginHandler)
-    } else {
-      // 카카오 계정 웹뷰 로그인
-      UserApi.shared.loginWithKakaoAccount(completion: loginHandler)
-    }
+
+    print("Kakao accessToken: \(token.accessToken)")
+
+    // Repository가 토큰 저장 처리 (async/await)
+    try await repository.login(
+      request: .init(provider: .kakao, accessToken: token.accessToken)
+    )
+    print("✅ Login successful - tokens saved to Keychain")
   }
-  
-  
-  
 }

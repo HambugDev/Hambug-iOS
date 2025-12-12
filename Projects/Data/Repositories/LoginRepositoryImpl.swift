@@ -7,27 +7,36 @@
 
 import Foundation
 import Alamofire
+import DataSources
 
-class LoginRepositoryImpl: LoginRepository {
-  //  private let networkService: NetworkServiceInterface
-  
-  func fetchUserProfile(accessToken: String, completion: @escaping (Result<UserResponse, any Error>) -> Void) {
-    let headers: HTTPHeaders = [
-      "Authorization" : "Bearer \(accessToken)"
-    ]
-    AF.request("Endpoint.auth.urlString", method: .get, headers: headers)
-      .validate()
-      .responseDecodable(of: UserResponse.self) { response in
-        switch response.result {
-        case .success(let profile):
-          print(profile)
-          
-          completion(.success(profile))
-          
-        case .failure(let error):
-          completion(.failure(error))
-        }
-      }
+final class LoginRepositoryImpl: LoginRepository {
+  private let networkService: NetworkServiceInterface
+  private let tokenStorage: TokenStorage
+
+  init(networkService: NetworkServiceInterface, tokenStorage: TokenStorage) {
+    self.networkService = networkService
+    self.tokenStorage = tokenStorage
+  }
+
+  func login(request: SocialLoginAuthRequestDTO) async throws {
+    let endpoint = LoginEndpoint.socialLogin(
+      request: .init(provider: request.provider, accessToken: request.accessToken)
+    )
+
+    // NetworkService를 사용하여 API 호출
+    let apiResponse: SuccessResponse<UserResponse> = try await networkService
+      .request(
+        endpoint,
+        responseType: SuccessResponse<UserResponse>.self
+      )
+      .async()
+
+    // 토큰을 Keychain에 저장
+    try tokenStorage.save(
+      accessToken: apiResponse.data.token.accessToken,
+      refreshToken: apiResponse.data.token.refreshToken
+    )
+    print("✅ Tokens saved to Keychain")
   }
 }
 
