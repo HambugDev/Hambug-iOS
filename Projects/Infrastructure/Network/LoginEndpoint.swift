@@ -12,12 +12,12 @@ enum LoginEndpoint: Endpoint {
     NetworkServiceImpl.baseURL
   }
   
-  case socialLogin(String)
+  case socialLogin(request: SocialLoginAuthRequestDTO)
   
   var path: String {
     switch self {
-    case .socialLogin(let provider):
-      "/api/v1/auth/login/\(provider)"
+    case .socialLogin(let request):
+      "/api/v1/auth/login/\(request.provider)"
     }
   }
   
@@ -42,7 +42,9 @@ enum LoginEndpoint: Endpoint {
   
   var body: Data? {
     switch self {
-    default: nil
+    case .socialLogin(let request):
+      let dict = ["accessToken" : "\(request.accessToken)"]
+      return try? JSONEncoder().encode(dict)
     }
   }
   

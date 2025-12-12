@@ -133,10 +133,3 @@ fileprivate struct PageIndicatorBar: View {
             .animation(.easeInOut(duration: 0.3), value: isActive)
     }
 }
-
-@available(iOS, introduced: 17.0)
-#Preview {
-    let appStateManager: AppStateManager = .init()
-    OnboardingView()
-        .environment(appStateManager)
-}

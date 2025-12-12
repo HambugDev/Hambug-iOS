@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B513799B2EE2ED8F00DAF2F7 /* Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B513799A2EE2ED8F00DAF2F7 /* Common.xcconfig */; };
+		B51379C52EE2F6C800DAF2F7 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = B51379C42EE2F6C800DAF2F7 /* KakaoSDKCommon */; };
+		B51379C72EE2F6C800DAF2F7 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = B51379C62EE2F6C800DAF2F7 /* KakaoSDKUser */; };
 		B52285C92E88469C00678ECC /* Managers in Frameworks */ = {isa = PBXBuildFile; productRef = B52285C82E88469C00678ECC /* Managers */; };
 		B52286032E884E5B00678ECC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B52286022E884E5B00678ECC /* DesignSystem */; };
 		B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3402E92CB6100575CDA /* Onboarding */; };
@@ -85,7 +87,9 @@
 				B57DE3432E92CB6100575CDA /* Splash in Frameworks */,
 				B52286032E884E5B00678ECC /* DesignSystem in Frameworks */,
 				B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */,
+				B51379C72EE2F6C800DAF2F7 /* KakaoSDKUser in Frameworks */,
 				B52285C92E88469C00678ECC /* Managers in Frameworks */,
+				B51379C52EE2F6C800DAF2F7 /* KakaoSDKCommon in Frameworks */,
 				B5C346492EA33BBF002354DF /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -165,6 +169,8 @@
 				B57DE3402E92CB6100575CDA /* Onboarding */,
 				B57DE3422E92CB6100575CDA /* Splash */,
 				B5C346482EA33BBF002354DF /* KakaoSDKAuth */,
+				B51379C42EE2F6C800DAF2F7 /* KakaoSDKCommon */,
+				B51379C62EE2F6C800DAF2F7 /* KakaoSDKUser */,
 			);
 			productName = Hambug;
 			productReference = 915BC5D22E3CB9B50062B78E /* Hambug.app */;
@@ -669,6 +675,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		B51379C42EE2F6C800DAF2F7 /* KakaoSDKCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKCommon;
+		};
+		B51379C62EE2F6C800DAF2F7 /* KakaoSDKUser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
+			productName = KakaoSDKUser;
+		};
 		B52285C82E88469C00678ECC /* Managers */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Managers;

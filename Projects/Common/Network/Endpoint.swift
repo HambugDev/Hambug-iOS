@@ -27,6 +27,13 @@ protocol Endpoint {
 }
 
 extension Endpoint {
+  var defaultHeaders: [String: String] {
+    [
+      "Content-Type": "application/json",
+      "accept": "application/json"
+    ]
+  }
+  
   func createURL() -> URL? {
     var urlComponents = URLComponents(string: baseURL.appending(path))
     var queryItems = [URLQueryItem]()
@@ -43,9 +50,13 @@ extension Endpoint {
     guard let url = createURL() else { throw NetworkError.invalidURL }
     var request = URLRequest(url: url)
     request.httpMethod = method.rawValue
-    var allHeaders: [String: String] = [:]
-    headers.forEach { allHeaders.updateValue($1, forKey: $0) }
     
+    defaultHeaders.forEach { request.setValue($1, forHTTPHeaderField: $0)}
+    headers.forEach { request.setValue($1, forHTTPHeaderField: $0)}
+    request.httpBody = body
+    print("✅ url: \(url)")
+    print("✅ header: \(request.headers)")
+    print("✅ method: \(method)")
     return request
   }
 }

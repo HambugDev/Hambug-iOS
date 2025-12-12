@@ -31,8 +31,6 @@ public final class AppStateManager {
   ) {
     self.tokenStorage = tokenStorage
     self.udManager = udManager
-    // 디버깅용 - 실제로는 제거하거나 조건부로 설정
-     UserDefaults.standard.set(false, forKey: .Storage.hasSeenOnboarding)
   }
   
   public var isOnboardingCompleted: Bool {
@@ -65,7 +63,6 @@ public final class AppStateManager {
   
   // 로그인 완료
   public func completeLogin() {
-    print(#function)
     state = .main
   }
   

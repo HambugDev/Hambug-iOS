@@ -27,10 +27,3 @@ public struct SplashView: View {
     
     public init() {}
 }
-
-@available(iOS, introduced: 17.0)
-#Preview {
-    let appStateManager = AppStateManager()
-    SplashView()
-        .environment(appStateManager)
-}
