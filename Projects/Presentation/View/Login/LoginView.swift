@@ -6,16 +6,14 @@
 //
 
 import SwiftUI
-import AuthenticationServices
 import DesignSystem
 import Managers
 
 struct LoginView: View {
-  @Environment(AppStateManager.self) var appStateManager
   @State var failureText: String = ""
-  
+
   private let viewModel: LoginViewModel
-  
+
   init(viewModel: LoginViewModel) {
     self.viewModel = viewModel
   }
@@ -82,30 +80,23 @@ struct LoginView: View {
       Text(verbatim: .LocalizedString.Login.descriptionOfSNS)
         .pretendard(.body(.small))
         .foregroundColor(.borderG400)
-      
+
       VStack(spacing: 10) {
         SNSLoginButton(.kakao {
-          viewModel.loginWithKakao(
-            onSccuess: {
-              // TODO: 성공처리
-            },
-            onFailure: {
+          Task {
+            do {
+              try await viewModel.loginWithKakao()
+            } catch {
               failureText = "로그인 실패!"
+              print("❌ Kakao login error: \(error)")
             }
-          )
+          }
         })
-        
+
         SNSLoginButton(.apple(
-          viewModel.loginWithApple(
-            onSccuess: {
-              // TODO: 성공처리
-            },
-            onFailure: {
-              failureText = "로그인 실패!"
-            }
-          )
+          viewModel.createAppleLoginHandler()
         ))
-        
+
         if !failureText.isEmpty {
           Text(failureText)
             .pretendard(.body(.bEmphasis))
@@ -115,53 +106,13 @@ struct LoginView: View {
       .padding(.horizontal, 18)
     }
   }
-  
-}
-
-struct AppleLogionHandler {
-  var onRequest: (ASAuthorizationAppleIDRequest) -> Void
-  var onCompletion: (Result<ASAuthorization, Error>) -> Void
-}
-
-enum LoginType {
-  case kakao(() -> Void)
-  case apple(AppleLogionHandler)
-  
-  var loginText: String {
-    switch self {
-    case .kakao: return "카카오"
-    case .apple: return "Apple"
-    }
-  }
-  
-  var logoName: String {
-    switch self {
-    case .kakao: return "kakao"
-    case .apple: return "apple"
-    }
-  }
-  
-  var fontColor: Color {
-    switch self {
-    case .kakao: return .textG900
-    case .apple: return .white
-    }
-  }
-  
-  var bgColor: Color {
-    switch self {
-    case .kakao: return .kakaoBtnYellow
-    case .apple: return .black
-    }
-  }
 }
 
 
 
 
 #Preview {
-  let appStateManager: AppStateManager = .init()
-  LoginView(viewModel: DIContainer.shared.loginViewModel)
-      .environment(appStateManager)
+  let appStateManager: AppStateManager = DIContainer.shared.makeAppStateManager()
+  LoginView(viewModel: DIContainer.shared.loginViewModel(appStateManager: appStateManager))
 }
 

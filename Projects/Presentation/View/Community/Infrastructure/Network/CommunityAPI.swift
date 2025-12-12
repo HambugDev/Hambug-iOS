@@ -32,8 +32,6 @@ enum BoardEndpoint: Endpoint {
   
   var headers: [String: String] {
     var headers: [String: String] = [:]
-    headers["Content-Type"] = "application/json"
-    headers["Accept"] = "application/json"
     return headers
   }
   

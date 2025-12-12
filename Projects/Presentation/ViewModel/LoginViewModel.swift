@@ -5,40 +5,42 @@
 //  Created by 차상진 on 10/5/25.
 //
 
-import SwiftUI
 import Foundation
-import Alamofire
-import AuthenticationServices
-import KakaoSDKUser
-//import KakaoSDKAuth
+import Managers
 
-class LoginViewModel {
-    
-    let useCase: LoginUseCase
-    
-    init(useCase: LoginUseCase) {
-        self.useCase = useCase
-    }
-    
-    
-    func loginWithApple(
-        onSccuess: @escaping () -> Void,
-        onFailure: @escaping () -> Void
-    ) -> AppleLogionHandler {
-        self.useCase.loginWithApple(onSccuess: onSccuess, onFailure: onFailure)
-    }
+final class LoginViewModel {
+  private let useCase: LoginUseCase
+  private let appStateManager: AppStateManager
 
-    func loginWithKakao(
-        onSccuess: @escaping () -> Void,
-        onFailure: @escaping () -> Void
-    ) {
-        self.useCase.loginWithKakao(onSccuess: onSccuess, onFailure: onFailure)
-    }
-    
-   
-    func fetchUserProfile(accessToken: String, completion: @escaping (Result<UserResponse, Error>) -> Void) {
-        self.useCase.fetchUserProfile(accessToken: accessToken, completion: completion)
-    }
+  init(useCase: LoginUseCase, appStateManager: AppStateManager) {
+    self.useCase = useCase
+    self.appStateManager = appStateManager
+  }
+
+  func createAppleLoginHandler() -> AppleLogionHandler {
+    let baseHandler = useCase.createAppleLoginHandler()
+
+    // 기존 handler를 래핑하여 성공 시 completeLogin 호출
+    return AppleLogionHandler(
+      onRequest: baseHandler.onRequest,
+      onCompletion: { [weak self] result in
+        baseHandler.onCompletion(result)
+
+        // 성공 시 앱 상태 전환
+        if case .success = result {
+          Task { @MainActor in
+            self?.appStateManager.completeLogin()
+          }
+        }
+      }
+    )
+  }
+
+  @MainActor
+  func loginWithKakao() async throws {
+    try await useCase.loginWithKakao()
+    appStateManager.completeLogin()
+  }
 }
 
 

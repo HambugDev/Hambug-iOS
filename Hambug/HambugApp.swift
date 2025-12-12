@@ -18,13 +18,13 @@ import KakaoSDKUser
 
 @main
 struct HambugApp: App {
-  @State private var appStateManager: AppStateManager = .init()
-  
+  @State private var appStateManager: AppStateManager = DIContainer.shared.makeAppStateManager()
+
   init() {
     FontManager.registerAllFonts()
     KakaoSDK.initSDK(appKey: HambugApp.kakaoMapNativeKey)
   }
-  
+
   var body: some Scene {
     WindowGroup {
       RootView()
@@ -35,25 +35,26 @@ struct HambugApp: App {
           }
         }
     }
-    
+
   }
 }
 
 fileprivate struct RootView: View {
   @Environment(AppStateManager.self) var appStateManager
-  
+
   var body: some View {
+    let _ = Self._printChanges()
     Group {
       switch appStateManager.currentState {
       case .splash:
         SplashView()
-        
+
       case .onboarding:
         OnboardingView()
-        
+
       case .login:
-        LoginView(viewModel: DIContainer.shared.loginViewModel)
-        
+        LoginView(viewModel: DIContainer.shared.loginViewModel(appStateManager: appStateManager))
+
       case .main:
         ContentView()
       }
