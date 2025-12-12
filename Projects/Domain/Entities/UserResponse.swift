@@ -7,19 +7,12 @@
 
 import Foundation
 
-struct UserResponse: Codable {
-    let success: Bool
-    let data: UserResponseData
-    let message: String
-}
-
 struct UserResponseData: Codable {
-    let userId: Int64
-    let email: String
-    let name: String
-    let nickname: String
-    let profileImageUrl: String
-    let loginType: String
-    let role: String
-    let kakao: Bool
+  let userId: Int64
+  let nickname: String
+  let profileImageUrl: String
+  let loginType: String
+  let role: String
+  let isRegister: Bool
+  let kakao: Bool
 }

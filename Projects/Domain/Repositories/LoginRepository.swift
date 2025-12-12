@@ -7,5 +7,5 @@
 
 
 protocol LoginRepository {
-  func fetchUserProfile(accessToken: String, completion: @escaping (Result<UserResponse, Error>) -> Void)
+  func login(request: SocialLoginAuthRequestDTO) async throws
 }
