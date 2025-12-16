@@ -16,8 +16,12 @@ final class NetworkServiceImpl: NetworkServiceInterface {
   private let session: Session
   private let decoder: JSONDecoder
   
-  init(session: Session = AF) {
-    self.session = session
+  init(session: Session = AF, interceptor: RequestInterceptor? = nil) {
+    if let interceptor {
+      self.session = Session(interceptor: Interceptor(interceptors: [interceptor]))
+    } else {
+      self.session = session
+    }
     self.decoder = JSONDecoder()
     
     // Date formatting 설정

@@ -19,7 +19,7 @@ final class LoginRepositoryImpl: LoginRepository {
   }
 
   func login(request: SocialLoginAuthRequestDTO) async throws {
-    let endpoint = LoginEndpoint.socialLogin(
+    let endpoint = AuthEndpoint.socialLogin(
       request: .init(provider: request.provider, accessToken: request.accessToken)
     )
 

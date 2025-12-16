@@ -7,15 +7,27 @@
 
 import Foundation
 
-enum LoginEndpoint: Endpoint {
+struct TokenInfo: Encodable {
+  let accessToken: String
+  let refreshToken: String
+}
+
+struct TokenResponse: Decodable {
+  let accessToken: String
+}
+
+enum AuthEndpoint: Endpoint {
   var baseURL: String {
     NetworkServiceImpl.baseURL
   }
   
+  case refresh(info: TokenInfo)
   case socialLogin(request: SocialLoginAuthRequestDTO)
   
   var path: String {
     switch self {
+    case .refresh:
+      "/api/v1/auth/refresh"
     case .socialLogin(let request):
       "/api/v1/auth/login/\(request.provider)"
     }
@@ -23,14 +35,19 @@ enum LoginEndpoint: Endpoint {
   
   var method: HTTPMethod {
     switch self {
-    case .socialLogin:
+    case .refresh, .socialLogin:
       return .POST
     }
   }
   
   var headers: [String : String] {
     switch self {
-    default: [:]
+    case .refresh(let tokenInfo):
+      var dict = [String : String]()
+      dict["Authorization"] = "Bearer \(tokenInfo.accessToken)"
+      dict["RefreshToken"] = "\(tokenInfo.refreshToken)"
+      return dict
+    default: return [:]
     }
   }
   
@@ -45,7 +62,9 @@ enum LoginEndpoint: Endpoint {
     case .socialLogin(let request):
       let dict = ["accessToken" : "\(request.accessToken)"]
       return try? JSONEncoder().encode(dict)
+    default: return nil
     }
   }
+  
   
 }
