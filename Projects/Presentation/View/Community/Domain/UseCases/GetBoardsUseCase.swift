@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import NetworkCommon
 
 // MARK: - Get Boards UseCase Interface
 protocol GetBoardsUseCaseInterface {

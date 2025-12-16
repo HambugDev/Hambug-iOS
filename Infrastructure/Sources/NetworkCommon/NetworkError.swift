@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Network Error
-enum NetworkError: Error, LocalizedError {
+public enum NetworkError: Error, LocalizedError {
   case invalidURL
   case noData
   case encodingError(Error)
@@ -20,7 +20,7 @@ enum NetworkError: Error, LocalizedError {
   case forbidden
   case notFound
   
-  var errorDescription: String? {
+  public var errorDescription: String? {
     switch self {
     case .invalidURL:
       return "잘못된 URL입니다."

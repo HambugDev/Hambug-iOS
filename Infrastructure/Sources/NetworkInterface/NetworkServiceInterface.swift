@@ -7,8 +7,9 @@
 
 import Foundation
 import Combine
+import NetworkCommon
 
 // MARK: - Network Interface Protocol
-protocol NetworkServiceInterface {
+public protocol NetworkServiceInterface {
   func request<T: Decodable>(_ endpoint: any Endpoint, responseType: T.Type) -> AnyPublisher<T, NetworkError>
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import NetworkCommon
 
 // MARK: - Community Repository Interface
 protocol CommunityRepositoryInterface {

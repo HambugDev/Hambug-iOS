@@ -12,6 +12,7 @@
 		B51379C72EE2F6C800DAF2F7 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = B51379C62EE2F6C800DAF2F7 /* KakaoSDKUser */; };
 		B52285C92E88469C00678ECC /* Managers in Frameworks */ = {isa = PBXBuildFile; productRef = B52285C82E88469C00678ECC /* Managers */; };
 		B52286032E884E5B00678ECC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B52286022E884E5B00678ECC /* DesignSystem */; };
+		B54126342EF1B0BC00CC4938 /* Infrastructure in Frameworks */ = {isa = PBXBuildFile; productRef = B54126332EF1B0BC00CC4938 /* Infrastructure */; };
 		B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3402E92CB6100575CDA /* Onboarding */; };
 		B57DE3432E92CB6100575CDA /* Splash in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3422E92CB6100575CDA /* Splash */; };
 		B5C346492EA33BBF002354DF /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B5C346482EA33BBF002354DF /* KakaoSDKAuth */; };
@@ -40,6 +41,7 @@
 		915BC5EA2E3CB9B80062B78E /* HambugUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HambugUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B513799A2EE2ED8F00DAF2F7 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		B52285C62E8844BD00678ECC /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Common; sourceTree = "<group>"; };
+		B54126322EF1A99B00CC4938 /* Infrastructure */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Infrastructure; sourceTree = "<group>"; };
 		B5E822EB2EA2791900F3E10E /* Intro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Intro; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +93,7 @@
 				B52285C92E88469C00678ECC /* Managers in Frameworks */,
 				B51379C52EE2F6C800DAF2F7 /* KakaoSDKCommon in Frameworks */,
 				B5C346492EA33BBF002354DF /* KakaoSDKAuth in Frameworks */,
+				B54126342EF1B0BC00CC4938 /* Infrastructure in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +117,7 @@
 		915BC5C92E3CB9B50062B78E = {
 			isa = PBXGroup;
 			children = (
+				B54126322EF1A99B00CC4938 /* Infrastructure */,
 				B513799A2EE2ED8F00DAF2F7 /* Common.xcconfig */,
 				B5E822EB2EA2791900F3E10E /* Intro */,
 				B52285C62E8844BD00678ECC /* Common */,
@@ -171,6 +175,7 @@
 				B5C346482EA33BBF002354DF /* KakaoSDKAuth */,
 				B51379C42EE2F6C800DAF2F7 /* KakaoSDKCommon */,
 				B51379C62EE2F6C800DAF2F7 /* KakaoSDKUser */,
+				B54126332EF1B0BC00CC4938 /* Infrastructure */,
 			);
 			productName = Hambug;
 			productReference = 915BC5D22E3CB9B50062B78E /* Hambug.app */;
@@ -692,6 +697,10 @@
 		B52286022E884E5B00678ECC /* DesignSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignSystem;
+		};
+		B54126332EF1B0BC00CC4938 /* Infrastructure */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Infrastructure;
 		};
 		B57DE3402E92CB6100575CDA /* Onboarding */ = {
 			isa = XCSwiftPackageProductDependency;

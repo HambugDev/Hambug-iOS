@@ -8,26 +8,31 @@
 
 import Foundation
 import DataSources
+import NetworkInterface
+import NetworkCommon
 
 import Alamofire
 
 // MARK: - Auth Interceptor
-final class AuthInterceptor: RequestInterceptor {
+public final class AuthInterceptor: RequestInterceptor {
+  private let authorizationKey = "Authorization"
+  private let refreshTokenKey = "RefreshToken"
+  
   private let tokenManager: TokenStorage
   
-  init(tokenManager: TokenStorage) {
+  public init(tokenManager: TokenStorage) {
     self.tokenManager = tokenManager
   }
   
   private actor RefreshCoordinator {
     private var refreshTask: Task<Bool, Never>?
     
-    func refresh(with refreshTokens: @escaping () async -> Bool) async -> Bool {
+    func refresh(with refreshTokens: @escaping @Sendable () async -> Bool) async -> Bool {
       if let existingTask = refreshTask {
         return await existingTask.value
       }
       
-      let task = Task {
+      let task = Task { @MainActor in
         await refreshTokens()
       }
       
@@ -42,7 +47,7 @@ final class AuthInterceptor: RequestInterceptor {
   
   private let coordinator = RefreshCoordinator()
   
-  func adapt(
+  public func adapt(
     _ urlRequest: URLRequest,
     for session: Session,
     completion: @escaping (Result<URLRequest, Error>) -> Void
@@ -51,21 +56,21 @@ final class AuthInterceptor: RequestInterceptor {
     
     let (access, refresh) = tokenManager.load()
     if let accessToken = access {
-      urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+      urlRequest.setValue("Bearer \(accessToken)", forHTTPHeaderField: authorizationKey)
     }
     
     if let refreshToken = refresh {
-      urlRequest.setValue(refreshToken, forHTTPHeaderField: "RefreshToken")
+      urlRequest.setValue(refreshToken, forHTTPHeaderField: refreshTokenKey)
     }
     
     completion(.success(urlRequest))
   }
   
-  func retry(
+  public func retry(
     _ request: Request,
     for session: Session,
     dueTo error: any Error,
-    completion: @escaping (RetryResult) -> Void
+    completion: @escaping @Sendable (RetryResult) -> Void
   ) {
     guard let response = request.task?.response as? HTTPURLResponse,
           response.statusCode == 401 else {
@@ -74,7 +79,7 @@ final class AuthInterceptor: RequestInterceptor {
     }
     
     
-    Task {
+    Task { @MainActor in
       let success = await coordinator.refresh { [weak self] in
         guard let self = self else { return false }
         return await self.refreshTokens()
@@ -97,17 +102,21 @@ final class AuthInterceptor: RequestInterceptor {
       return false
     }
     
-    guard let endpoint = try? AuthEndpoint.refresh(info: .init(accessToken: accessToken, refreshToken: refreshToken)).createURLRequest() else {
+    var header = [String : String]()
+    header[authorizationKey] = "Bearer \(accessToken)"
+    header[refreshTokenKey] = refreshToken
+    
+    guard let request = try? TokenRefreshEndpoint(headers: header).createURLRequest() else {
       return false
     }
     
     do {
-      let tokenResponse = try await AF.request(endpoint)
+      let tokenResponse = try await AF.request(request)
         .validate()
-        .serializingDecodable(SuccessResponse<TokenResponse>.self)
+        .serializingDecodable(SuccessResponse<String>.self)
         .value
       
-      try? tokenManager.save(accessToken: tokenResponse.data.accessToken, refreshToken: nil)
+      try? tokenManager.save(accessToken: tokenResponse.data, refreshToken: nil)
       
       return true
     } catch {
@@ -125,5 +134,3 @@ final class AuthInterceptor: RequestInterceptor {
 extension NSNotification.Name {
   static let userDidLogout = NSNotification.Name("userDidLogout")
 }
-
-

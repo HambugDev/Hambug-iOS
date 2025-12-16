@@ -7,6 +7,8 @@
 
 import Foundation
 import DataSources
+import NetworkInterface
+import NetworkImpl
 
 // MARK: - Generic DIContainer Protocol
 protocol DIContainerProtocol {

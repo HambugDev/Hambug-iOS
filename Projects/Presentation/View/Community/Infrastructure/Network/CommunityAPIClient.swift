@@ -7,6 +7,8 @@
 
 import Foundation
 import Combine
+import NetworkCommon
+import NetworkInterface
 
 // MARK: - Community API Client Interface
 protocol CommunityAPIClientInterface {
