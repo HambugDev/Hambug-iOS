@@ -8,13 +8,14 @@
 
 import Foundation
 import AuthenticationServices
-import KakaoSDKAuth
-import KakaoSDKUser
+import KakaoLogin
 
 public final class LoginUseCaseImpl: LoginUseCase, @unchecked Sendable {
   private let repository: LoginRepository
-
+  private let kakaoManager: KakaoSDKManager
+  
   public init(repository: LoginRepository) {
+    self.kakaoManager = KakaoSDKManager.shared
     self.repository = repository
   }
 
@@ -58,22 +59,7 @@ public final class LoginUseCaseImpl: LoginUseCase, @unchecked Sendable {
 
   public func loginWithKakao() async throws {
     let accessToken: String = try await withCheckedThrowingContinuation { continuation in
-      let loginHandler: (OAuthToken?, Error?) -> Void = { token, error in
-        if let error = error {
-          print("Kakao login error: \(error)")
-          continuation.resume(throwing: error)
-        } else if let token = token {
-          continuation.resume(returning: token.accessToken)
-        }
-      }
-
-      if UserApi.isKakaoTalkLoginAvailable() {
-        // 카카오톡 앱으로 로그인
-        UserApi.shared.loginWithKakaoTalk(completion: loginHandler)
-      } else {
-        // 카카오 계정 웹뷰 로그인
-        UserApi.shared.loginWithKakaoAccount(completion: loginHandler)
-      }
+      kakaoManager.handle(continuation)
     }
 
     print("Kakao accessToken: \(accessToken)")

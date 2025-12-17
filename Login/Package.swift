@@ -24,7 +24,7 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(url: "https://github.com/kakao/kakao-ios-sdk", branch: "master"),
+    .package(name: "3rdParth", path: "../3rdParth"),
     .package(name: "Common", path: "../Common"),
     .package(name: "Infrastructure", path: "../Infrastructure")
   ],
@@ -33,8 +33,7 @@ let package = Package(
     .target(
       name: Config.domain,
       dependencies: [
-        .product(name: "KakaoSDKAuth", package: "kakao-ios-sdk"),
-        .product(name: "KakaoSDKUser", package: "kakao-ios-sdk"),
+        .product(name: "KakaoLogin", package: "3rdParth"),
       ],
       path: "Sources/Domain"
     ),

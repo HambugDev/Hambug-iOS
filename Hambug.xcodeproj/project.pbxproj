@@ -8,17 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		B513799B2EE2ED8F00DAF2F7 /* Common.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B513799A2EE2ED8F00DAF2F7 /* Common.xcconfig */; };
-		B51379C52EE2F6C800DAF2F7 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = B51379C42EE2F6C800DAF2F7 /* KakaoSDKCommon */; };
-		B51379C72EE2F6C800DAF2F7 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = B51379C62EE2F6C800DAF2F7 /* KakaoSDKUser */; };
 		B52285C92E88469C00678ECC /* Managers in Frameworks */ = {isa = PBXBuildFile; productRef = B52285C82E88469C00678ECC /* Managers */; };
 		B52286032E884E5B00678ECC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B52286022E884E5B00678ECC /* DesignSystem */; };
 		B54128772EF1CD3100CC4938 /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = B54128762EF1CD3100CC4938 /* Login */; };
 		B5412A862EF277A200CC4938 /* NetworkCommon in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A852EF277A200CC4938 /* NetworkCommon */; };
 		B5412A882EF277A200CC4938 /* NetworkImpl in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A872EF277A200CC4938 /* NetworkImpl */; };
 		B5412A8A2EF277A200CC4938 /* NetworkInterface in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A892EF277A200CC4938 /* NetworkInterface */; };
+		B5412B662EF30B8B00CC4938 /* KakaoLogin in Frameworks */ = {isa = PBXBuildFile; productRef = B5412B652EF30B8B00CC4938 /* KakaoLogin */; };
 		B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3402E92CB6100575CDA /* Onboarding */; };
 		B57DE3432E92CB6100575CDA /* Splash in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3422E92CB6100575CDA /* Splash */; };
-		B5C346492EA33BBF002354DF /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B5C346482EA33BBF002354DF /* KakaoSDKAuth */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +42,9 @@
 		915BC5EA2E3CB9B80062B78E /* HambugUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HambugUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B513799A2EE2ED8F00DAF2F7 /* Common.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Common.xcconfig; sourceTree = "<group>"; };
 		B52285C62E8844BD00678ECC /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Common; sourceTree = "<group>"; };
+		B54125132EF161BF00CC4938 /* Login */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Login; sourceTree = "<group>"; };
 		B54126322EF1A99B00CC4938 /* Infrastructure */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Infrastructure; sourceTree = "<group>"; };
+		B5412B642EF309D400CC4938 /* 3rdParth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = 3rdParth; sourceTree = "<group>"; };
 		B5E822EB2EA2791900F3E10E /* Intro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Intro; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,12 +91,13 @@
 			files = (
 				B57DE3432E92CB6100575CDA /* Splash in Frameworks */,
 				B52286032E884E5B00678ECC /* DesignSystem in Frameworks */,
+				B5412A862EF277A200CC4938 /* NetworkCommon in Frameworks */,
 				B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */,
-				B51379C72EE2F6C800DAF2F7 /* KakaoSDKUser in Frameworks */,
 				B52285C92E88469C00678ECC /* Managers in Frameworks */,
-				B51379C52EE2F6C800DAF2F7 /* KakaoSDKCommon in Frameworks */,
-				B5C346492EA33BBF002354DF /* KakaoSDKAuth in Frameworks */,
-				B54126342EF1B0BC00CC4938 /* Infrastructure in Frameworks */,
+				B54128772EF1CD3100CC4938 /* Login in Frameworks */,
+				B5412B662EF30B8B00CC4938 /* KakaoLogin in Frameworks */,
+				B5412A882EF277A200CC4938 /* NetworkImpl in Frameworks */,
+				B5412A8A2EF277A200CC4938 /* NetworkInterface in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,7 +121,9 @@
 		915BC5C92E3CB9B50062B78E = {
 			isa = PBXGroup;
 			children = (
+				B5412B642EF309D400CC4938 /* 3rdParth */,
 				B54126322EF1A99B00CC4938 /* Infrastructure */,
+				B54125132EF161BF00CC4938 /* Login */,
 				B513799A2EE2ED8F00DAF2F7 /* Common.xcconfig */,
 				B5E822EB2EA2791900F3E10E /* Intro */,
 				B52285C62E8844BD00678ECC /* Common */,
@@ -175,10 +178,11 @@
 				B52286022E884E5B00678ECC /* DesignSystem */,
 				B57DE3402E92CB6100575CDA /* Onboarding */,
 				B57DE3422E92CB6100575CDA /* Splash */,
-				B5C346482EA33BBF002354DF /* KakaoSDKAuth */,
-				B51379C42EE2F6C800DAF2F7 /* KakaoSDKCommon */,
-				B51379C62EE2F6C800DAF2F7 /* KakaoSDKUser */,
-				B54126332EF1B0BC00CC4938 /* Infrastructure */,
+				B54128762EF1CD3100CC4938 /* Login */,
+				B5412A852EF277A200CC4938 /* NetworkCommon */,
+				B5412A872EF277A200CC4938 /* NetworkImpl */,
+				B5412A892EF277A200CC4938 /* NetworkInterface */,
+				B5412B652EF30B8B00CC4938 /* KakaoLogin */,
 			);
 			productName = Hambug;
 			productReference = 915BC5D22E3CB9B50062B78E /* Hambug.app */;
@@ -264,7 +268,6 @@
 			mainGroup = 915BC5C92E3CB9B50062B78E;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 915BC5D32E3CB9B50062B78E /* Products */;
@@ -671,28 +674,7 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kakao/kakao-ios-sdk";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		B51379C42EE2F6C800DAF2F7 /* KakaoSDKCommon */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKCommon;
-		};
-		B51379C62EE2F6C800DAF2F7 /* KakaoSDKUser */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKUser;
-		};
 		B52285C82E88469C00678ECC /* Managers */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Managers;
@@ -701,9 +683,25 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = DesignSystem;
 		};
-		B54126332EF1B0BC00CC4938 /* Infrastructure */ = {
+		B54128762EF1CD3100CC4938 /* Login */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = Infrastructure;
+			productName = Login;
+		};
+		B5412A852EF277A200CC4938 /* NetworkCommon */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NetworkCommon;
+		};
+		B5412A872EF277A200CC4938 /* NetworkImpl */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NetworkImpl;
+		};
+		B5412A892EF277A200CC4938 /* NetworkInterface */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NetworkInterface;
+		};
+		B5412B652EF30B8B00CC4938 /* KakaoLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KakaoLogin;
 		};
 		B57DE3402E92CB6100575CDA /* Onboarding */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -712,11 +710,6 @@
 		B57DE3422E92CB6100575CDA /* Splash */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Splash;
-		};
-		B5C346482EA33BBF002354DF /* KakaoSDKAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B5C346222EA33B25002354DF /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
-			productName = KakaoSDKAuth;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
