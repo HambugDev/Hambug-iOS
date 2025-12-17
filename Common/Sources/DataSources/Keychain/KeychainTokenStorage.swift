@@ -7,9 +7,9 @@
 
 import Foundation
 
-public protocol TokenStorage {
+public protocol TokenStorage: Sendable {
   func save(accessToken: String, refreshToken: String?) throws
-  func load() throws -> (accessToken: String, refreshToken: String?)
+  func load() -> (accessToken: String?, refreshToken: String?)
   func clear() throws
   func exists() throws -> Bool
 }
@@ -31,13 +31,9 @@ public final class KeychainTokenStorage: TokenStorage {
     }
   }
 
-  public func load() throws -> (accessToken: String, refreshToken: String?) {
-    let access = try string(for: .accessToken)
-    let refresh = try string(for: .refreshToken)
-
-    guard let access else {
-      throw KeychainError.itemNotFound
-    }
+  public func load() -> (accessToken: String?, refreshToken: String?) {
+    let access = try? string(for: .accessToken)
+    let refresh = try? string(for: .refreshToken)
 
     return (access, refresh)
   }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NetworkInterface
 
 // MARK: - Board Endpoints (Moya Style)
 enum BoardEndpoint: Endpoint {

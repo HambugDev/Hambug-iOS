@@ -36,7 +36,9 @@ final class DIContainer {
   
   var loginRepository: LoginRepository {
     LoginRepositoryImpl(
-      networkService: NetworkServiceImpl(),
+      networkService: NetworkServiceImpl(
+        interceptor: AuthInterceptor(tokenManager: tokenStorage)
+      ),
       tokenStorage: tokenStorage
     )
   }

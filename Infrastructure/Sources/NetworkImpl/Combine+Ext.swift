@@ -8,7 +8,7 @@
 import Combine
 
 // MARK: - Publisher to async/await extension
-extension Publisher {
+public extension Publisher where Output: Sendable {
   func async() async throws -> Output {
     try await withCheckedThrowingContinuation { continuation in
       var cancellable: AnyCancellable?

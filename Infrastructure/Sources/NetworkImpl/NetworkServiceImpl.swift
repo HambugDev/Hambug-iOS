@@ -7,17 +7,24 @@
 
 import Foundation
 import Combine
+import NetworkCommon
+import NetworkInterface
+
 import Alamofire
 
-final class NetworkServiceImpl: NetworkServiceInterface {
-  static let baseURL: String = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as! String
+public final class NetworkServiceImpl: NetworkServiceInterface {
+  public static let baseURL: String = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as! String
   
   // MARK: - Properties
   private let session: Session
   private let decoder: JSONDecoder
   
-  init(session: Session = AF) {
-    self.session = session
+  public init(session: Session = AF, interceptor: RequestInterceptor? = nil) {
+    if let interceptor {
+      self.session = Session(interceptor: Interceptor(interceptors: [interceptor]))
+    } else {
+      self.session = session
+    }
     self.decoder = JSONDecoder()
     
     // Date formatting 설정
@@ -26,7 +33,7 @@ final class NetworkServiceImpl: NetworkServiceInterface {
     decoder.dateDecodingStrategy = .formatted(dateFormatter)
   }
   
-  init(configuration: URLSessionConfiguration) {
+  public init(configuration: URLSessionConfiguration) {
     self.session = Session(configuration: configuration)
     self.decoder = JSONDecoder()
     
@@ -36,7 +43,7 @@ final class NetworkServiceImpl: NetworkServiceInterface {
     decoder.dateDecodingStrategy = .formatted(dateFormatter)
   }
   
-  func request<T: Decodable>(_ endpoint: any Endpoint, responseType: T.Type) -> AnyPublisher<T, NetworkError> {
+  public func request<T: Decodable>(_ endpoint: any Endpoint, responseType: T.Type) -> AnyPublisher<T, NetworkError> {
     do {
       let urlRequest = try endpoint.createURLRequest()
       return session.request(urlRequest)
@@ -67,7 +74,7 @@ final class NetworkServiceImpl: NetworkServiceInterface {
   }
   
   // MARK: - Private Methods
-  private func alamofireMethod(from httpMethod: HTTPMethod) -> Alamofire.HTTPMethod {
+  private func alamofireMethod(from httpMethod: NetworkInterface.HTTPMethod) -> Alamofire.HTTPMethod {
     switch httpMethod {
     case .GET:
       return .get

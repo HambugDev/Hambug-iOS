@@ -6,18 +6,19 @@
 //
 
 import Foundation
+import NetworkCommon
 
 // MARK: - HTTP Method
-enum HTTPMethod: String {
-  case GET = "GET"
-  case POST = "POST"
-  case PUT = "PUT"
-  case DELETE = "DELETE"
-  case PATCH = "PATCH"
+public enum HTTPMethod: String, Sendable {
+  case GET
+  case POST
+  case PUT
+  case DELETE
+  case PATCH
 }
 
 // MARK: - Base Endpoint Protocol
-protocol Endpoint {
+public protocol Endpoint: Sendable {
   var baseURL: String { get }
   var path: String { get }
   var method: HTTPMethod { get }
@@ -26,7 +27,7 @@ protocol Endpoint {
   var body: Data? { get }
 }
 
-extension Endpoint {
+public extension Endpoint {
   var defaultHeaders: [String: String] {
     [
       "Content-Type": "application/json",
@@ -55,7 +56,7 @@ extension Endpoint {
     headers.forEach { request.setValue($1, forHTTPHeaderField: $0)}
     request.httpBody = body
     print("✅ url: \(url)")
-    print("✅ header: \(request.headers)")
+    print("✅ header: \(String(describing: request.allHTTPHeaderFields))")
     print("✅ method: \(method)")
     return request
   }
