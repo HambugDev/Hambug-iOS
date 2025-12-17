@@ -8,20 +8,27 @@
 import Foundation
 import Alamofire
 import DataSources
+import LoginDomain
+import NetworkInterface
+import NetworkCommon
 
-final class LoginRepositoryImpl: LoginRepository {
+public final class LoginRepositoryImpl: LoginRepository {
   private let networkService: NetworkServiceInterface
   private let tokenStorage: TokenStorage
 
-  init(networkService: NetworkServiceInterface, tokenStorage: TokenStorage) {
+  public init(networkService: NetworkServiceInterface, tokenStorage: TokenStorage) {
     self.networkService = networkService
     self.tokenStorage = tokenStorage
   }
 
-  func login(request: SocialLoginAuthRequestDTO) async throws {
-    let endpoint = AuthEndpoint.socialLogin(
-      request: .init(provider: request.provider, accessToken: request.accessToken)
+  public func login(request: SocialLoginRequest) async throws {
+    // Domain model → Data DTO 변환 (Adapter 패턴)
+    let dto = SocialLoginAuthRequestDTO(
+      provider: request.provider.identifier,
+      accessToken: request.accessToken
     )
+
+    let endpoint = AuthEndpoint.socialLogin(request: dto)
 
     // NetworkService를 사용하여 API 호출
     let apiResponse: SuccessResponse<UserResponse> = try await networkService
