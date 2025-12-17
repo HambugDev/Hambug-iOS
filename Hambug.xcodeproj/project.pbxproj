@@ -12,7 +12,10 @@
 		B51379C72EE2F6C800DAF2F7 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = B51379C62EE2F6C800DAF2F7 /* KakaoSDKUser */; };
 		B52285C92E88469C00678ECC /* Managers in Frameworks */ = {isa = PBXBuildFile; productRef = B52285C82E88469C00678ECC /* Managers */; };
 		B52286032E884E5B00678ECC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B52286022E884E5B00678ECC /* DesignSystem */; };
-		B54126342EF1B0BC00CC4938 /* Infrastructure in Frameworks */ = {isa = PBXBuildFile; productRef = B54126332EF1B0BC00CC4938 /* Infrastructure */; };
+		B54128772EF1CD3100CC4938 /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = B54128762EF1CD3100CC4938 /* Login */; };
+		B5412A862EF277A200CC4938 /* NetworkCommon in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A852EF277A200CC4938 /* NetworkCommon */; };
+		B5412A882EF277A200CC4938 /* NetworkImpl in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A872EF277A200CC4938 /* NetworkImpl */; };
+		B5412A8A2EF277A200CC4938 /* NetworkInterface in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A892EF277A200CC4938 /* NetworkInterface */; };
 		B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3402E92CB6100575CDA /* Onboarding */; };
 		B57DE3432E92CB6100575CDA /* Splash in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3422E92CB6100575CDA /* Splash */; };
 		B5C346492EA33BBF002354DF /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B5C346482EA33BBF002354DF /* KakaoSDKAuth */; };
