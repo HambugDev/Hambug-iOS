@@ -5,9 +5,8 @@
 //  Created by 강동영 on 12/5/25.
 //
 
-
-protocol LoginUseCase {
+public protocol LoginUseCase {
   func loginWithKakao() async throws
 
-  func createAppleLoginHandler() -> AppleLogionHandler
+  func createAppleLoginHandler() -> AppleLoginHandler
 }

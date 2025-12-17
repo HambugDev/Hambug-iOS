@@ -9,16 +9,12 @@ import SwiftUI
 import AuthenticationServices
 
 import DesignSystem
+import LoginDomain
 
-// MARK: - LoginType, AppleLogionHandler
+// MARK: - LoginType
 enum LoginType {
   case kakao(() -> Void)
-  case apple(AppleLogionHandler)
-}
-
-struct AppleLogionHandler {
-  var onRequest: (ASAuthorizationAppleIDRequest) -> Void
-  var onCompletion: (Result<ASAuthorization, Error>) -> Void
+  case apple(AppleLoginHandler)
 }
 
 // MARK: - SNSLoginButton

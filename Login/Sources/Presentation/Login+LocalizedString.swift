@@ -1,13 +1,11 @@
 //
-//  LocalizedString.swift
-//  Hambug
+//  Login.swift
+//  Login
 //
-//  Created by 강동영 on 12/5/25.
+//  Created by 강동영 on 12/17/25.
 //
 
-extension String {
-  enum LocalizedString {}
-}
+import LocalizedString
 
 extension String.LocalizedString {
   enum Login {

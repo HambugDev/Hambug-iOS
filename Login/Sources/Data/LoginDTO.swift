@@ -7,31 +7,14 @@
 
 import Foundation
 
-enum SNSProviderType {
-  case kakao
-  case apple
-  
-  var identifier: String {
-    switch self {
-    case .kakao:
-      return "kakao"
-      case .apple:
-      return "apple"
-    }
-  }
-}
+// MARK: - API Request DTOs
 
 struct SocialLoginAuthRequestDTO {
   let provider: String
   let accessToken: String
-  
+
   init(provider: String, accessToken: String) {
     self.provider = provider
-    self.accessToken = accessToken
-  }
-  
-  init(provider: SNSProviderType, accessToken: String) {
-    self.provider = provider.identifier
     self.accessToken = accessToken
   }
 }
@@ -39,6 +22,16 @@ struct SocialLoginAuthRequestDTO {
 struct UserResponse: Decodable {
   let user: UserResponseData
   let token: AuthTokenResponse
+}
+
+struct UserResponseData: Codable {
+  let userId: Int64
+  let nickname: String
+  let profileImageUrl: String
+  let loginType: String
+  let role: String
+  let isRegister: Bool
+  let kakao: Bool
 }
 
 struct AuthTokenResponse: Decodable {

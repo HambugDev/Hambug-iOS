@@ -9,16 +9,16 @@ import SwiftUI
 import DesignSystem
 import Managers
 
-struct LoginView: View {
+public struct LoginView: View {
   @State var failureText: String = ""
 
   private let viewModel: LoginViewModel
 
-  init(viewModel: LoginViewModel) {
+  public init(viewModel: LoginViewModel) {
     self.viewModel = viewModel
   }
   
-  var body: some View {
+  public var body: some View {
     ZStack {
       Color(.white)
         .ignoresSafeArea()
@@ -108,11 +108,4 @@ struct LoginView: View {
   }
 }
 
-
-
-
-#Preview {
-  let appStateManager: AppStateManager = DIContainer.shared.makeAppStateManager()
-  LoginView(viewModel: DIContainer.shared.loginViewModel(appStateManager: appStateManager))
-}
 

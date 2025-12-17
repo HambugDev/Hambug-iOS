@@ -3,22 +3,24 @@
 //  Hambug
 //
 //  Created by 차상진 on 10/7/25.
+//  Moved to Domain by Claude on 12/16/25
 //
 
 import Foundation
 import AuthenticationServices
-import KakaoSDKAuth
-import KakaoSDKUser
+import KakaoLogin
 
-final class LoginUseCaseImpl: LoginUseCase {
+public final class LoginUseCaseImpl: LoginUseCase, @unchecked Sendable {
   private let repository: LoginRepository
-
-  init(repository: LoginRepository) {
+  private let kakaoManager: KakaoSDKManager
+  
+  public init(repository: LoginRepository) {
+    self.kakaoManager = KakaoSDKManager.shared
     self.repository = repository
   }
 
-  func createAppleLoginHandler() -> AppleLogionHandler {
-    AppleLogionHandler(
+  public func createAppleLoginHandler() -> AppleLoginHandler {
+    AppleLoginHandler(
       onRequest: { request in
         request.requestedScopes = [.fullName, .email]
       },
@@ -35,9 +37,12 @@ final class LoginUseCaseImpl: LoginUseCase {
               print("Apple identity token: \(tokenString)")
 
               do {
-                // Repository가 토큰 저장 처리 (async/await)
+                // Use Domain model
                 try await self.repository.login(
-                  request: .init(provider: .apple, accessToken: tokenString)
+                  request: SocialLoginRequest(
+                    provider: .apple,
+                    accessToken: tokenString
+                  )
                 )
                 print("✅ Apple login successful - tokens saved to Keychain")
               } catch {
@@ -52,31 +57,19 @@ final class LoginUseCaseImpl: LoginUseCase {
     )
   }
 
-  func loginWithKakao() async throws {
-    let token: OAuthToken = try await withCheckedThrowingContinuation { continuation in
-      let loginHandler: (OAuthToken?, Error?) -> Void = { token, error in
-        if let error = error {
-          print("Kakao login error: \(error)")
-          continuation.resume(throwing: error)
-        } else if let token = token {
-          continuation.resume(returning: token)
-        }
-      }
-
-      if UserApi.isKakaoTalkLoginAvailable() {
-        // 카카오톡 앱으로 로그인
-        UserApi.shared.loginWithKakaoTalk(completion: loginHandler)
-      } else {
-        // 카카오 계정 웹뷰 로그인
-        UserApi.shared.loginWithKakaoAccount(completion: loginHandler)
-      }
+  public func loginWithKakao() async throws {
+    let accessToken: String = try await withCheckedThrowingContinuation { continuation in
+      kakaoManager.handle(continuation)
     }
 
-    print("Kakao accessToken: \(token.accessToken)")
+    print("Kakao accessToken: \(accessToken)")
 
-    // Repository가 토큰 저장 처리 (async/await)
+    // Use Domain model
     try await repository.login(
-      request: .init(provider: .kakao, accessToken: token.accessToken)
+      request: SocialLoginRequest(
+        provider: .kakao,
+        accessToken: accessToken
+      )
     )
     print("✅ Login successful - tokens saved to Keychain")
   }
