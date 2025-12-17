@@ -21,6 +21,10 @@ let package = Package(
             name: "DataSources",
             targets: ["DataSources"]
         ),
+        .library(
+            name: "LocalizedString",
+            targets: ["LocalizedString"]
+        ),
     ],
     targets: [
         .target(
@@ -35,6 +39,9 @@ let package = Package(
         ),
         .target(
             name: "DataSources"
+        ),
+        .target(
+            name: "LocalizedString"
         ),
         .plugin(
             name: "ColorGenerator",

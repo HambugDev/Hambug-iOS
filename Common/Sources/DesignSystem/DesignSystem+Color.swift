@@ -27,4 +27,5 @@ public extension Color {
     static let textG800 = Color("textG800", bundle: .module)
     static let textG900 = Color("textG900", bundle: .module)
     static let textR100 = Color("textR100", bundle: .module)
+    static let kakaoBtnYellow = Color("kakaoBtnYellow", bundle: .module)
 }
