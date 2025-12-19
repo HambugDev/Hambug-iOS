@@ -9,6 +9,7 @@ import Foundation
 import Managers
 import LoginDomain
 
+@Observable
 public final class LoginViewModel: @unchecked Sendable {
   private let useCase: LoginUseCase
   private let appStateManager: AppStateManager
