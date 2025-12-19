@@ -6,28 +6,30 @@
 //
 
 import SwiftUI
+import AppDI
 
 struct ContentView: View {
+    @Environment(AppDIContainer.self) var appContainer
     @State private var selectedTab: Int = 0
-    
+
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView(viewModel: DIContainer.shared.homeViewModel)
+            HomeView(viewModel: HomeDIContainer(appContainer: appContainer).homeViewModel)
                 .tabItem {
                     Image(systemName: "house")
                     Text("홈")
                 }
                 .tag(0)
-            
+
 #if DEBUG
-          CommunityView(container: CommunityDIContainer(isMock: true))
+          CommunityView(container: CommunityDIContainer(appContainer: appContainer, isMock: true))
             .tabItem {
               Image(systemName: "person.2.fill")
               Text("커뮤니티")
             }
             .tag(1)
 #else
-          CommunityView(container: CommunityDIContainer())
+          CommunityView(container: CommunityDIContainer(appContainer: appContainer))
             .tabItem {
               Image(systemName: "person.2.fill")
               Text("커뮤니티")
@@ -42,4 +44,5 @@ struct ContentView: View {
 //MARK: - Preview
 #Preview {
     ContentView()
+        .environment(AppDIContainer.shared)
 }

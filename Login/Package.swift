@@ -8,7 +8,6 @@ struct Config {
   static let data: String = name + "Data"
   static let domain: String = name + "Domain"
   static let presentation: String = name + "Presentation"
-  static let infrastructure: String = name + "Infrastructure"
 }
 
 let package = Package(
