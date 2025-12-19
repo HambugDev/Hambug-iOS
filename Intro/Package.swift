@@ -35,9 +35,6 @@ let package = Package(
                 .product(name: "Managers", package: "Common"),
                 .product(name: "DesignSystem", package: "Common")
             ],
-            resources: [
-//                .process("Splash")
-            ]
         ),
     ]
 )

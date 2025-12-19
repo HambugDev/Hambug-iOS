@@ -3,11 +3,20 @@
 
 import PackageDescription
 
-struct Config {
+enum Config: String, CaseIterable {
   static let name: String = "Login"
-  static let data: String = name + "Data"
-  static let domain: String = name + "Domain"
-  static let presentation: String = name + "Presentation"
+  
+  case data = "Data"
+  case domain = "Domain"
+  case presentation = "Presentation"
+  
+  var name: String {
+    Config.name + rawValue
+  }
+  
+  var path: String {
+    "Sources/\(rawValue)"
+  }
 }
 
 let package = Package(
@@ -19,7 +28,7 @@ let package = Package(
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
       name: Config.name,
-      targets: [Config.data, Config.domain, Config.presentation]
+      targets: Config.allCases.map(\.name)
     ),
   ],
   dependencies: [
@@ -30,37 +39,42 @@ let package = Package(
   targets: [
     // Domain: 독립적 (외부 SDK만 의존)
     .target(
-      name: Config.domain,
+      name: Config.domain.name,
       dependencies: [
         .product(name: "KakaoLogin", package: "3rdParth"),
       ],
-      path: "Sources/Domain"
+      path: Config.domain.path
     ),
     
     // Data: Domain에 의존
     .target(
-      name: Config.data,
+      name: Config.data.name,
       dependencies: [
-        .target(name: Config.domain),
+        .target(config: Config.domain),
         .product(name: "DataSources", package: "Common"),
         .product(name: "NetworkCommon", package: "Infrastructure"),
         .product(name: "NetworkInterface", package: "Infrastructure"),
         .product(name: "NetworkImpl", package: "Infrastructure")
       ],
-      path: "Sources/Data"
+      path: Config.data.path
     ),
     
     // Presentation: Domain에 의존
     .target(
-      name: Config.presentation,
+      name: Config.presentation.name,
       dependencies: [
-        .target(name: Config.domain),
+        .target(config: Config.domain),
         .product(name: "LocalizedString", package: "Common"),
         .product(name: "Managers", package: "Common"),
         .product(name: "DesignSystem", package: "Common")
       ],
-      path: "Sources/Presentation"
+      path: Config.presentation.path
     ),
   ]
 )
 
+extension Target.Dependency {
+  static func target(config: Config) -> Self {
+    return .target(name: config.name)
+  }
+}

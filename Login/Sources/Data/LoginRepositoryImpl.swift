@@ -44,6 +44,8 @@ public final class LoginRepositoryImpl: LoginRepository {
       refreshToken: apiResponse.data.token.refreshToken
     )
     print("✅ Tokens saved to Keychain")
+    print("✅ accessToken: \(apiResponse.data.token.accessToken,)")
+    print("✅ refreshToken \(apiResponse.data.token.refreshToken)")
   }
 }
 
