@@ -12,10 +12,10 @@ import Managers
 public struct LoginView: View {
   @State var failureText: String = ""
 
-  private let viewModel: LoginViewModel
+  @State private var viewModel: LoginViewModel
 
   public init(viewModel: LoginViewModel) {
-    self.viewModel = viewModel
+    self._viewModel = State(initialValue: viewModel)
   }
   
   public var body: some View {

@@ -10,7 +10,7 @@ import DesignSystem
 
 @available(iOS, introduced: 17.0)
 public struct OnboardingView: View {
-  private let viewModel: OnboardingViewModel
+  @State private var viewModel: OnboardingViewModel
   
   var currentStep: Int {
     viewModel.currentStep
@@ -61,7 +61,7 @@ public struct OnboardingView: View {
   }
   
   public init(viewModel: OnboardingViewModel) {
-    self.viewModel = viewModel
+    self._viewModel = State(initialValue: viewModel)
   }
   
   func buildAttributedString(from step: OnboardingStep) -> AttributedString {
