@@ -70,5 +70,5 @@ struct PopularPostsView: View {
 
 
 #Preview {
-    HomeView(viewModel: DIContainer.shared.homeViewModel)
+    HomeView(viewModel: HomeDIContainer().homeViewModel)
 }
