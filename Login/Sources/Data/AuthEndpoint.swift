@@ -15,10 +15,13 @@ enum AuthEndpoint: Endpoint {
     NetworkServiceImpl.baseURL
   }
   
+  case refresh(info: TokenInfo)
   case socialLogin(request: SocialLoginAuthRequestDTO)
   
   var path: String {
     switch self {
+    case .refresh:
+      "/api/v1/auth/refresh"
     case .socialLogin(let request):
       "/api/v1/auth/login/\(request.provider)"
     }
@@ -26,7 +29,7 @@ enum AuthEndpoint: Endpoint {
   
   var method: HTTPMethod {
     switch self {
-    case .socialLogin:
+    case .refresh, .socialLogin:
       return .POST
     }
   }
@@ -48,6 +51,7 @@ enum AuthEndpoint: Endpoint {
     case .socialLogin(let request):
       let dict = ["accessToken" : "\(request.accessToken)"]
       return try? JSONEncoder().encode(dict)
+    default: return nil
     }
   }
   

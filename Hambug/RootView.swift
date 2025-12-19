@@ -11,46 +11,29 @@ import Managers
 import Splash
 import Onboarding
 import LoginPresentation
-import LoginDI
-import AppDI
-import IntroDI
 
 struct RootView: View {
   @Environment(AppStateManager.self) var appStateManager
-  @Environment(AppDIContainer.self) var appContainer
 
   var body: some View {
     let _ = Self._printChanges()
     Group {
       switch appStateManager.currentState {
       case .splash:
-        SplashView(
-          viewModel: IntroDIContainer(
-            appContainer: appContainer,
-            appStateManager: appStateManager
-          ).resolve(SplashViewModel.self)
-        )
+        SplashView()
 
       case .onboarding:
-        OnboardingView(
-          viewModel: IntroDIContainer(
-            appContainer: appContainer,
-            appStateManager: appStateManager
-          ).resolve(OnboardingViewModel.self)
-        )
+        OnboardingView()
 
       case .login:
-        LoginView(
-          viewModel: LoginDIContainer(
-            appContainer: appContainer,
-            appStateManager: appStateManager
-          ).makeLoginViewModel()
-        )
+        ViewFactory().makeView()
+//        LoginView(viewModel: DIContainer.shared.loginViewModel(appStateManager: appStateManager))
+        Text("")
 
       case .main:
         ContentView()
       }
     }
-    .environment(appContainer)
+    .environment(appStateManager)
   }
 }

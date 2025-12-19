@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -14,7 +14,7 @@ struct Config {
 let package = Package(
   name: Config.name,
   platforms: [
-    .iOS(.v17)
+    .iOS(.v16)
   ],
   products: [
     .library(
