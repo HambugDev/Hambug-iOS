@@ -7,23 +7,23 @@
 
 import SwiftUI
 import DesignSystem
-import Managers
 
 @available(iOS, introduced: 17.0)
 public struct SplashView: View {
-    @Environment(AppStateManager.self) var appStateManager
-    
-    public var body: some View {
-        ZStack {
-            Color.bgYellow
-                .ignoresSafeArea()
-            Image(.splashLogo)
-        }
-        .task {
-            try? await Task.sleep(for: .seconds(1))
-            appStateManager.completeSplash()
-        }
+  private let viewModel: SplashViewModel
+  public var body: some View {
+    ZStack {
+      Color.bgYellow
+        .ignoresSafeArea()
+      Image(.splashLogo)
     }
-    
-    public init() {}
+    .task {
+      try? await Task.sleep(for: .seconds(1))
+      viewModel.completeSplash()
+    }
+  }
+  
+  public init(viewModel: SplashViewModel) {
+    self.viewModel = viewModel
+  }
 }

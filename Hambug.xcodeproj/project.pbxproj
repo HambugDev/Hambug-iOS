@@ -15,6 +15,10 @@
 		B5412A882EF277A200CC4938 /* NetworkImpl in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A872EF277A200CC4938 /* NetworkImpl */; };
 		B5412A8A2EF277A200CC4938 /* NetworkInterface in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A892EF277A200CC4938 /* NetworkInterface */; };
 		B5412B662EF30B8B00CC4938 /* KakaoLogin in Frameworks */ = {isa = PBXBuildFile; productRef = B5412B652EF30B8B00CC4938 /* KakaoLogin */; };
+		B5412BFF2EF311AE00CC4938 /* DIKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5412BFE2EF311AE00CC4938 /* DIKit */; };
+		B541315B2EF3D49300CC4938 /* AppDI in Frameworks */ = {isa = PBXBuildFile; productRef = B541315A2EF3D49300CC4938 /* AppDI */; };
+		B541315D2EF3D49300CC4938 /* LoginDI in Frameworks */ = {isa = PBXBuildFile; productRef = B541315C2EF3D49300CC4938 /* LoginDI */; };
+		B541315F2EF3FA2900CC4938 /* IntroDI in Frameworks */ = {isa = PBXBuildFile; productRef = B541315E2EF3FA2900CC4938 /* IntroDI */; };
 		B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3402E92CB6100575CDA /* Onboarding */; };
 		B57DE3432E92CB6100575CDA /* Splash in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3422E92CB6100575CDA /* Splash */; };
 /* End PBXBuildFile section */
@@ -45,6 +49,7 @@
 		B54125132EF161BF00CC4938 /* Login */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Login; sourceTree = "<group>"; };
 		B54126322EF1A99B00CC4938 /* Infrastructure */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Infrastructure; sourceTree = "<group>"; };
 		B5412B642EF309D400CC4938 /* 3rdParth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = 3rdParth; sourceTree = "<group>"; };
+		B5412CD62EF3C9EA00CC4938 /* DI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DI; sourceTree = "<group>"; };
 		B5E822EB2EA2791900F3E10E /* Intro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Intro; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,13 +94,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B541315B2EF3D49300CC4938 /* AppDI in Frameworks */,
 				B57DE3432E92CB6100575CDA /* Splash in Frameworks */,
 				B52286032E884E5B00678ECC /* DesignSystem in Frameworks */,
 				B5412A862EF277A200CC4938 /* NetworkCommon in Frameworks */,
 				B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */,
+				B5412BFF2EF311AE00CC4938 /* DIKit in Frameworks */,
 				B52285C92E88469C00678ECC /* Managers in Frameworks */,
+				B541315F2EF3FA2900CC4938 /* IntroDI in Frameworks */,
 				B54128772EF1CD3100CC4938 /* Login in Frameworks */,
 				B5412B662EF30B8B00CC4938 /* KakaoLogin in Frameworks */,
+				B541315D2EF3D49300CC4938 /* LoginDI in Frameworks */,
 				B5412A882EF277A200CC4938 /* NetworkImpl in Frameworks */,
 				B5412A8A2EF277A200CC4938 /* NetworkInterface in Frameworks */,
 			);
@@ -121,6 +130,7 @@
 		915BC5C92E3CB9B50062B78E = {
 			isa = PBXGroup;
 			children = (
+				B5412CD62EF3C9EA00CC4938 /* DI */,
 				B5412B642EF309D400CC4938 /* 3rdParth */,
 				B54126322EF1A99B00CC4938 /* Infrastructure */,
 				B54125132EF161BF00CC4938 /* Login */,
@@ -183,6 +193,10 @@
 				B5412A872EF277A200CC4938 /* NetworkImpl */,
 				B5412A892EF277A200CC4938 /* NetworkInterface */,
 				B5412B652EF30B8B00CC4938 /* KakaoLogin */,
+				B5412BFE2EF311AE00CC4938 /* DIKit */,
+				B541315A2EF3D49300CC4938 /* AppDI */,
+				B541315C2EF3D49300CC4938 /* LoginDI */,
+				B541315E2EF3FA2900CC4938 /* IntroDI */,
 			);
 			productName = Hambug;
 			productReference = 915BC5D22E3CB9B50062B78E /* Hambug.app */;
@@ -702,6 +716,22 @@
 		B5412B652EF30B8B00CC4938 /* KakaoLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = KakaoLogin;
+		};
+		B5412BFE2EF311AE00CC4938 /* DIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DIKit;
+		};
+		B541315A2EF3D49300CC4938 /* AppDI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AppDI;
+		};
+		B541315C2EF3D49300CC4938 /* LoginDI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LoginDI;
+		};
+		B541315E2EF3FA2900CC4938 /* IntroDI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = IntroDI;
 		};
 		B57DE3402E92CB6100575CDA /* Onboarding */ = {
 			isa = XCSwiftPackageProductDependency;

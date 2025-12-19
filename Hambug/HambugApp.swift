@@ -9,13 +9,21 @@ import SwiftUI
 import Managers
 import DesignSystem
 import KakaoLogin
+import AppDI
 
 @main
 struct HambugApp: App {
-  @State private var appStateManager: AppStateManager = HomeDIContainer.shared.makeAppStateManager()
+  // Initialize AppDIContainer singleton first
+  private let appContainer = AppDIContainer.shared
+
+  // Get AppStateManager from AppDIContainer
+  @State private var appStateManager: AppStateManager
   private let kakaoSDK = KakaoSDKManager.shared
-  
+
   init() {
+    // Initialize AppStateManager from DI container
+    self._appStateManager = State(initialValue: appContainer.makeAppStateManager())
+
     FontManager.registerAllFonts()
     kakaoSDK.regist(appKey: HambugApp.kakaoMapNativeKey)
   }
@@ -24,6 +32,7 @@ struct HambugApp: App {
     WindowGroup {
       RootView()
         .environment(appStateManager)
+        .environment(appContainer)
         .onOpenURL { url in
           kakaoSDK.authCallback(with: url)
         }
