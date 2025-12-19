@@ -7,6 +7,10 @@
 
 import SwiftUI
 import AppDI
+import HomePresentation
+import HomeDI
+import CommunityPresentation
+import CommunityDI
 import MyPagePresentation
 import MyPageDI
 
@@ -32,7 +36,7 @@ struct ContentView: View {
       HomeView(viewModel: homeDIContainer.homeViewModel)
         .tag(0)
       
-      CommunityView(container: communityDIContainer)
+      CommunityView(viewModel: communityDIContainer.makeCommunityViewModel())
         .tag(1)
       
       MyPageView(viewModel: mypageDIContainer.makeMyPageViewModel())

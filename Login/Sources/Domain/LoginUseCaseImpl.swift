@@ -2,8 +2,7 @@
 //  LoginUseCaseImpl.swift
 //  Hambug
 //
-//  Created by 차상진 on 10/7/25.
-//  Moved to Domain by Claude on 12/16/25
+//  Created by 강동영 on 12/16/25
 //
 
 import Foundation

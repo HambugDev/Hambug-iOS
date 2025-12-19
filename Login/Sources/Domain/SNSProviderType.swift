@@ -2,7 +2,7 @@
 //  SNSProviderType.swift
 //  Hambug
 //
-//  Created by Claude on 12/16/25.
+//  Created by 강동영 on 12/16/25.
 //
 
 import Foundation

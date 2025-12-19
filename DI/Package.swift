@@ -5,19 +5,21 @@ import PackageDescription
 
 enum Config: String, CaseIterable {
   static let name: String = "DI"
-  
+
   case interface = "DI"
   case app = "App"
   case intro = "Intro"
   case login = "Login"
   case myPage = "MyPage"
-  
+  case home = "Home"
+  case community = "Community"
+
   var name: String {
     switch self {
     case .interface: "\(rawValue)Kit"
     default: "\(rawValue)DI"
     }
-    
+
   }
 }
 let package = Package(
@@ -35,6 +37,8 @@ let package = Package(
     .package(name: "Intro", path: "../Intro"),
     .package(name: "Login", path: "../Login"),
     .package(name: "MyPage", path: "../MyPage"),
+    .package(name: "Home", path: "../Home"),
+    .package(name: "Community", path: "../Community"),
   ],
   targets: [
     .target(name: Config.interface.name),
@@ -69,6 +73,20 @@ let package = Package(
       dependencies: [
         .target(config: .app),
         .product(name: "MyPage", package: "MyPage"),
+      ]
+    ),
+    .target(
+      name: Config.home.name,
+      dependencies: [
+        .target(config: .app),
+        .product(name: "Home", package: "Home"),
+      ]
+    ),
+    .target(
+      name: Config.community.name,
+      dependencies: [
+        .target(config: .app),
+        .product(name: "Community", package: "Community"),
       ]
     )
   ]
