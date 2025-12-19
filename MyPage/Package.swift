@@ -28,9 +28,19 @@ let package = Package(
       targets: Config.allCases.map(\.name)
     ),
   ],
+  dependencies: [
+    .package(name: "Common", path: "../Common"),
+    .package(name: "Infrastructure", path: "../Infrastructure")
+  ],
   targets: [
     .target(
       name: Config.data.name,
+      dependencies: [
+        .target(config: .domain),
+        .product(name: "NetworkCommon", package: "Infrastructure"),
+        .product(name: "NetworkInterface", package: "Infrastructure"),
+        .product(name: "NetworkImpl", package: "Infrastructure")
+      ],
       path: Config.data.path
     ),
     .target(
@@ -39,6 +49,11 @@ let package = Package(
     ),
     .target(
       name: Config.presentation.name,
+      dependencies: [
+        .target(config: .domain),
+        .product(name: "LocalizedString", package: "Common"),
+        .product(name: "DesignSystem", package: "Common")
+      ],
       path: Config.presentation.path
     ),
     

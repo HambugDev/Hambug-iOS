@@ -7,6 +7,8 @@
 
 import SwiftUI
 import AppDI
+import MyPagePresentation
+import MyPageDI
 
 struct ContentView: View {
   @Environment(AppDIContainer.self) var appContainer
@@ -19,6 +21,10 @@ struct ContentView: View {
     CommunityDIContainer(appContainer: appContainer)
   }
   
+  private var mypageDIContainer: MyPageDIContainer {
+    MyPageDIContainer(appContainer: appContainer)
+  }
+  
   @State private var selectedTab: Int = 0
   
   var body: some View {
@@ -29,7 +35,7 @@ struct ContentView: View {
       CommunityView(container: communityDIContainer)
         .tag(1)
       
-      Text("MyPage")
+      MyPageView(viewModel: mypageDIContainer.makeMyPageViewModel())
         .tag(2)
     }
   }
