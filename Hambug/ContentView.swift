@@ -9,12 +9,30 @@ import SwiftUI
 import AppDI
 
 struct ContentView: View {
-    @Environment(AppDIContainer.self) var appContainer
-    @State private var selectedTab: Int = 0
-
-    var body: some View {
-      CustomTabView(selectedTab: $selectedTab)
+  @Environment(AppDIContainer.self) var appContainer
+  
+  private var homeDIContainer: HomeDIContainer {
+    HomeDIContainer(appContainer: appContainer)
+  }
+  
+  private var communityDIContainer: CommunityDIContainer {
+    CommunityDIContainer(appContainer: appContainer)
+  }
+  
+  @State private var selectedTab: Int = 0
+  
+  var body: some View {
+    CustomTabView(selectedTab: $selectedTab) {
+      HomeView(viewModel: homeDIContainer.homeViewModel)
+        .tag(0)
+      
+      CommunityView(container: communityDIContainer)
+        .tag(1)
+      
+      Text("MyPage")
+        .tag(2)
     }
+  }
 }
 
 

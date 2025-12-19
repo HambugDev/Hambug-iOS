@@ -5,49 +5,33 @@
 //  Created by 강동영 on 12/12/25.
 //
 
-
-import SwiftUI
 import DesignSystem
+import SwiftUI
+import AppDI
 
-struct CustomTabView: View {
+struct CustomTabView<Content: View>: View {
+  private let tabConfig: [HambugTab]
+  @ViewBuilder let content: Content
+
   @Binding private var selectedTab: Int
   
   var body: some View {
     VStack(spacing: 0) {
       // Content area
       TabView(selection: $selectedTab) {
-        HomeView(viewModel: DIContainer.shared.homeViewModel)
-          .tag(0)
-        
-        CommunityView(container: CommunityDIContainer(isMock: true))
-          .tag(1)
-        
-        Text("MyPage")
-          .tag(2)
+        content
       }
       .tabViewStyle(.page(indexDisplayMode: .never))
-      
+
       // Custom Tab Bar
       HStack(spacing: 0) {
-        TabBarItem(
-          config: .home,
-          isSelected: selectedTab == 0
-        ) {
-          selectedTab = 0
-        }
-        
-        TabBarItem(
-          config: .community,
-          isSelected: selectedTab == 1
-        ) {
-          selectedTab = 1
-        }
-        
-        TabBarItem(
-          config: .myPage,
-          isSelected: selectedTab == 2
-        ) {
-          selectedTab = 2
+        ForEach(tabConfig) { tab in
+          TabBarItem(
+            config: tab,
+            isSelected: selectedTab == tab.id
+          ) {
+            selectedTab = tab.id
+          }
         }
       }
       .frame(height: UIScreen.main.bounds.height * 0.11)
@@ -59,19 +43,26 @@ struct CustomTabView: View {
     }
     .ignoresSafeArea(.all, edges: .vertical)
   }
-  
+
   init(
-    selectedTab: Binding<Int>) {
+    selectedTab: Binding<Int>,
+    tabConfig: [HambugTab] = HambugTab.allCases,
+    @ViewBuilder content: () -> Content,
+  ) {
     self._selectedTab = selectedTab
+    self.tabConfig = tabConfig
+    self.content = content()
   }
 }
 
 // MARK: CustomTabView 의 HambugTab
 extension CustomTabView {
-  enum HambugTab {
-    case home
-    case community
-    case myPage
+  enum HambugTab: Int, CaseIterable, Identifiable {
+    case home = 0
+    case community = 1
+    case myPage = 2
+
+    var id: Int { rawValue }
     
     var iconName: String {
       switch self {
@@ -157,5 +148,9 @@ struct RoundedCorner: Shape {
 
 #Preview {
   @Previewable @State var selectedTab = 0
-  CustomTabView(selectedTab: $selectedTab)
+  let appContainer = AppDIContainer.shared
+  
+  CustomTabView(selectedTab: $selectedTab) {
+    Text("Preview")
+  }
 }
