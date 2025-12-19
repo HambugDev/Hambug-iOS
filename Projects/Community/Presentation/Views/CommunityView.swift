@@ -150,7 +150,7 @@ fileprivate struct CommunityFilterChip: View {
 }
 
 // MARK: - List View
-fileprivate struct CommunityListView: View {
+struct CommunityListView: View {
   let boards: [Board]
   
   var body: some View {
