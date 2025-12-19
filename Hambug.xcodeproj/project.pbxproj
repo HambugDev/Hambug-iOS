@@ -14,11 +14,11 @@
 		B5412A862EF277A200CC4938 /* NetworkCommon in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A852EF277A200CC4938 /* NetworkCommon */; };
 		B5412A882EF277A200CC4938 /* NetworkImpl in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A872EF277A200CC4938 /* NetworkImpl */; };
 		B5412A8A2EF277A200CC4938 /* NetworkInterface in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A892EF277A200CC4938 /* NetworkInterface */; };
-		B5412B662EF30B8B00CC4938 /* KakaoLogin in Frameworks */ = {isa = PBXBuildFile; productRef = B5412B652EF30B8B00CC4938 /* KakaoLogin */; };
 		B5412BFF2EF311AE00CC4938 /* DIKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5412BFE2EF311AE00CC4938 /* DIKit */; };
 		B54134082EF535FC00CC4938 /* MyPage in Frameworks */ = {isa = PBXBuildFile; productRef = B54134072EF535FC00CC4938 /* MyPage */; };
 		B54134FD2EF5B09D00CC4938 /* Community in Frameworks */ = {isa = PBXBuildFile; productRef = B54134FC2EF5B09D00CC4938 /* Community */; };
 		B54134FF2EF5B0A400CC4938 /* Home in Frameworks */ = {isa = PBXBuildFile; productRef = B54134FE2EF5B0A400CC4938 /* Home */; };
+		B54135802EF5B4CC00CC4938 /* KakaoLogin in Frameworks */ = {isa = PBXBuildFile; productRef = B541357F2EF5B4CC00CC4938 /* KakaoLogin */; };
 		B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3402E92CB6100575CDA /* Onboarding */; };
 		B57DE3432E92CB6100575CDA /* Splash in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3422E92CB6100575CDA /* Splash */; };
 /* End PBXBuildFile section */
@@ -48,11 +48,11 @@
 		B52285C62E8844BD00678ECC /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Common; sourceTree = "<group>"; };
 		B54125132EF161BF00CC4938 /* Login */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Login; sourceTree = "<group>"; };
 		B54126322EF1A99B00CC4938 /* Infrastructure */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Infrastructure; sourceTree = "<group>"; };
-		B5412B642EF309D400CC4938 /* 3rdParth */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = 3rdParth; sourceTree = "<group>"; };
 		B5412CD62EF3C9EA00CC4938 /* DI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DI; sourceTree = "<group>"; };
 		B54134062EF5330A00CC4938 /* MyPage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MyPage; sourceTree = "<group>"; };
 		B54134FA2EF57F4100CC4938 /* Home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Home; sourceTree = "<group>"; };
 		B54134FB2EF57F6400CC4938 /* Community */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Community; sourceTree = "<group>"; };
+		B54135972EF5B58100CC4938 /* 3rdParty */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = 3rdParty; sourceTree = "<group>"; };
 		B5E822EB2EA2791900F3E10E /* Intro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Intro; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,7 +106,7 @@
 				B5412BFF2EF311AE00CC4938 /* DIKit in Frameworks */,
 				B52285C92E88469C00678ECC /* Managers in Frameworks */,
 				B54128772EF1CD3100CC4938 /* Login in Frameworks */,
-				B5412B662EF30B8B00CC4938 /* KakaoLogin in Frameworks */,
+				B54135802EF5B4CC00CC4938 /* KakaoLogin in Frameworks */,
 				B5412A882EF277A200CC4938 /* NetworkImpl in Frameworks */,
 				B54134FD2EF5B09D00CC4938 /* Community in Frameworks */,
 				B5412A8A2EF277A200CC4938 /* NetworkInterface in Frameworks */,
@@ -133,11 +133,11 @@
 		915BC5C92E3CB9B50062B78E = {
 			isa = PBXGroup;
 			children = (
+				B54135972EF5B58100CC4938 /* 3rdParty */,
 				B54134FB2EF57F6400CC4938 /* Community */,
 				B54134FA2EF57F4100CC4938 /* Home */,
 				B54134062EF5330A00CC4938 /* MyPage */,
 				B5412CD62EF3C9EA00CC4938 /* DI */,
-				B5412B642EF309D400CC4938 /* 3rdParth */,
 				B54126322EF1A99B00CC4938 /* Infrastructure */,
 				B54125132EF161BF00CC4938 /* Login */,
 				B513799A2EE2ED8F00DAF2F7 /* Common.xcconfig */,
@@ -198,11 +198,11 @@
 				B5412A852EF277A200CC4938 /* NetworkCommon */,
 				B5412A872EF277A200CC4938 /* NetworkImpl */,
 				B5412A892EF277A200CC4938 /* NetworkInterface */,
-				B5412B652EF30B8B00CC4938 /* KakaoLogin */,
 				B5412BFE2EF311AE00CC4938 /* DIKit */,
 				B54134072EF535FC00CC4938 /* MyPage */,
 				B54134FC2EF5B09D00CC4938 /* Community */,
 				B54134FE2EF5B0A400CC4938 /* Home */,
+				B541357F2EF5B4CC00CC4938 /* KakaoLogin */,
 			);
 			productName = Hambug;
 			productReference = 915BC5D22E3CB9B50062B78E /* Hambug.app */;
@@ -719,10 +719,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = NetworkInterface;
 		};
-		B5412B652EF30B8B00CC4938 /* KakaoLogin */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = KakaoLogin;
-		};
 		B5412BFE2EF311AE00CC4938 /* DIKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DIKit;
@@ -738,6 +734,10 @@
 		B54134FE2EF5B0A400CC4938 /* Home */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Home;
+		};
+		B541357F2EF5B4CC00CC4938 /* KakaoLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = KakaoLogin;
 		};
 		B57DE3402E92CB6100575CDA /* Onboarding */ = {
 			isa = XCSwiftPackageProductDependency;

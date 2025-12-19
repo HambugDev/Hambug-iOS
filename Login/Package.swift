@@ -32,7 +32,7 @@ let package = Package(
     ),
   ],
   dependencies: [
-    .package(name: "3rdParth", path: "../3rdParth"),
+    .package(name: "3rdParty", path: "../3rdParty"),
     .package(name: "Common", path: "../Common"),
     .package(name: "Infrastructure", path: "../Infrastructure")
   ],
@@ -41,7 +41,7 @@ let package = Package(
     .target(
       name: Config.domain.name,
       dependencies: [
-        .product(name: "KakaoLogin", package: "3rdParth"),
+        .product(name: "KakaoLogin", package: "3rdParty"),
       ],
       path: Config.domain.path
     ),

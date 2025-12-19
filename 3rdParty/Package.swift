@@ -4,7 +4,7 @@
 import PackageDescription
 
 let package = Package(
-  name: "3rdParth",
+  name: "3rdParty",
   platforms: [.iOS(.v17)],
   products: [
     .library(
