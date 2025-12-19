@@ -2,8 +2,7 @@
 //  UserResponse.swift
 //  Hambug
 //
-//  Created by 차상진 on 9/30/25.
-//  Renamed to User by Claude on 12/16/25
+//  Created by 강동영 on 12/16/25
 //
 
 import Foundation

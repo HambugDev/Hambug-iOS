@@ -7,7 +7,7 @@
 
 
 public struct SuccessResponse<T: Decodable & Sendable>: Decodable, Sendable {
-  let success: Bool
+  public let success: Bool
   public let data: T
-  let message: String
+  public let message: String
 }

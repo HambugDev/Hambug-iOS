@@ -3,25 +3,32 @@
 
 import PackageDescription
 
+enum Config: String, CaseIterable {
+  static let name: String = "DI"
+
+  case interface = "DI"
+  case app = "App"
+  case intro = "Intro"
+  case login = "Login"
+  case myPage = "MyPage"
+  case home = "Home"
+  case community = "Community"
+
+  var name: String {
+    switch self {
+    case .interface: "\(rawValue)Kit"
+    default: "\(rawValue)DI"
+    }
+
+  }
+}
 let package = Package(
-  name: "DI",
+  name: Config.name,
   platforms: [.iOS(.v17)],
   products: [
     .library(
-      name: "DIKit",
-      targets: ["DIKit"]
-    ),
-    .library(
-      name: "AppDI",
-      targets: ["AppDI"]
-    ),
-    .library(
-      name: "IntroDI",
-      targets: ["IntroDI"]
-    ),
-    .library(
-      name: "LoginDI",
-      targets: ["LoginDI"]
+      name: Config.interface.name,
+      targets: Config.allCases.map(\.name)
     )
   ],
   dependencies: [
@@ -29,13 +36,16 @@ let package = Package(
     .package(name: "Infrastructure", path: "../Infrastructure"),
     .package(name: "Intro", path: "../Intro"),
     .package(name: "Login", path: "../Login"),
+    .package(name: "MyPage", path: "../MyPage"),
+    .package(name: "Home", path: "../Home"),
+    .package(name: "Community", path: "../Community"),
   ],
   targets: [
-    .target(name: "DIKit"),
+    .target(name: Config.interface.name),
     .target(
-      name: "AppDI",
+      name: Config.app.name,
       dependencies: [
-        .target(name: "DIKit"),
+        .target(config: .interface),
         .product(name: "DataSources", package: "Common"),
         .product(name: "Managers", package: "Common"),
         .product(name: "NetworkCommon", package: "Infrastructure"),
@@ -44,19 +54,46 @@ let package = Package(
       ]
     ),
     .target(
-      name: "IntroDI",
+      name: Config.intro.name,
       dependencies: [
-        .target(name: "AppDI"),
+        .target(config: .app),
         .product(name: "Onboarding", package: "Intro"),
         .product(name: "Splash", package: "Intro"),
       ]
     ),
     .target(
-      name: "LoginDI",
+      name: Config.login.name,
       dependencies: [
-        .target(name: "AppDI"),
+        .target(config: .app),
         .product(name: "Login", package: "Login"),
+      ]
+    ),
+    .target(
+      name: Config.myPage.name,
+      dependencies: [
+        .target(config: .app),
+        .product(name: "MyPage", package: "MyPage"),
+      ]
+    ),
+    .target(
+      name: Config.home.name,
+      dependencies: [
+        .target(config: .app),
+        .product(name: "Home", package: "Home"),
+      ]
+    ),
+    .target(
+      name: Config.community.name,
+      dependencies: [
+        .target(config: .app),
+        .product(name: "Community", package: "Community"),
       ]
     )
   ]
 )
+
+extension Target.Dependency {
+  static func target(config: Config) -> Self {
+    .target(name: config.name)
+  }
+}

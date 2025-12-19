@@ -128,34 +128,7 @@ private extension KeychainTokenStorage {
     
     return SecItemCopyMatching(query as CFDictionary, nil) == errSecSuccess
   }
-  
-  func getAllKeys2() throws -> [String] {
-    let query: [String: Any] = [
-      kSecClass as String: kSecClassGenericPassword,
-      kSecAttrService as String: service,
-      kSecReturnAttributes as String: true,
-      kSecMatchLimit as String: kSecMatchLimitAll
-    ]
     
-    var result: AnyObject?
-    let status = SecItemCopyMatching(query as CFDictionary, &result)
-    
-    do {
-      try handleError(status)
-      
-      guard let items = result as? [[String: Any]] else {
-        return []
-      }
-      
-      return items.compactMap { item in
-        item[kSecAttrAccount as String] as? String
-      }
-      
-    } catch KeychainError.itemNotFound {
-      return []
-    }
-  }
-  
   func handleError(_ status: OSStatus) throws {
     switch status {
     case errSecSuccess:
