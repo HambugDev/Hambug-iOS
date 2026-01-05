@@ -1,11 +1,13 @@
 //
 //  HomeViewRepository.swift
-//  Hambug
+//  HomeDomain
 //
 //  Created by 강동영 on 12/5/25.
 //
 
+import Foundation
 
 public protocol HomeViewRepository {
-  func fetchPopularPosts() -> [PostModel]
+  func fetchRecommendedBurgers() async throws -> [RecommendedBurger]
+  func fetchTrendingPosts() async throws -> [TrendingPost]
 }
