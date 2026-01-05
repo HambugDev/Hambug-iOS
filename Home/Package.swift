@@ -6,6 +6,7 @@ import PackageDescription
 enum Config: String, CaseIterable {
   static let name: String = "Home"
 
+  case di = "DI"
   case data = "Data"
   case domain = "Domain"
   case presentation = "Presentation"
@@ -30,34 +31,82 @@ let package = Package(
   ],
   dependencies: [
     .package(name: "Common", path: "../Common"),
+    .package(name: "DIKit", path: "../DI"),
+    .package(name: "Infrastructure", path: "../Infrastructure"),
   ],
   targets: [
-    // Domain: 독립적 (외부 의존성 없음)
     .target(
-      name: Config.domain.name,
-      path: Config.domain.path
+      config: .di,
+      dependencies: [
+        .target(config: .domain),
+        .target(config: .data),
+        .target(config: .presentation),
+        .product(name: "DI", package: "DIKit"),
+        .product(name: "AppDI", package: "DIKit"),
+        .product(name: "Managers", package: "Common"),
+        .product(name: "DataSources", package: "Common"),
+      ],
+    ),
+    // Domain: NetworkCommon에 의존
+    .target(
+      config: .domain,
+      dependencies: [
+        .product(name: "NetworkCommon", package: "Infrastructure"),
+      ],
     ),
 
     // Data: Domain에 의존
     .target(
-      name: Config.data.name,
+      config: .data,
       dependencies: [
         .target(config: .domain),
+        .product(name: "NetworkCommon", package: "Infrastructure"),
+        .product(name: "NetworkInterface", package: "Infrastructure"),
       ],
-      path: Config.data.path
     ),
 
     // Presentation: Domain, DesignSystem에 의존
     .target(
-      name: Config.presentation.name,
+      config: .presentation,
       dependencies: [
         .target(config: .domain),
         .product(name: "DesignSystem", package: "Common"),
       ],
-      path: Config.presentation.path
     ),
   ]
 )
+
+extension Target {
+  static func target(
+    config: Config,
+    dependencies: [Dependency] = [],
+    exclude: [String] = [],
+    sources: [String]? = nil,
+    resources: [Resource]? = nil,
+    publicHeadersPath: String? = nil,
+    packageAccess: Bool = false,
+    cSettings: [CSetting]? = nil,
+    cxxSettings: [CXXSetting]? = nil,
+    swiftSettings: [SwiftSetting]? = nil,
+    linkerSettings: [LinkerSetting]? = nil,
+    plugins: [PluginUsage]? = nil,
+  ) -> Target {
+    return .target(
+      name: config.name,
+      dependencies: dependencies,
+      path: config.path,
+      exclude: exclude,
+      sources: sources,
+      resources: resources,
+      publicHeadersPath: publicHeadersPath,
+      packageAccess: packageAccess,
+      cSettings: cSettings,
+      cxxSettings: cxxSettings,
+      swiftSettings: swiftSettings,
+      linkerSettings: linkerSettings,
+      plugins: plugins)
+  }
+}
 
 extension Target.Dependency {
   static func target(config: Config) -> Self {

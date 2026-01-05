@@ -10,28 +10,38 @@ import DIKit
 import AppDI
 import Managers
 import DataSources
+import NetworkInterface
 import HomeDomain
 import HomeData
 import HomePresentation
+
+import SwiftUI
 
 // MARK: - Home Assembly
 struct HomeAssembly: Assembly {
   func assemble(container: GenericDIContainer) {
     // Note: TokenStorage, UserDefaultsManager, AppStateManager come from parent
 
-    // Repository registration
-    container.register(HomeViewRepository.self) { _ in
-      DummyHomeViewRepositoryImpl()
+    // Repository - AppDIContainer의 NetworkService 직접 의존
+    container.register(HomeViewRepository.self) { resolver in
+      HomeViewRepositoryImpl(networkService: resolver.resolve(NetworkServiceInterface.self))
     }
 
-    // UseCase registration
-    container.register(HomeViewUseCase.self) { resolver in
-      HomeViewUseCaseImpl(repository: resolver.resolve(HomeViewRepository.self))
+    // Use Cases - Repository 의존
+    container.register(FetchRecommendedBurgersUseCase.self) { resolver in
+      FetchRecommendedBurgersUseCaseImpl(repository: resolver.resolve(HomeViewRepository.self))
     }
 
-    // ViewModel registration
+    container.register(FetchTrendingPostsUseCaseInterface.self) { resolver in
+      FetchTrendingPostsUseCase(repository: resolver.resolve(HomeViewRepository.self))
+    }
+
+    // ViewModel - Use Cases 의존
     container.register(HomeViewModel.self) { resolver in
-      HomeViewModel(useCase: resolver.resolve(HomeViewUseCase.self))
+      HomeViewModel(
+        fetchRecommendedBurgersUseCase: resolver.resolve(FetchRecommendedBurgersUseCase.self),
+        fetchTrendingPostsUseCase: resolver.resolve(FetchTrendingPostsUseCaseInterface.self)
+      )
     }
   }
 }
@@ -56,4 +66,8 @@ public final class HomeDIContainer {
   public func resolve<T>(_ type: T.Type) -> T {
     return container.resolve(type)
   }
+}
+
+#Preview {
+  HomeView(viewModel: HomeDIContainer.init().homeViewModel)
 }

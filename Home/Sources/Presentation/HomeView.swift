@@ -11,10 +11,10 @@ import DesignSystem
 
 public struct HomeView: View {
 
-  @StateObject private var viewModel: HomeViewModel
+  @State private var viewModel: HomeViewModel
 
   public init(viewModel: HomeViewModel) {
-    self._viewModel = StateObject(wrappedValue: viewModel)
+    self._viewModel = State(initialValue: viewModel)
   }
 
   public var body: some View {
@@ -26,10 +26,15 @@ public struct HomeView: View {
         HeaderBar()
         
         ScrollView {
-          SuggestView()
-          
-          PopularPostsView(postItems: viewModel.postModels)
-            .padding()
+          SuggestView(burgers: viewModel.recommendedBurgers)
+            .padding(.leading, 18)
+
+          Spacer()
+            .frame(height: 30)
+
+          PopularPostsView(postItems: viewModel.trendingPosts)
+            .padding(.horizontal, 18)
+
         }
         .safeAreaPadding(.bottom, 100)
       }
@@ -42,31 +47,41 @@ public struct HomeView: View {
 
 
 struct PopularPostsView: View {
-  
-  var postItems: [PostModel] // @State
-  
-  init(postItems: [PostModel]) {
+
+  var postItems: [TrendingPost]
+
+  init(postItems: [TrendingPost]) {
     self.postItems = postItems
   }
-  
-  
+
+
   var body: some View {
-    VStack(spacing: 10) {
-      HStack {
-        Text("인기글")
-          .foregroundColor(.textG800)
-        Spacer()
+    VStack(spacing: 12) {
+      CategoryHeaderText("인기글")
+
+      VStack(spacing: 0) {
+        ForEach(postItems) { post in
+          PostView(post: post)
+        }
       }
-      
-      ForEach(postItems) { post in
-        PostView(postModel: post)
-      }
+      .background(.white)
+      .cornerRadius(16)
+      .shadow(radius: 6)
     }
-    .padding()
-    .background(.white)
-    .cornerRadius(16)
-    .shadow(radius: 6)
-    
   }
 }
 
+struct CategoryHeaderText: View {
+  private let title: String
+  
+  init(_ title: String) {
+    self.title = title
+  }
+  var body: some View {
+    HStack {
+      Text(title)
+        .pretendard(.title(.t2))
+      Spacer()
+    }
+  }
+}

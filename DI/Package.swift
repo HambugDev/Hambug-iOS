@@ -11,7 +11,6 @@ enum Config: String, CaseIterable {
   case intro = "Intro"
   case login = "Login"
   case myPage = "MyPage"
-  case home = "Home"
   case community = "Community"
 
   var name: String {
@@ -29,6 +28,14 @@ let package = Package(
     .library(
       name: Config.interface.name,
       targets: Config.allCases.map(\.name)
+    ),
+    .library(
+      name: Config.interface.rawValue,
+      targets: [Config.interface.name]
+    ),
+    .library(
+      name: Config.app.name,
+      targets: [Config.app.name]
     )
   ],
   dependencies: [
@@ -37,7 +44,6 @@ let package = Package(
     .package(name: "Intro", path: "../Intro"),
     .package(name: "Login", path: "../Login"),
     .package(name: "MyPage", path: "../MyPage"),
-    .package(name: "Home", path: "../Home"),
     .package(name: "Community", path: "../Community"),
   ],
   targets: [
@@ -73,13 +79,6 @@ let package = Package(
       dependencies: [
         .target(config: .app),
         .product(name: "MyPage", package: "MyPage"),
-      ]
-    ),
-    .target(
-      name: Config.home.name,
-      dependencies: [
-        .target(config: .app),
-        .product(name: "Home", package: "Home"),
       ]
     ),
     .target(

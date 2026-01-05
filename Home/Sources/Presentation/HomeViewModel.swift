@@ -1,6 +1,6 @@
 //
 //  HomeViewModel.swift
-//  Hambug
+//  HomePresentation
 //
 //  Created by 차상진 on 9/27/25.
 //
@@ -8,18 +8,49 @@
 import Foundation
 import HomeDomain
 
-public final class HomeViewModel: ObservableObject {
+@Observable
+public final class HomeViewModel {
+    private let fetchRecommendedBurgersUseCase: FetchRecommendedBurgersUseCase
+    private let fetchTrendingPostsUseCase: FetchTrendingPostsUseCaseInterface
 
-    let useCase: HomeViewUseCase
-    @Published public var postModels: [PostModel] = []
+    public var recommendedBurgers: [RecommendedBurger] = []
+    public var trendingPosts: [TrendingPost] = []
+    public var isLoading: Bool = false
+    public var errorMessage: String?
 
-    public init(useCase: HomeViewUseCase) {
-        self.useCase = useCase
-        fetchPopularPosts()
+    public init(
+        fetchRecommendedBurgersUseCase: FetchRecommendedBurgersUseCase,
+        fetchTrendingPostsUseCase: FetchTrendingPostsUseCaseInterface
+    ) {
+        self.fetchRecommendedBurgersUseCase = fetchRecommendedBurgersUseCase
+        self.fetchTrendingPostsUseCase = fetchTrendingPostsUseCase
+
+        Task {
+            await loadHomeData()
+        }
     }
 
+    @MainActor
+    public func loadHomeData() async {
+        isLoading = true
+        errorMessage = nil
+        defer { isLoading = false }
 
-    public func fetchPopularPosts() {
-        self.postModels = self.useCase.fetchPopularPosts()
+        do {
+            // 병렬 API 호출
+            async let burgers = try fetchRecommendedBurgersUseCase.execute()
+            async let posts = try fetchTrendingPostsUseCase.execute()
+
+            self.recommendedBurgers = try await burgers
+            self.trendingPosts = try await posts
+        } catch {
+            self.errorMessage = error.localizedDescription
+            print("❌ Home API 에러: \(error)")
+        }
+    }
+
+    @MainActor
+    public func refresh() async {
+        await loadHomeData()
     }
 }
