@@ -97,14 +97,12 @@ public final class AuthInterceptor: RequestInterceptor {
   
   private func refreshTokens() async -> Bool {
     let tokens = tokenManager.load()
-    guard let accessToken = tokens.accessToken,
-          let refreshToken = tokens.refreshToken else {
+    guard let refreshToken = tokens.refreshToken else {
       return false
     }
     
     var header = [String : String]()
-    header[authorizationKey] = "Bearer \(accessToken)"
-    header[refreshTokenKey] = refreshToken
+    header[authorizationKey] = "Bearer \(refreshToken)"
     
     guard let request = try? TokenRefreshEndpoint(headers: header).createURLRequest() else {
       return false
@@ -131,6 +129,6 @@ public final class AuthInterceptor: RequestInterceptor {
   
 }
 
-extension NSNotification.Name {
+public extension NSNotification.Name {
   static let userDidLogout = NSNotification.Name("userDidLogout")
 }
