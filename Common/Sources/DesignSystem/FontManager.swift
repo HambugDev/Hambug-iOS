@@ -55,7 +55,12 @@ public enum FontManager {
     
     /// 모든 Pretendard 폰트를 한번에 등록하는 함수 (옵션)
     public static func registerAllFonts() {
-        let fontNames = ["Pretendard-Regular", "Pretendard-Medium", "Pretendard-SemiBold"]
+    let fontNames = [
+      "GeekbleMalang2-Regular",
+      "Pretendard-Regular",
+      "Pretendard-Medium",
+      "Pretendard-SemiBold",
+    ]
         fontNames.forEach { registerFontIfNeeded($0) }
     }
 }

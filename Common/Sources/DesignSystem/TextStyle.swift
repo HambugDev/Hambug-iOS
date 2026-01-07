@@ -37,15 +37,15 @@ public enum TextStyle {
         case .body(let body):
             switch body {
             case .base: return (.regular, 16)
-            case .bEmphasis: return (.medium, 16)
+            case .bEmphasis: return (.semiBold, 16)
             case .small: return (.regular, 14)
-            case .sEmphasis: return (.medium, 14)
+            case .sEmphasis: return (.semiBold, 14)
             }
             
         case .caption(let caption):
             switch caption {
             case .base: return (.regular, 12)
-            case .emphasis: return (.medium, 12)
+            case .emphasis: return (.semiBold, 12)
             }
         }
     }

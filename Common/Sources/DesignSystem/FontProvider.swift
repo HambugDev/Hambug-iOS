@@ -25,6 +25,16 @@ public struct PretendardProvider: FontProvider {
     public init() {}
 }
 
+// MARK: - Pretendard Font Provider
+public struct GeekbleMalang2: FontProvider {
+    public let regular: String = "GeekbleMalang2-Regular"
+    public let medium: String = ""
+    public let semiBold: String = ""
+    public let bold: String? = nil
+    
+    public init() {}
+}
+
 // MARK: - Font Weight Enum
 public enum FontWeight {
     case regular, medium, semiBold, bold

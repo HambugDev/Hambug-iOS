@@ -9,18 +9,26 @@ import SwiftUI
 
 // 상단 헤더 - 로고, 알림
 public struct HeaderBar: View {
-  public init() {}
+  private let fontStyle: FontStyle
+  public init() {
+    fontStyle = .init(.custom("GeekbleMalang2-Regular"), size: 24.0)
+  }
   
   public var body: some View {
-    HStack(spacing: 10) {
+    HStack(spacing: 4) {
       Image("hambug_icon")
         .resizable()
         .frame(width: 30, height: 30)
       
       Text("햄버그")
-        .pretendard(.title(.t1))
+        .font(fontStyle.font)
+        .lineSpacing(fontStyle.lineHeight)
         .foregroundColor(.primaryHambugRed)
       Spacer()
+      
+      Image("notification")
+        .resizable()
+        .frame(width: 30, height: 30)
     }
     .padding()
   }
