@@ -30,10 +30,20 @@ struct AppAssembly: Assembly {
     // Register NetworkServiceInterface as singleton
     container.register(NetworkServiceInterface.self, scope: .singleton) { resolver in
       let tokenStorage = resolver.resolve(TokenStorage.self)
+      
+#if DEBUG
+      let logger = NetworkLogger()
+      return NetworkServiceImpl(
+        interceptor: AuthInterceptor(tokenManager: tokenStorage),
+        logger: logger
+      )
+#else
       return NetworkServiceImpl(
         interceptor: AuthInterceptor(tokenManager: tokenStorage)
       )
+#endif
     }
+
 
     // Register AppStateManager as singleton
     container.register(AppStateManager.self, scope: .singleton) { resolver in
