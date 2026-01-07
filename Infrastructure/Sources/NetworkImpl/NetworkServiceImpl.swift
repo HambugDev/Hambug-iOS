@@ -18,13 +18,15 @@ public final class NetworkServiceImpl: NetworkServiceInterface {
   // MARK: - Properties
   private let session: Session
   private let decoder: JSONDecoder
+  private let logger: NetworkLogger?
   
-  public init(session: Session = AF, interceptor: RequestInterceptor? = nil) {
+  public init(session: Session = AF, interceptor: RequestInterceptor? = nil, logger: NetworkLogger? = nil) {
     if let interceptor {
       self.session = Session(interceptor: Interceptor(interceptors: [interceptor]))
     } else {
       self.session = session
     }
+    self.logger = logger
     self.decoder = JSONDecoder()
     
     // Date formatting 설정
@@ -33,8 +35,9 @@ public final class NetworkServiceImpl: NetworkServiceInterface {
     decoder.dateDecodingStrategy = .formatted(dateFormatter)
   }
   
-  public init(configuration: URLSessionConfiguration) {
+  public init(configuration: URLSessionConfiguration, logger: NetworkLogger? = nil) {
     self.session = Session(configuration: configuration)
+    self.logger = logger
     self.decoder = JSONDecoder()
     
     // Date formatting 설정
@@ -46,6 +49,11 @@ public final class NetworkServiceImpl: NetworkServiceInterface {
   public func request<T: Decodable>(_ endpoint: any Endpoint, responseType: T.Type) -> AnyPublisher<T, NetworkError> {
     do {
       let urlRequest = try endpoint.createURLRequest()
+      
+#if DEBUG
+      logger?.requestLogger(request: urlRequest)
+#endif
+      
       return session.request(urlRequest)
         .validate()
         .publishData()
@@ -59,6 +67,12 @@ public final class NetworkServiceImpl: NetworkServiceInterface {
           guard let data = response.data else {
             throw NetworkError.noData
           }
+          
+#if DEBUG
+          if let httpResponse = response.response {
+            self.logger?.responseLogger(response: httpResponse, data: data)
+          }
+#endif
           
           return data
         }

@@ -55,9 +55,6 @@ public extension Endpoint {
     defaultHeaders.forEach { request.setValue($1, forHTTPHeaderField: $0)}
     headers.forEach { request.setValue($1, forHTTPHeaderField: $0)}
     request.httpBody = body
-    print("✅ url: \(url)")
-    print("✅ header: \(String(describing: request.allHTTPHeaderFields))")
-    print("✅ method: \(method)")
     return request
   }
 }
