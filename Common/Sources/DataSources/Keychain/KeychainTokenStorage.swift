@@ -26,8 +26,6 @@ public final class KeychainTokenStorage: TokenStorage {
 
     if let refresh = refreshToken {
       try set(refresh, for: .refreshToken)
-    } else {
-      try delete(.refreshToken)
     }
   }
 

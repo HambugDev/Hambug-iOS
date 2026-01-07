@@ -14,6 +14,7 @@ import LoginPresentation
 import LoginDI
 import AppDI
 import IntroDI
+import NetworkImpl
 
 struct RootView: View {
   @Environment(AppStateManager.self) var appStateManager
@@ -52,5 +53,13 @@ struct RootView: View {
       }
     }
     .environment(appContainer)
+    .onReceive(NotificationCenter.default.publisher(for: .userDidLogout)) { _ in
+      handleLogout()
+    }
+  }
+
+  @MainActor
+  private func handleLogout() {
+    appStateManager.logout()
   }
 }
