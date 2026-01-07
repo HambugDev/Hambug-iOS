@@ -91,7 +91,7 @@ private extension KeychainTokenStorage {
       kSecReturnData as String: true,
       kSecMatchLimit as String: kSecMatchLimitOne
     ]
-    print("service: \(service), key: \(key) in storage")
+    
     var item: CFTypeRef?
     let status = SecItemCopyMatching(query as CFDictionary, &item)
     
@@ -131,6 +131,8 @@ private extension KeychainTokenStorage {
     switch status {
     case errSecSuccess:
       return
+    case errSecDuplicateItem:
+      throw KeychainError.duplicateItem
     case errSecItemNotFound:
       throw KeychainError.itemNotFound
     default:
