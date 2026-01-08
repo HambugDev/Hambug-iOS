@@ -56,6 +56,7 @@ let package = Package(
       dependencies: [
         .target(config: .domain),
         .product(name: "NetworkInterface", package: "Infrastructure"),
+        .product(name: "Util", package: "Common"),
       ],
     ),
 
