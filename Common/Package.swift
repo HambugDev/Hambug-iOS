@@ -23,6 +23,10 @@ let package = Package(
       name: "LocalizedString",
       targets: ["LocalizedString"]
     ),
+    .library(
+      name: "Util",
+      targets: ["Util"]
+    ),
   ],
   targets: [
     .target(
@@ -32,15 +36,13 @@ let package = Package(
     .target(
       name: "DesignSystem",
       resources: [
-        .process("Resources")
+        .process("Resources/Font")
       ]
     ),
-    .target(
-      name: "DataSources"
-    ),
-    .target(
-      name: "LocalizedString"
-    ),
+    .target(name: "DataSources"),
+    .target(name: "LocalizedString"),
+    .target(name: "Util"),
+    
     .plugin(
       name: "ColorGenerator",
       capability: .command(
