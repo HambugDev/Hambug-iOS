@@ -2,7 +2,7 @@
 //  TrendingPostResponse.swift
 //  HomeData
 //
-//  Created by Claude on 1/5/26.
+//  Created by 강동영 on 1/5/26.
 //
 
 import Foundation

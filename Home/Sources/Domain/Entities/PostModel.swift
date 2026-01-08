@@ -5,7 +5,7 @@
 //  Created by 차상진 on 9/6/25.
 //
 
-import SwiftUI
+import Foundation
 
 public struct PostCodableItem: Codable {
     public var id: Int64

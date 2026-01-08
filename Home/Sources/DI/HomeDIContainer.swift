@@ -27,21 +27,16 @@ struct HomeAssembly: Assembly {
       HomeViewRepositoryImpl(networkService: resolver.resolve(NetworkServiceInterface.self))
     }
 
-    // Use Cases - Repository 의존
-    container.register(FetchRecommendedBurgersUseCase.self) { resolver in
-      FetchRecommendedBurgersUseCaseImpl(repository: resolver.resolve(HomeViewRepository.self))
+    // UseCase - Repository 의존
+    container.register(HomeUseCase.self) { resolver in
+      HomeUseCaseImpl(repository: resolver.resolve(HomeViewRepository.self))
     }
 
-    container.register(FetchTrendingPostsUseCaseInterface.self) { resolver in
-      FetchTrendingPostsUseCase(repository: resolver.resolve(HomeViewRepository.self))
-    }
-
-    // ViewModel - Use Cases 의존
+    // ViewModel - UseCase 의존
     container.register(HomeViewModel.self) { resolver in
-      HomeViewModel(
-        fetchRecommendedBurgersUseCase: resolver.resolve(FetchRecommendedBurgersUseCase.self),
-        fetchTrendingPostsUseCase: resolver.resolve(FetchTrendingPostsUseCaseInterface.self)
-      )
+      MainActor.assumeIsolated {
+        HomeViewModel(homeUseCase: resolver.resolve(HomeUseCase.self))
+      }
     }
   }
 }

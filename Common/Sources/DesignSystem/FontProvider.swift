@@ -27,7 +27,7 @@ public struct PretendardProvider: FontProvider {
 
 // MARK: - Pretendard Font Provider
 public struct GeekbleMalang2: FontProvider {
-    public let regular: String = "GeekbleMalang2-Regular"
+    public let regular: String = "GeekbleMalang2"
     public let medium: String = ""
     public let semiBold: String = ""
     public let bold: String? = nil
