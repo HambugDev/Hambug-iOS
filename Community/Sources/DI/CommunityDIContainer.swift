@@ -56,19 +56,19 @@ struct CommunityAssembly: Assembly {
     }
 
     // UseCase registration
-    container.register(GetBoardsUseCaseInterface.self) { resolver in
-      GetBoardsUseCase(repository: resolver.resolve(CommunityRepository.self))
+    container.register(GetBoardsUseCase.self) { resolver in
+      GetBoardsUseCaseImpl(repository: resolver.resolve(CommunityRepository.self))
     }
 
-    container.register(GetBoardsByCategoryUseCaseInterface.self) { resolver in
-      GetBoardsByCategoryUseCase(repository: resolver.resolve(CommunityRepository.self))
+    container.register(GetBoardsByCategoryUseCase.self) { resolver in
+      GetBoardsByCategoryUseCaseImpl(repository: resolver.resolve(CommunityRepository.self))
     }
 
     // MARK: - CommunityViewModel registration
     container.register(CommunityViewModel.self) { @MainActor resolver in
       CommunityViewModel(
-        getBoardsUseCase: resolver.resolve(GetBoardsUseCaseInterface.self),
-        getBoardsByCategoryUseCase: resolver.resolve(GetBoardsByCategoryUseCaseInterface.self)
+        getBoardsUseCase: resolver.resolve(GetBoardsUseCase.self),
+        getBoardsByCategoryUseCase: resolver.resolve(GetBoardsByCategoryUseCase.self)
       )
     }
 
