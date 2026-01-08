@@ -11,7 +11,6 @@
 		B52285C92E88469C00678ECC /* Managers in Frameworks */ = {isa = PBXBuildFile; productRef = B52285C82E88469C00678ECC /* Managers */; };
 		B52286032E884E5B00678ECC /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = B52286022E884E5B00678ECC /* DesignSystem */; };
 		B54128772EF1CD3100CC4938 /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = B54128762EF1CD3100CC4938 /* Login */; };
-		B5412A862EF277A200CC4938 /* NetworkCommon in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A852EF277A200CC4938 /* NetworkCommon */; };
 		B5412A882EF277A200CC4938 /* NetworkImpl in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A872EF277A200CC4938 /* NetworkImpl */; };
 		B5412A8A2EF277A200CC4938 /* NetworkInterface in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A892EF277A200CC4938 /* NetworkInterface */; };
 		B54134082EF535FC00CC4938 /* MyPage in Frameworks */ = {isa = PBXBuildFile; productRef = B54134072EF535FC00CC4938 /* MyPage */; };
@@ -100,7 +99,6 @@
 				B57DE3432E92CB6100575CDA /* Splash in Frameworks */,
 				B52286032E884E5B00678ECC /* DesignSystem in Frameworks */,
 				B54134082EF535FC00CC4938 /* MyPage in Frameworks */,
-				B5412A862EF277A200CC4938 /* NetworkCommon in Frameworks */,
 				B5EDA8F82F0B9C0C002F72B9 /* DIKit in Frameworks */,
 				B54134FF2EF5B0A400CC4938 /* Home in Frameworks */,
 				B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */,
@@ -195,7 +193,6 @@
 				B57DE3402E92CB6100575CDA /* Onboarding */,
 				B57DE3422E92CB6100575CDA /* Splash */,
 				B54128762EF1CD3100CC4938 /* Login */,
-				B5412A852EF277A200CC4938 /* NetworkCommon */,
 				B5412A872EF277A200CC4938 /* NetworkImpl */,
 				B5412A892EF277A200CC4938 /* NetworkInterface */,
 				B54134072EF535FC00CC4938 /* MyPage */,
@@ -706,10 +703,6 @@
 		B54128762EF1CD3100CC4938 /* Login */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Login;
-		};
-		B5412A852EF277A200CC4938 /* NetworkCommon */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NetworkCommon;
 		};
 		B5412A872EF277A200CC4938 /* NetworkImpl */ = {
 			isa = XCSwiftPackageProductDependency;

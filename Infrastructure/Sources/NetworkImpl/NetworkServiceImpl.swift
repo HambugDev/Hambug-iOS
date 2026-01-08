@@ -7,13 +7,11 @@
 
 import Foundation
 import Combine
-import NetworkCommon
 import NetworkInterface
 
 import Alamofire
 
 public final class NetworkServiceImpl: NetworkServiceInterface {
-  public static let baseURL: String = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as! String
   
   // MARK: - Properties
   private let session: Session

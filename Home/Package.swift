@@ -47,20 +47,14 @@ let package = Package(
         .product(name: "DataSources", package: "Common"),
       ],
     ),
-    // Domain: NetworkCommon에 의존
-    .target(
-      config: .domain,
-      dependencies: [
-        .product(name: "NetworkCommon", package: "Infrastructure"),
-      ],
-    ),
+    // Domain: 의존하지않음
+    .target(config: .domain),
 
     // Data: Domain에 의존
     .target(
       config: .data,
       dependencies: [
         .target(config: .domain),
-        .product(name: "NetworkCommon", package: "Infrastructure"),
         .product(name: "NetworkInterface", package: "Infrastructure"),
       ],
     ),
