@@ -7,7 +7,6 @@
 
 import Foundation
 import Combine
-import NetworkCommon
 
 // MARK: - Network Interface Protocol
 public protocol NetworkServiceInterface {

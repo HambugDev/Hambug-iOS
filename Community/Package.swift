@@ -36,6 +36,9 @@ let package = Package(
     // Domain: 독립적 (외부 의존성 없음)
     .target(
       name: Config.domain.name,
+      dependencies: [
+        .product(name: "NetworkInterface", package: "Infrastructure"),
+      ],
       path: Config.domain.path
     ),
 
@@ -44,7 +47,6 @@ let package = Package(
       name: Config.data.name,
       dependencies: [
         .target(config: .domain),
-        .product(name: "NetworkCommon", package: "Infrastructure"),
         .product(name: "NetworkInterface", package: "Infrastructure"),
         .product(name: "NetworkImpl", package: "Infrastructure"),
       ],

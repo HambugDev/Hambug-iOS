@@ -37,7 +37,6 @@ let package = Package(
       name: Config.data.name,
       dependencies: [
         .target(config: .domain),
-        .product(name: "NetworkCommon", package: "Infrastructure"),
         .product(name: "NetworkInterface", package: "Infrastructure"),
         .product(name: "NetworkImpl", package: "Infrastructure")
       ],

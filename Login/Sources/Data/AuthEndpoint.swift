@@ -8,11 +8,10 @@
 
 import Foundation
 import NetworkInterface
-import NetworkImpl
 
 enum AuthEndpoint: Endpoint {
   var baseURL: String {
-    NetworkServiceImpl.baseURL
+    NetworkConfig.baseURL
   }
   
   case socialLogin(request: SocialLoginAuthRequestDTO)

@@ -9,7 +9,7 @@ import Foundation
 import NetworkInterface
 
 struct TokenRefreshEndpoint: Endpoint {
-  let baseURL: String = NetworkServiceImpl.baseURL
+  let baseURL: String = NetworkConfig.baseURL
   let path: String = "/api/v1/auth/refresh"
   let method: NetworkInterface.HTTPMethod = .POST
   let headers: [String : String]

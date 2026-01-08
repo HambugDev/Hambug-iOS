@@ -54,7 +54,6 @@ let package = Package(
         .target(config: .interface),
         .product(name: "DataSources", package: "Common"),
         .product(name: "Managers", package: "Common"),
-        .product(name: "NetworkCommon", package: "Infrastructure"),
         .product(name: "NetworkInterface", package: "Infrastructure"),
         .product(name: "NetworkImpl", package: "Infrastructure")
       ]

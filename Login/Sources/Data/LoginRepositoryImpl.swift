@@ -6,11 +6,9 @@
 //
 
 import Foundation
-import Alamofire
 import DataSources
 import LoginDomain
 import NetworkInterface
-import NetworkCommon
 
 public final class LoginRepositoryImpl: LoginRepository {
   private let networkService: NetworkServiceInterface

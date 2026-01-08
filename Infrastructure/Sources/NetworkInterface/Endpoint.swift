@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import NetworkCommon
 
 // MARK: - HTTP Method
 public enum HTTPMethod: String, Sendable {

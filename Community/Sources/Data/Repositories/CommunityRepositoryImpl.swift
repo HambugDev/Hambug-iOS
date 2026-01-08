@@ -7,8 +7,8 @@
 
 import Foundation
 import Combine
-import NetworkCommon
 import CommunityDomain
+import NetworkInterface
 
 // MARK: - Community Repository Implementation
 public final class CommunityRepositoryImpl: CommunityRepositoryInterface {

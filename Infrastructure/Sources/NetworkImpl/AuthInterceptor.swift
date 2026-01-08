@@ -9,7 +9,6 @@
 import Foundation
 import DataSources
 import NetworkInterface
-import NetworkCommon
 
 import Alamofire
 
