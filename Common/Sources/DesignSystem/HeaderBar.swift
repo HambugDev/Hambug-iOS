@@ -11,7 +11,7 @@ import SwiftUI
 public struct HeaderBar: View {
   private let fontStyle: FontStyle
   public init() {
-    fontStyle = .init(.custom("GeekbleMalang2-Regular"), size: 24.0)
+    fontStyle = .init(.custom("GeekbleMalang2"), size: 24.0)
   }
   
   public var body: some View {

@@ -36,7 +36,7 @@ public struct HomeView: View {
             .padding(.horizontal, 18)
 
         }
-        .safeAreaPadding(.bottom, 100)
+        .safeAreaPadding(.bottom, 60)
       }
       .padding(.top, 50)
     }
@@ -47,13 +47,11 @@ public struct HomeView: View {
 
 
 struct PopularPostsView: View {
-
-  var postItems: [TrendingPost]
+  private let postItems: [TrendingPost]
 
   init(postItems: [TrendingPost]) {
     self.postItems = postItems
   }
-
 
   var body: some View {
     VStack(spacing: 12) {
