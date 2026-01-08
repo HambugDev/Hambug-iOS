@@ -7,6 +7,7 @@
 
 import Foundation
 import HomeDomain
+import Util
 
 public struct TrendingPostResponse: Decodable, Sendable {
     public let id: Int
@@ -25,23 +26,23 @@ public struct TrendingPostResponse: Decodable, Sendable {
 }
 
 extension TrendingPostResponse {
-    public func toDomain() -> TrendingPost {
-        let formatter = ISO8601DateFormatter()
-
-        return TrendingPost(
-            id: id,
-            title: title,
-            content: content,
-            category: category,
-            imageUrls: imageUrls,
-            authorNickname: authorNickname,
-            authorId: authorId,
-            createdAt: formatter.date(from: createdAt) ?? Date(),
-            updatedAt: formatter.date(from: updatedAt) ?? Date(),
-            viewCount: viewCount,
-            likeCount: likeCount,
-            commentCount: commentCount,
-            isLiked: isLiked
-        )
-    }
+  public func toDomain() -> TrendingPost {
+    let formatter = DateFormatter.iso8601WithMicroseconds
+    
+    return TrendingPost(
+      id: id,
+      title: title,
+      content: content,
+      category: category,
+      imageUrls: imageUrls,
+      authorNickname: authorNickname,
+      authorId: authorId,
+      createdAt: formatter.date(from: createdAt) ?? Date(),
+      updatedAt: formatter.date(from: updatedAt) ?? Date(),
+      viewCount: viewCount,
+      likeCount: likeCount,
+      commentCount: commentCount,
+      isLiked: isLiked
+    )
+  }
 }
