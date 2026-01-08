@@ -8,7 +8,6 @@
 import Foundation
 
 public struct NetworkConfig {
-  public static let baseURL: String = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as! String
-  
+  public static let baseURL: String = (Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String) ?? ""
   private init() {}
 }

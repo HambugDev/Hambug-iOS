@@ -11,7 +11,6 @@ enum Config: String, CaseIterable {
   case intro = "Intro"
   case login = "Login"
   case myPage = "MyPage"
-  case community = "Community"
 
   var name: String {
     switch self {
@@ -44,7 +43,6 @@ let package = Package(
     .package(name: "Intro", path: "../Intro"),
     .package(name: "Login", path: "../Login"),
     .package(name: "MyPage", path: "../MyPage"),
-    .package(name: "Community", path: "../Community"),
   ],
   targets: [
     .target(name: Config.interface.name),

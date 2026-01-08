@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Logger
 #if DEBUG
-public final class NetworkLogger {
+public final class NetworkLogger: Sendable {
   public init() {}
 
   public func requestLogger(request: URLRequest) {

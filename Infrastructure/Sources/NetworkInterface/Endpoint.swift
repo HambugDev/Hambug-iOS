@@ -23,10 +23,13 @@ public protocol Endpoint: Sendable {
   var method: HTTPMethod { get }
   var headers: [String: String] { get }
   var queryParameters: [String: Any] { get }
+  var queryEncoder: EndPointEncoder { get }
   var body: Data? { get }
 }
 
 public extension Endpoint {
+  var queryEncoder: EndPointEncoder { DefaultQueryEncoder() }
+  
   var defaultHeaders: [String: String] {
     [
       "Content-Type": "application/json",

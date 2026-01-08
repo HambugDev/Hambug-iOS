@@ -9,15 +9,24 @@ import SwiftUI
 import DesignSystem
 import CommunityDomain
 
-public struct CommunityView: View {
-  @StateObject private var viewModel: CommunityViewModel
+public protocol CommunityWriteFactory {
+  func makeWriteViewModel() -> CommunityWriteViewModel
+}
 
-  public init(viewModel: CommunityViewModel) {
-    self._viewModel = StateObject(wrappedValue: viewModel)
+public struct CommunityView: View {
+  @State private var viewModel: CommunityViewModel
+  private let factory: CommunityWriteFactory
+  
+  public init(
+    viewModel: CommunityViewModel,
+    factory: CommunityWriteFactory
+  ) {
+    self._viewModel = State(initialValue: viewModel)
+    self.factory = factory
   }
 
   public var body: some View {
-    NavigationView {
+    NavigationStack {
       ZStack {
         VStack(spacing: 0) {
           Color.primaryHambugRed
@@ -64,7 +73,11 @@ public struct CommunityView: View {
           Spacer()
           HStack {
             Spacer()
-            NavigationLink(destination: CommunityWriteView()) {
+            NavigationLink(
+              destination: CommunityWriteView(
+                viewModel: factory.makeWriteViewModel()
+              )
+            ) {
               Color.bgPencil
                 .frame(width: 45, height: 45)
                 .clipShape(Circle())
@@ -214,41 +227,41 @@ fileprivate struct CommunityPostListCard: View {
               .lineLimit(1)
               .truncationMode(.tail)
               .padding(.trailing, 8)
-            
+
             Text(board.createdAt)
               .pretendard(.caption(.base))
               .foregroundColor(Color.textG600)
-            
+
             Spacer()
           }
-          
+
           HStack(spacing: 4) {
-            Text(board.nickName)
+            Text(board.authorNickname)
               .pretendard(.caption(.base))
               .foregroundColor(Color.textG800)
-            
+
             HStack(spacing: 4) {
               Image(systemName: "heart.fill")
                 .foregroundColor(Color.textR100)
                 .font(.system(size: 12))
-              
-              Text(board.likeCount)
+
+              Text("\(board.likeCount)")
                 .pretendard(.caption(.base))
                 .foregroundColor(Color.textG600)
-              
+
               Image(.communityComment)
                 .resizable()
                 .frame(width: 12, height: 12)
-              
-              Text(board.commnetCount)
+
+              Text("\(board.commentCount)")
                 .pretendard(.caption(.base))
                 .foregroundColor(Color.textG600)
             }
           }
         }
-        
+
         AsyncThumbnailImage(
-          imageURL: board.imageURL,
+          imageURL: board.imageUrls.first ?? "",
           width: 50,
           height: 50,
           cornerRadius: 8
@@ -258,9 +271,6 @@ fileprivate struct CommunityPostListCard: View {
       .padding(.horizontal, 16)
       .padding(.vertical, 16)
       .background(Color.white)
-      
-      Divider()
-        .background(Color.borderG300)
     }
   }
 }
@@ -268,12 +278,12 @@ fileprivate struct CommunityPostListCard: View {
 // MARK: - Feed Card
 fileprivate struct CommunityPostFeedCard: View {
   let board: Board
-  
+
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
-      
+
       AsyncThumbnailImage(
-        imageURL: board.imageURL,
+        imageURL: board.imageUrls.first ?? "",
         height: 192,
         cornerRadius: 8
       )
@@ -284,33 +294,33 @@ fileprivate struct CommunityPostFeedCard: View {
           .foregroundColor(Color.textG800)
           .multilineTextAlignment(.leading)
           .lineLimit(1)
-        
+
         Spacer()
-        
+
         Text(board.createdAt)
           .pretendard(.caption(.base))
           .foregroundColor(Color.textG600)
       }
-      
+
       HStack {
-        Text(board.nickName)
+        Text(board.authorNickname)
           .pretendard(.caption(.base))
           .foregroundColor(Color.textG800)
-        
+
         HStack(spacing: 4) {
           Image(systemName: "heart.fill")
             .foregroundColor(Color.textR100)
             .font(.system(size: 12))
-          
-          Text(board.likeCount)
+
+          Text("\(board.likeCount)")
             .pretendard(.caption(.base))
             .foregroundColor(Color.textG600)
-          
+
           Image(.communityComment)
             .resizable()
             .frame(width: 12, height: 12)
-          
-          Text(board.commnetCount)
+
+          Text("\(board.commentCount)")
             .pretendard(.caption(.base))
             .foregroundColor(Color.textG600)
         }
@@ -327,25 +337,6 @@ fileprivate struct CommunityPostFeedCard: View {
     .background(Color.white)
     .cornerRadius(8)
     .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
-  }
-}
-
-// MARK: - Helper Functions
-private func timeAgoString(from date: Date) -> String {
-  let now = Date()
-  let timeInterval = now.timeIntervalSince(date)
-  
-  if timeInterval < 60 {
-    return "방금 전"
-  } else if timeInterval < 3600 {
-    let minutes = Int(timeInterval / 60)
-    return "\(minutes)분 전"
-  } else if timeInterval < 86400 {
-    let hours = Int(timeInterval / 3600)
-    return "\(hours)시간 전"
-  } else {
-    let days = Int(timeInterval / 86400)
-    return "\(days)일 전"
   }
 }
 

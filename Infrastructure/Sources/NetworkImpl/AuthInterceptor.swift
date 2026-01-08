@@ -135,7 +135,9 @@ public final class AuthInterceptor: RequestInterceptor {
   
   private func handleLogout() {
     try? tokenManager.clear()
-    NotificationCenter.default.post(name: .userDidLogout, object: nil)
+    Task { @MainActor in
+      NotificationCenter.default.post(name: .userDidLogout, object: nil)
+    }
   }
   
 }
