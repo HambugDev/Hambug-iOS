@@ -27,6 +27,10 @@ let package = Package(
       name: "Util",
       targets: ["Util"]
     ),
+    .library(
+      name: "SharedUI",
+      targets: ["SharedUI"]
+    ),
   ],
   targets: [
     .target(
@@ -42,6 +46,10 @@ let package = Package(
     .target(name: "DataSources"),
     .target(name: "LocalizedString"),
     .target(name: "Util"),
+    .target(
+      name: "SharedUI",
+      dependencies: ["DesignSystem"]
+    ),
     
     .plugin(
       name: "ColorGenerator",

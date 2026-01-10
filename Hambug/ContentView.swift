@@ -13,6 +13,7 @@ import CommunityPresentation
 import CommunityDI
 import MyPagePresentation
 import MyPageDI
+import SharedUI
 
 struct ContentView: View {
   @Environment(AppDIContainer.self) var appContainer

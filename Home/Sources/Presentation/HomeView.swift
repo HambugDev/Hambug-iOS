@@ -8,6 +8,7 @@
 import SwiftUI
 import HomeDomain
 import DesignSystem
+import SharedUI
 
 public struct HomeView: View {
 
@@ -41,6 +42,7 @@ public struct HomeView: View {
       .padding(.top, 50)
     }
     .ignoresSafeArea()
+    .tabBarHidden(false)
   }
 }
 

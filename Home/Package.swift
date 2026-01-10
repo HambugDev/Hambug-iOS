@@ -31,7 +31,7 @@ let package = Package(
   ],
   dependencies: [
     .package(name: "Common", path: "../Common"),
-    .package(name: "DIKit", path: "../DI"),
+    .package(name: "DI", path: "../DI"),
     .package(name: "Infrastructure", path: "../Infrastructure"),
   ],
   targets: [
@@ -60,12 +60,13 @@ let package = Package(
       ],
     ),
 
-    // Presentation: Domain, DesignSystem에 의존
+    // Presentation: Domain, DesignSystem, SharedUI에 의존
     .target(
       config: .presentation,
       dependencies: [
         .target(config: .domain),
         .product(name: "DesignSystem", package: "Common"),
+        .product(name: "SharedUI", package: "Common"),
       ],
     ),
   ]

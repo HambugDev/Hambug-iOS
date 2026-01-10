@@ -8,6 +8,7 @@
 import SwiftUI
 import DesignSystem
 import CommunityDomain
+import SharedUI
 
 public protocol CommunityWriteFactory {
   func makeWriteViewModel() -> CommunityWriteViewModel
@@ -97,6 +98,7 @@ public struct CommunityView: View {
         viewModel.refreshBoards()
       }
       .navigationBarHidden(true)
+      .tabBarHidden(false)
     }
   }
 }
