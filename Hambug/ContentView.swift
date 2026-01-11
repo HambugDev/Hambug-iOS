@@ -61,6 +61,7 @@ struct ContentView: View {
       }
       .toolbar(.hidden, for: .tabBar)
     }
+    .ignoresSafeArea(.keyboard)
   }
 }
 

@@ -6,6 +6,7 @@ import PackageDescription
 enum Config: String, CaseIterable {
   static let name: String = "MyPage"
   
+  case di = "DI"
   case data = "Data"
   case domain = "Domain"
   case presentation = "Presentation"
@@ -33,6 +34,17 @@ let package = Package(
     .package(name: "Infrastructure", path: "../Infrastructure")
   ],
   targets: [
+    .target(
+      name: Config.di.name,
+      dependencies: [
+        .target(config: .domain),
+        .target(config: .data),
+        .target(config: .presentation),
+        .product(name: "NetworkInterface", package: "Infrastructure"),
+        .product(name: "NetworkImpl", package: "Infrastructure")
+      ],
+      path: Config.di.path
+    ),
     .target(
       name: Config.data.name,
       dependencies: [
