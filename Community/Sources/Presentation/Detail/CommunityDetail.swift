@@ -11,7 +11,10 @@ import CommunityDomain
 import SharedUI
 
 public protocol UpdateBoardFactory {
-  func makeViewModel() -> CommunityWriteViewModelProtocol
+  func makeViewModel(boardId: Int) -> CommunityWriteViewModelProtocol
+}
+public protocol ReportBoardFactory {
+  func makeViewModel(req: ReportRequest) -> CommunityReportViewModel
 }
 
 public struct CommunityDetailView: View {
@@ -37,15 +40,18 @@ public struct CommunityDetailView: View {
 
   private let boardId: Int
   private let updateFactory: UpdateBoardFactory
+  private let reportFactory: ReportBoardFactory
   
   public init(
     viewModel: CommunityDetailViewModel,
     boardId: Int,
-    updateFactory: UpdateBoardFactory
+    updateFactory: UpdateBoardFactory,
+    reportFactory: ReportBoardFactory,
   ) {
     _viewModel = State(initialValue: viewModel)
     self.boardId = boardId
     self.updateFactory = updateFactory
+    self.reportFactory = reportFactory
   }
   
   public var body: some View {
@@ -125,8 +131,15 @@ public struct CommunityDetailView: View {
       if let currentUserId = viewModel.currentUserId,
          Int64(comment.authorId) != currentUserId {
         NavigationLink(
-          // TODO: CommunityReportView 추가
-          destination: Text("신고")
+          destination: CommunityReportView(
+            viewModel: reportFactory.makeViewModel(
+              req: CommunityDomain.ReportRequest.init(
+                targetId: comment.id,
+                targetType: .comment,
+                reason: ""
+              )
+            )
+          )
         ) {
           Text("신고")
         }
@@ -141,7 +154,7 @@ public struct CommunityDetailView: View {
          Int64(authorId) == currentUserId {
         NavigationLink(
           destination: CommunityWriteView(
-            viewModel: updateFactory.makeViewModel(),
+            viewModel: updateFactory.makeViewModel(boardId: boardId),
             title: viewModel.board?.title ?? "",
             content: viewModel.board?.content ?? ""
           )
@@ -159,9 +172,18 @@ public struct CommunityDetailView: View {
       if let currentUserId = viewModel.currentUserId,
          let authorId = viewModel.board?.authorId,
          Int64(authorId) != currentUserId {
-        Button("신고") {
-          reportTargetId = boardId
-          reportTargetType = .board
+        NavigationLink(
+          destination: CommunityReportView(
+            viewModel: reportFactory.makeViewModel(
+              req: CommunityDomain.ReportRequest.init(
+                targetId: boardId,
+                targetType: .board,
+                reason: ""
+              )
+            )
+          )
+        ) {
+          Text("신고")
         }
       }
 
@@ -445,18 +467,6 @@ public struct CommunityDetailView: View {
       alignment: .top
     )
   }
-
-//        Button {
-//          Task {
-//            if let targetId = reportTargetId, let targetType = reportTargetType {
-//              await viewModel.reportContent(targetId: targetId, targetType: targetType, reason: reportReason)
-//              reportReason = ""
-//              reportTargetId = nil
-//              reportTargetType = nil
-//            }
-//          }
-
-
 
   private func timeAgoDisplay(_ date: Date) -> String {
     let now = Date()

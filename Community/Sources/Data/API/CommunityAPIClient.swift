@@ -24,6 +24,16 @@ public protocol CommunityAPIClientInterface: Sendable {
     category: String,
     images: [UIImage]
   ) -> AnyPublisher<BoardResponseDTO, NetworkError>
+  
+  func updateBoard(
+    boardId: Int,
+    title: String,
+    content: String,
+    category: String,
+    images: [UIImage]
+  ) -> AnyPublisher<BoardResponseDTO, NetworkError>
+  
+  func deleteBoard(boardId: Int) -> AnyPublisher<Void, NetworkError>
 
   // Comments
   func fetchComments(boardId: Int, lastId: Int?, limit: Int, order: String) -> AnyPublisher<CommentListDataDTO, NetworkError>
@@ -107,6 +117,50 @@ public final class CommunityAPIClient: CommunityAPIClientInterface {
       .map(\.data)
       .eraseToAnyPublisher()
     }
+  }
+  
+  public func updateBoard(
+    boardId: Int,
+    title: String,
+    content: String,
+    category: String,
+    images: [UIImage]
+  ) -> AnyPublisher<BoardResponseDTO, NetworkError> {
+    let dto = BoardRequestDTO(
+      title: title,
+      content: content,
+      category: category,
+      imageUrls: [] // multipart에서는 사용 안함
+    )
+
+    let endpoint = BoardEndpoint.updateBoard(boardId: boardId, body: dto)
+
+    if images.isEmpty {
+      // 이미지 없으면 일반 JSON request
+      return networkService.request(endpoint, responseType: SuccessResponse<BoardResponseDTO>.self)
+        .map(\.data)
+        .eraseToAnyPublisher()
+    } else {
+      // 이미지 있으면 multipart upload
+      return networkService.uploadMultipart(
+        endpoint,
+        images: images,
+        responseType: SuccessResponse<BoardResponseDTO>.self
+      )
+      .map(\.data)
+      .eraseToAnyPublisher()
+    }
+  }
+  
+  public func deleteBoard(boardId: Int) -> AnyPublisher<Void, NetworkInterface.NetworkError> {
+    let endpoint = BoardEndpoint.deleteBoard(boardId: boardId)
+    
+    return networkService.request(
+      endpoint,
+      responseType: SuccessResponse<Bool>.self
+    )
+    .map { _ in () }
+    .eraseToAnyPublisher()
   }
 
   // MARK: - Comments

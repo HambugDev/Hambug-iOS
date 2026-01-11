@@ -15,6 +15,8 @@ public enum BoardEndpoint: Endpoint {
   case boardsByCategory(CategoryPagingQuery)
   case createBoard(BoardRequestDTO)
   case boardDetail(boardId: Int)
+  case updateBoard(boardId: Int, body: BoardRequestDTO)
+  case deleteBoard(boardId: Int)
   case comments(boardId: Int, query: CursorPagingQuery)
   case createComment(boardId: Int, content: String)
   case updateComment(boardId: Int, commentId: Int, content: String)
@@ -31,6 +33,8 @@ public enum BoardEndpoint: Endpoint {
     switch self {
     case .createBoard(let dto):
       return dto.imageUrls.isEmpty ? "/boards" : "/boards/with-image"
+    case .updateBoard(let id, let dto):
+      return dto.imageUrls.isEmpty ? "/boards/\(id)" : "/boards/\(id)/with-image"
     case .boards:
       return "/boards"
     case .boardsByCategory:
@@ -62,9 +66,9 @@ public enum BoardEndpoint: Endpoint {
       return .GET
     case .createBoard, .createComment, .toggleLike, .report:
       return .POST
-    case .updateComment:
+    case .updateBoard, .updateComment:
       return .PUT
-    case .deleteComment:
+    case .deleteBoard, .deleteComment:
       return .DELETE
     }
   }

@@ -9,34 +9,41 @@ import SwiftUI
 import DesignSystem
 import PhotosUI
 import CommunityDomain
+import SharedUI
 
 public struct CommunityWriteView: View {
   @Environment(\.dismiss) private var dismiss
-  @State private var selectedCategory: Category = .자유잡담
+  @State private var viewModel: CommunityWriteViewModelProtocol
+  
+  @State private var selectedCategory: BoardCategory = .freeTalk
   @State private var title: String = ""
   @State private var content: String = ""
   @State private var characterCount: Int = 0
-  @StateObject private var keyboardObserver = KeyboardObserver()
   @FocusState private var focusedField: Field?
-  @State private var viewModel: CommunityWriteViewModel
+  
   @State private var photosPickerItems: [PhotosPickerItem] = []
 
-  private let maxCharacterCount = 300
+  private let maxCharacterCount: Int
 
-  public init(viewModel: CommunityWriteViewModel) {
+  public init(
+    viewModel: CommunityWriteViewModelProtocol,
+    title: String = "",
+    content: String = "",
+    characterCount: Int = 0,
+    maxCharacterCount: Int = 300
+  ) {
     self.viewModel = viewModel
+    
+    self.title = title
+    self.content = content
+    self.characterCount = content.count
+    self.maxCharacterCount = maxCharacterCount
   }
 
   private var isCharacterMax: Bool {
     characterCount >= maxCharacterCount
   }
-  enum Category: String, CaseIterable {
-    case 자유잡담 = "자유잡담"
-    case 프랜차이즈 = "프랜차이즈"
-    case 수제버거 = "수제버거"
-    case 맛집추천 = "맛집추천"
-  }
-
+  
   enum Field: Hashable {
     case title
     case content
@@ -78,10 +85,10 @@ public struct CommunityWriteView: View {
           ) {
             focusedField = nil
             Task {
-              let success = await viewModel.createBoard(
+              let success = await viewModel.writeBoard(
                 title: title,
                 content: content,
-                category: selectedCategory.toBoardCategory()
+                category: selectedCategory
               )
               if success {
                 dismiss()
@@ -99,6 +106,7 @@ public struct CommunityWriteView: View {
       } message: {
         Text("이미지 크기가 너무 큽니다. 다른 이미지를 선택해주세요.")
       }
+      .tabBarHidden(true)
     }
     .navigationBarHidden(true)
   }
@@ -135,11 +143,11 @@ public struct CommunityWriteView: View {
       
       ScrollView(.horizontal, showsIndicators: false) {
         HStack(spacing: 8) {
-          ForEach(Category.allCases, id: \.self) { category in
+          ForEach(BoardCategory.allCases, id: \.self) { category in
             Button {
               selectedCategory = category
             } label: {
-              Text(category.rawValue)
+              Text(category.displayName)
                 .pretendard(.caption(.emphasis))
                 .foregroundColor(selectedCategory == category ? Color.primaryHambugRed : .textG600)
                 .padding(.horizontal, 10)
@@ -204,7 +212,7 @@ public struct CommunityWriteView: View {
   private var addImageButtonSection: some View {
     PhotosPicker(
       selection: $photosPickerItems,
-      maxSelectionCount: viewModel.maxImages - viewModel.selectedImages.count,
+      maxSelectionCount: viewModel.maxSelectionCount,
       matching: .images
     ) {
       Label(viewModel.imageCountText, systemImage: "camera")
@@ -223,17 +231,6 @@ public struct CommunityWriteView: View {
       }
     }
     .disabled(!viewModel.canAddMoreImages || viewModel.isProcessingImages)
-  }
-}
-
-extension CommunityWriteView.Category {
-  func toBoardCategory() -> BoardCategory {
-    switch self {
-    case .자유잡담: return .freeTalk
-    case .프랜차이즈: return .franchise
-    case .수제버거: return .handmade
-    case .맛집추천: return .recommendation
-    }
   }
 }
 

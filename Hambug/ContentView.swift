@@ -35,13 +35,17 @@ struct ContentView: View {
   var body: some View {
     CustomTabView(selectedTab: $selectedTab) {
       Group {
-        HomeView(viewModel: homeDIContainer.homeViewModel)
-          .tag(0)
+        NavigationStack {
+          HomeView(viewModel: homeDIContainer.homeViewModel)
+        }
+        .tag(0)
         
         NavigationStack {
           CommunityView(
             viewModel: communityDIContainer.makeCommunityViewModel(),
-            detailFactory: communityDIContainer
+            writeFactory: communityDIContainer,
+            detailFactory: communityDIContainer,
+            updateFactory: communityDIContainer
           )
         }
         .tag(1)

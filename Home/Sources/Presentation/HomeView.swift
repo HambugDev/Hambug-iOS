@@ -19,7 +19,6 @@ public struct HomeView: View {
   }
 
   public var body: some View {
-    
     ZStack {
       Color.bgG100
       
