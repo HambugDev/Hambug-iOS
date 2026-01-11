@@ -31,6 +31,10 @@ let package = Package(
       name: "SharedUI",
       targets: ["SharedUI"]
     ),
+    .library(
+      name: "SharedDomain",
+      targets: ["SharedDomain"]
+    ),
   ],
   targets: [
     .target(
@@ -50,6 +54,7 @@ let package = Package(
       name: "SharedUI",
       dependencies: ["DesignSystem"]
     ),
+    .target(name: "SharedDomain"),
     
     .plugin(
       name: "ColorGenerator",

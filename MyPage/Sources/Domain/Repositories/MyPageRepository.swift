@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import SharedDomain
 
 // MARK: - MyPage Repository Interface
 public protocol MyPageRepository {

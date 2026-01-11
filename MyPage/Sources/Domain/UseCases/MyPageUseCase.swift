@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SharedDomain
 
 public protocol MyPageUseCase {
   func fetchProfile()
@@ -16,6 +17,7 @@ public protocol MyPageUseCase {
   
   func logout()
   func deleteAccount()
+  func fetchProfile() async throws -> User
 }
 
 // MARK: - MyPage UseCase 구현체
@@ -26,8 +28,14 @@ public final class MyPageUseCaseImpl: MyPageUseCase {
     self.repository = repository
   }
   
-  public func fetchProfile() {
-    repository.fetchProfile(userId: 0)
+  public func fetchProfile() async throws -> User {
+    do {
+      return try await repository.fetchProfile()
+    } catch {
+      throw error
+    }
+    
+  }
   }
   
   public func updateNickname(_ nickName: String) {}
