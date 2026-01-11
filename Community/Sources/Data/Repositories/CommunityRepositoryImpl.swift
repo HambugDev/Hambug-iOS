@@ -63,15 +63,17 @@ public final class CommunityRepositoryImpl: CommunityRepository {
       .mapError { $0 as Error }
       .async()
   }
-
-  public func createBoard(
+  
+  public func updateBoard(
+    boardId: Int,
     title: String,
     content: String,
-    category: BoardCategory,
+    category: CommunityDomain.BoardCategory,
     images: [UIImage]
-  ) async throws -> Board {
+  ) async throws -> CommunityDomain.Board {
     return try await apiClient
-      .createBoard(
+      .updateBoard(
+        boardId: boardId,
         title: title,
         content: content,
         category: category.rawValue,

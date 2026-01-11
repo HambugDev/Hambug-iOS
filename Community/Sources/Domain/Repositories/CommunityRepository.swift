@@ -23,6 +23,18 @@ public protocol CommunityRepository: Sendable {
     category: BoardCategory,
     images: [UIImage]
   ) async throws -> Board
+  
+  // 게시글 수정
+  func updateBoard(
+    boardId: Int,
+    title: String,
+    content: String,
+    category: BoardCategory,
+    images: [UIImage]
+  ) async throws -> Board
+  
+  // 게시글 삭제
+  func deleteBoard(boardId: Int) async throws
 
   // 댓글
   func fetchComments(boardId: Int, lastId: Int?, limit: Int, order: SortOrder) async throws -> CommentListData

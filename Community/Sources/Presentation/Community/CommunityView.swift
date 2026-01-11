@@ -11,24 +11,32 @@ import CommunityDomain
 import SharedUI
 
 public protocol CommunityWriteFactory {
-  func makeWriteViewModel() -> CommunityWriteViewModel
+  func makeWriteViewModel() -> CommunityWriteViewModelProtocol
+}
+
 public protocol CommunityDetailFactory {
   func makeDetailViewModel() -> CommunityDetailViewModel
 }
 
 public struct CommunityView: View {
   @State private var viewModel: CommunityViewModel
-  private let factory: CommunityWriteFactory
+  private let writeFactory: CommunityWriteFactory
   private let detailFactory: CommunityDetailFactory
+  private let updateFactory: UpdateBoardFactory
+  private let reportFactory: ReportBoardFactory
   
   public init(
     viewModel: CommunityViewModel,
-    factory: CommunityWriteFactory
+    writeFactory: CommunityWriteFactory,
     detailFactory: CommunityDetailFactory,
+    updateFactory: UpdateBoardFactory,
+    reportFactory: ReportBoardFactory
   ) {
     self._viewModel = State(initialValue: viewModel)
-    self.factory = factory
+    self.writeFactory = writeFactory
     self.detailFactory = detailFactory
+    self.updateFactory = updateFactory
+    self.reportFactory = reportFactory
   }
 
   public var body: some View {
@@ -66,12 +74,18 @@ public struct CommunityView: View {
               if viewModel.isListView {
                 CommunityListView(
                   boards: viewModel.filteredBoards,
-                  detailFactory: detailFactory
+                  detailFactory: detailFactory,
+                  updateFactory: updateFactory,
+                  reportFactory: reportFactory,
+                  viewModel: viewModel
                 )
               } else {
                 CommunityFeedView(
                   boards: viewModel.filteredBoards,
-                  detailFactory: detailFactory
+                  detailFactory: detailFactory,
+                  updateFactory: updateFactory,
+                  reportFactory: reportFactory,
+                  viewModel: viewModel
                 )
               }
             }
@@ -86,7 +100,7 @@ public struct CommunityView: View {
             Spacer()
             NavigationLink(
               destination: CommunityWriteView(
-                viewModel: factory.makeWriteViewModel()
+                viewModel: writeFactory.makeWriteViewModel()
               )
             ) {
               Color.bgPencil
@@ -179,7 +193,25 @@ fileprivate struct CommunityFilterChip: View {
 struct CommunityListView: View {
   let boards: [Board]
   let detailFactory: CommunityDetailFactory
+  let updateFactory: UpdateBoardFactory
+  let reportFactory: ReportBoardFactory
   
+  @State private var viewModel: CommunityViewModel
+
+  init(
+    boards: [Board],
+    detailFactory: CommunityDetailFactory,
+    updateFactory: UpdateBoardFactory,
+    reportFactory: ReportBoardFactory,
+    viewModel: CommunityViewModel
+  ) {
+    self.boards = boards
+    self.detailFactory = detailFactory
+    self.updateFactory = updateFactory
+    self.reportFactory = reportFactory
+    self._viewModel = State(initialValue: viewModel)
+  }
+
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 0) {
@@ -187,7 +219,9 @@ struct CommunityListView: View {
           NavigationLink(
             destination: CommunityDetailView(
               viewModel: detailFactory.makeDetailViewModel(),
-              boardId: board.id
+              boardId: board.id,
+              updateFactory: updateFactory,
+              reportFactory: reportFactory
             )) {
             CommunityPostListCard(board: board)
           }
@@ -223,16 +257,36 @@ struct CommunityListView: View {
 // MARK: - Feed View
 fileprivate struct CommunityFeedView: View {
   let boards: [Board]
+  let detailFactory: CommunityDetailFactory
+  let updateFactory: UpdateBoardFactory
+  let reportFactory: ReportBoardFactory
   
+  @State private var viewModel: CommunityViewModel
+
+  init(
+    boards: [Board],
+    detailFactory: CommunityDetailFactory,
+    updateFactory: UpdateBoardFactory,
+    reportFactory: ReportBoardFactory,
+    viewModel: CommunityViewModel
+  ) {
+    self.boards = boards
+    self.detailFactory = detailFactory
+    self.updateFactory = updateFactory
+    self.reportFactory = reportFactory
+    self._viewModel = State(initialValue: viewModel)
+  }
+
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 16) {
-        ForEach(boards) { board in
         ForEach(Array(boards.enumerated()), id: \.element.id) { index, board in
           NavigationLink(
             destination: CommunityDetailView(
               viewModel: detailFactory.makeDetailViewModel(),
-              boardId: board.id
+              boardId: board.id,
+              updateFactory: updateFactory,
+              reportFactory: reportFactory
             )
           ) {
             CommunityPostFeedCard(board: board)
