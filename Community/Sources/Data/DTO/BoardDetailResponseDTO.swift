@@ -1,23 +1,23 @@
 //
-//  BoardResponse.swift
-//  Hambug
+//  BoardDetailResponseDTO.swift
+//  Community
 //
-//  Created by 강동영 on 10/27/25.
+//  Created by 강동영 on 1/11/26.
 //
 
 import Foundation
 import CommunityDomain
-import Util
 
 // MARK: - Board Response DTO
-public struct BoardResponseDTO: Decodable, Sendable {
+public struct BoardDetailResponseDTO: Decodable, Sendable {
   public let id: Int
   public let title: String
   public let content: String
   public let category: String
   public let imageUrls: [String]
-  public let authorNickname: String?
-  public let authorId: Int?
+  public let authorNickname: String
+  public let authorProfileImageUrl: String?
+  public let authorId: Int
   public let createdAt: String
   public let updatedAt: String
   public let viewCount: Int
@@ -29,6 +29,7 @@ public struct BoardResponseDTO: Decodable, Sendable {
     case id, title, content, category
     case imageUrls
     case authorNickname
+    case authorProfileImageUrl
     case authorId
     case createdAt
     case updatedAt
@@ -39,21 +40,8 @@ public struct BoardResponseDTO: Decodable, Sendable {
   }
 }
 
-// MARK: - Board List Data DTO (Pagination)
-public struct BoardListDataDTO: Decodable, Sendable {
-  public let content: [BoardResponseDTO]
-  public let nextCursorId: Int?
-  public let nextPage: Bool
-
-  private enum CodingKeys: String, CodingKey {
-    case content
-    case nextCursorId = "netCursorId"
-    case nextPage
-  }
-}
-
 // MARK: - DTO to Domain Mapper
-extension BoardResponseDTO {
+extension BoardDetailResponseDTO {
   func toDomain() -> Board {
     let dateFormatter = DateFormatter.iso8601WithMicroseconds
     
@@ -64,6 +52,7 @@ extension BoardResponseDTO {
       category: BoardCategory(rawValue: category) ?? .freeTalk,
       imageUrls: imageUrls,
       authorNickname: authorNickname,
+      authorProfileImageUrl: authorProfileImageUrl,
       authorId: authorId,
       createdAt: dateFormatter.date(from: createdAt) ?? Date(),
       updatedAt: dateFormatter.date(from: updatedAt) ?? Date(),
@@ -71,16 +60,6 @@ extension BoardResponseDTO {
       likeCount: likeCount,
       commentCount: commentCount,
       isLiked: isLiked
-    )
-  }
-}
-
-extension BoardListDataDTO {
-  func toDomain() -> BoardListData {
-    return BoardListData(
-      content: content.map { $0.toDomain() },
-      nextCursorId: nextCursorId,
-      hasNextPage: nextPage
     )
   }
 }

@@ -11,9 +11,9 @@ import CommunityDomain
 
 // MARK: - Board Endpoints
 public enum BoardEndpoint: Endpoint {
-  case createBoard(BoardRequestDTO)
   case boards(CursorPagingQuery)
   case boardsByCategory(CategoryPagingQuery)
+  case createBoard(BoardRequestDTO)
   case boardDetail(boardId: Int)
   case comments(boardId: Int, query: CursorPagingQuery)
   case createComment(boardId: Int, content: String)
@@ -36,6 +36,8 @@ public enum BoardEndpoint: Endpoint {
     case .boardsByCategory:
       return "/boards/category"
     case .boardDetail(let boardId):
+      return "/boards/\(boardId)"
+    case .deleteBoard(let boardId):
       return "/boards/\(boardId)"
     case .comments(let boardId, _):
       return "/boards/\(boardId)/comments"
@@ -87,7 +89,7 @@ public enum BoardEndpoint: Endpoint {
   public var body: Data? {
     let encoder = JSONEncoder()
     switch self {
-    case .createBoard(let dto):
+    case .createBoard(let dto), .updateBoard(_, let dto):
       return try? encoder.encode(dto)
     case .createComment(_, let content):
       let body = ["content": content]

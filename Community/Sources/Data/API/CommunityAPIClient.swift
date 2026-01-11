@@ -15,7 +15,7 @@ import UIKit
 public protocol CommunityAPIClientInterface: Sendable {
   func fetchBoards(lastId: Int?, limit: Int, order: String) -> AnyPublisher<BoardListDataDTO, NetworkError>
   func fetchBoardsByCategory(category: String, lastId: Int?, limit: Int, order: String) -> AnyPublisher<BoardListDataDTO, NetworkError>
-  func fetchBoardDetail(boardId: Int) -> AnyPublisher<BoardResponseDTO, NetworkError>
+  func fetchBoardDetail(boardId: Int) -> AnyPublisher<BoardDetailResponseDTO, NetworkError>
 
   // Board creation
   func createBoard(
@@ -26,7 +26,7 @@ public protocol CommunityAPIClientInterface: Sendable {
   ) -> AnyPublisher<BoardResponseDTO, NetworkError>
 
   // Comments
-  func fetchComments(boardId: Int, lastId: Int, limit: Int, order: String) -> AnyPublisher<CommentListDataDTO, NetworkError>
+  func fetchComments(boardId: Int, lastId: Int?, limit: Int, order: String) -> AnyPublisher<CommentListDataDTO, NetworkError>
   func createComment(boardId: Int, content: String) -> AnyPublisher<CommentResponseDTO, NetworkError>
   func updateComment(boardId: Int, commentId: Int, content: String) -> AnyPublisher<CommentResponseDTO, NetworkError>
   func deleteComment(boardId: Int, commentId: Int) -> AnyPublisher<Void, NetworkError>
@@ -68,10 +68,10 @@ public final class CommunityAPIClient: CommunityAPIClientInterface {
     .eraseToAnyPublisher()
   }
 
-  public func fetchBoardDetail(boardId: Int) -> AnyPublisher<BoardResponseDTO, NetworkError> {
+  public func fetchBoardDetail(boardId: Int) -> AnyPublisher<BoardDetailResponseDTO, NetworkError> {
     return networkService.request(
       BoardEndpoint.boardDetail(boardId: boardId),
-      responseType: SuccessResponse<BoardResponseDTO>.self
+      responseType: SuccessResponse<BoardDetailResponseDTO>.self
     )
     .map(\.data)
     .eraseToAnyPublisher()
@@ -110,7 +110,7 @@ public final class CommunityAPIClient: CommunityAPIClientInterface {
   }
 
   // MARK: - Comments
-  public func fetchComments(boardId: Int, lastId: Int, limit: Int, order: String) -> AnyPublisher<CommentListDataDTO, NetworkError> {
+  public func fetchComments(boardId: Int, lastId: Int?, limit: Int, order: String) -> AnyPublisher<CommentListDataDTO, NetworkError> {
     let query: CursorPagingQuery = .init(lastId: lastId, limit: limit, order: order)
     return networkService.request(
       BoardEndpoint.comments(boardId: boardId, query: query),
@@ -141,7 +141,7 @@ public final class CommunityAPIClient: CommunityAPIClientInterface {
   public func deleteComment(boardId: Int, commentId: Int) -> AnyPublisher<Void, NetworkError> {
     return networkService.request(
       BoardEndpoint.deleteComment(boardId: boardId, commentId: commentId),
-      responseType: SuccessResponse<EmptyResponse>.self
+      responseType: SuccessResponse<Bool>.self
     )
     .map { _ in () }
     .eraseToAnyPublisher()

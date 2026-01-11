@@ -25,7 +25,7 @@ public protocol CommunityRepository: Sendable {
   ) async throws -> Board
 
   // 댓글
-  func fetchComments(boardId: Int, lastId: Int, limit: Int, order: SortOrder) async throws -> CommentListData
+  func fetchComments(boardId: Int, lastId: Int?, limit: Int, order: SortOrder) async throws -> CommentListData
   func createComment(boardId: Int, content: String) async throws -> Comment
   func updateComment(boardId: Int, commentId: Int, content: String) async throws -> Comment
   func deleteComment(boardId: Int, commentId: Int) async throws

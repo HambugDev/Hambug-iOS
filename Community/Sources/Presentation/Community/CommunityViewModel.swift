@@ -128,9 +128,6 @@ public final class CommunityViewModel {
     } catch {
       errorMessage = error.localizedDescription
       print("❌ API Error: \(error)")
-
-      // API 실패 시 샘플 데이터 사용
-      boards = Board.sampleData
     }
 
     isLoading = false

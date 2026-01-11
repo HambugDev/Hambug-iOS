@@ -12,29 +12,33 @@ import SharedUI
 
 public protocol CommunityWriteFactory {
   func makeWriteViewModel() -> CommunityWriteViewModel
+public protocol CommunityDetailFactory {
+  func makeDetailViewModel() -> CommunityDetailViewModel
 }
 
 public struct CommunityView: View {
   @State private var viewModel: CommunityViewModel
   private let factory: CommunityWriteFactory
+  private let detailFactory: CommunityDetailFactory
   
   public init(
     viewModel: CommunityViewModel,
     factory: CommunityWriteFactory
+    detailFactory: CommunityDetailFactory,
   ) {
     self._viewModel = State(initialValue: viewModel)
     self.factory = factory
+    self.detailFactory = detailFactory
   }
 
   public var body: some View {
-    NavigationStack {
       ZStack {
         VStack(spacing: 0) {
           Color.primaryHambugRed
             .frame(height: UIScreen.main.bounds.height * 0.25)
           Color.bgG75
         }
-        .ignoresSafeArea(.all, edges: .top)
+        .ignoresSafeArea(.container, edges: .vertical)
         
         VStack(spacing: 0) {
           // 헤더
@@ -60,9 +64,15 @@ public struct CommunityView: View {
             // 컨텐츠 영역
             ZStack {
               if viewModel.isListView {
-                CommunityListView(boards: viewModel.filteredBoards)
+                CommunityListView(
+                  boards: viewModel.filteredBoards,
+                  detailFactory: detailFactory
+                )
               } else {
-                CommunityFeedView(boards: viewModel.filteredBoards)
+                CommunityFeedView(
+                  boards: viewModel.filteredBoards,
+                  detailFactory: detailFactory
+                )
               }
             }
           }
@@ -94,12 +104,12 @@ public struct CommunityView: View {
           }
         }
       }
+      .safeAreaPadding(.bottom, 100)
       .refreshable {
         viewModel.refreshBoards()
       }
       .navigationBarHidden(true)
       .tabBarHidden(false)
-    }
   }
 }
 
@@ -168,30 +178,45 @@ fileprivate struct CommunityFilterChip: View {
 // MARK: - List View
 struct CommunityListView: View {
   let boards: [Board]
+  let detailFactory: CommunityDetailFactory
   
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 0) {
-        ForEach(boards) { board in
-          NavigationLink(destination: CommunityDetailView()) {
+        ForEach(Array(boards.enumerated()), id: \.element.id) { index, board in
+          NavigationLink(
+            destination: CommunityDetailView(
+              viewModel: detailFactory.makeDetailViewModel(),
+              boardId: board.id
+            )) {
             CommunityPostListCard(board: board)
           }
           .buttonStyle(PlainButtonStyle())
+          .onAppear {
+            // 마지막에서 3개 전부터 미리 로드 시작
+            if index >= boards.count - 3 {
+              Task {
+                await viewModel.loadMoreBoards()
+              }
+            }
+          }
+        }
+
+        if viewModel.isLoadingMore {
+          HStack {
+            Spacer()
+            ProgressView()
+            Spacer()
+          }
+          .padding(.vertical, 16)
         }
       }
+      .cornerRadius(8)
+      .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
     }
-    .background(
-      RoundedRectangle(cornerRadius: 8)
-        .fill(Color.white)
-        .padding(-2)
-        .shadow(
-          color: Color.black.opacity(0.1),
-          radius: 4.5,
-          x: 0,
-          y: 0
-        )
-    )
-    .background(Color.white)
+    .scrollIndicators(.hidden)
+    .cornerRadius(8)
+    .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
   }
 }
 
@@ -203,10 +228,33 @@ fileprivate struct CommunityFeedView: View {
     ScrollView {
       LazyVStack(spacing: 16) {
         ForEach(boards) { board in
-          NavigationLink(destination: CommunityDetailView()) {
+        ForEach(Array(boards.enumerated()), id: \.element.id) { index, board in
+          NavigationLink(
+            destination: CommunityDetailView(
+              viewModel: detailFactory.makeDetailViewModel(),
+              boardId: board.id
+            )
+          ) {
             CommunityPostFeedCard(board: board)
           }
           .buttonStyle(PlainButtonStyle())
+          .onAppear {
+            // 마지막에서 3개 전부터 미리 로드 시작
+            if index >= boards.count - 3 {
+              Task {
+                await viewModel.loadMoreBoards()
+              }
+            }
+          }
+        }
+
+        if viewModel.isLoadingMore {
+          HStack {
+            Spacer()
+            ProgressView()
+            Spacer()
+          }
+          .padding(.vertical, 16)
         }
       }
       .padding(.top, 8)
@@ -270,8 +318,7 @@ fileprivate struct CommunityPostListCard: View {
         )
         
       }
-      .padding(.horizontal, 16)
-      .padding(.vertical, 16)
+      .padding(16)
       .background(Color.white)
     }
   }

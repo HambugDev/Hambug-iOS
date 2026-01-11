@@ -37,6 +37,25 @@ public final class CommunityRepositoryImpl: CommunityRepository {
       .async()
   }
 
+  // MARK: - Board CRUD
+  public func createBoard(
+    title: String,
+    content: String,
+    category: BoardCategory,
+    images: [UIImage]
+  ) async throws -> Board {
+    return try await apiClient
+      .createBoard(
+        title: title,
+        content: content,
+        category: category.rawValue,
+        images: images
+      )
+      .map { $0.toDomain() }
+      .mapError { $0 as Error }
+      .async()
+  }
+
   public func fetchBoardDetail(boardId: Int) async throws -> Board {
     return try await apiClient
       .fetchBoardDetail(boardId: boardId)
@@ -62,9 +81,16 @@ public final class CommunityRepositoryImpl: CommunityRepository {
       .mapError { $0 as Error }
       .async()
   }
-
+  
+  public func deleteBoard(boardId: Int) async throws {
+    return try await apiClient
+      .deleteBoard(boardId: boardId)
+      .mapError { $0 as Error }
+      .async()
+  }
+  
   // MARK: - Comments
-  public func fetchComments(boardId: Int, lastId: Int, limit: Int, order: CommunityDomain.SortOrder) async throws -> CommentListData {
+  public func fetchComments(boardId: Int, lastId: Int?, limit: Int, order: CommunityDomain.SortOrder) async throws -> CommentListData {
     return try await apiClient
       .fetchComments(boardId: boardId, lastId: lastId, limit: limit, order: order.rawValue)
       .map { $0.toDomain() }

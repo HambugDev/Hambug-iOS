@@ -13,8 +13,8 @@ import NetworkImpl
 import CommunityDomain
 import CommunityData
 import CommunityPresentation
+import Managers
 
-import SwiftUI
 struct CommunityWriteAssembly: Assembly {
   func assemble(container: GenericDIContainer) {
     container.register(CreateBoardUseCase.self) { resolver in
@@ -72,32 +72,16 @@ struct CommunityAssembly: Assembly {
       )
     }
 
-    container.register(GetBoardDetailUseCaseInterface.self) { resolver in
-      GetBoardDetailUseCase(repository: resolver.resolve(CommunityRepository.self))
+    container.register(BoardDetailUseCase.self) { resolver in
+      BoardDetailUseCaseImpl(repository: resolver.resolve(CommunityRepository.self))
     }
 
-    container.register(GetCommentsUseCaseInterface.self) { resolver in
-      GetCommentsUseCase(repository: resolver.resolve(CommunityRepository.self))
+    container.register(CommentUseCase.self) { resolver in
+      CommentUseCaseImpl(repository: resolver.resolve(CommunityRepository.self))
     }
 
-    container.register(CreateCommentUseCaseInterface.self) { resolver in
-      CreateCommentUseCase(repository: resolver.resolve(CommunityRepository.self))
-    }
-
-    container.register(UpdateCommentUseCaseInterface.self) { resolver in
-      UpdateCommentUseCase(repository: resolver.resolve(CommunityRepository.self))
-    }
-
-    container.register(DeleteCommentUseCaseInterface.self) { resolver in
-      DeleteCommentUseCase(repository: resolver.resolve(CommunityRepository.self))
-    }
-
-    container.register(GetLikeInfoUseCaseInterface.self) { resolver in
-      GetLikeInfoUseCase(repository: resolver.resolve(CommunityRepository.self))
-    }
-
-    container.register(ToggleLikeUseCaseInterface.self) { resolver in
-      ToggleLikeUseCase(repository: resolver.resolve(CommunityRepository.self))
+    container.register(LikeUseCase.self) { resolver in
+      LikeUseCaseImpl(repository: resolver.resolve(CommunityRepository.self))
     }
 
     container.register(ReportContentUseCase.self) { resolver in
@@ -106,14 +90,11 @@ struct CommunityAssembly: Assembly {
 
     container.register(CommunityDetailViewModel.self) { @MainActor resolver in
       CommunityDetailViewModel(
-        getBoardDetailUseCase: resolver.resolve(GetBoardDetailUseCaseInterface.self),
-        getCommentsUseCase: resolver.resolve(GetCommentsUseCaseInterface.self),
-        createCommentUseCase: resolver.resolve(CreateCommentUseCaseInterface.self),
-        updateCommentUseCase: resolver.resolve(UpdateCommentUseCaseInterface.self),
-        deleteCommentUseCase: resolver.resolve(DeleteCommentUseCaseInterface.self),
-        getLikeInfoUseCase: resolver.resolve(GetLikeInfoUseCaseInterface.self),
-        toggleLikeUseCase: resolver.resolve(ToggleLikeUseCaseInterface.self),
-        reportContentUseCase: resolver.resolve(ReportContentUseCase.self)
+        boardDetailUseCase: resolver.resolve(BoardDetailUseCase.self),
+        commentUseCase: resolver.resolve(CommentUseCase.self),
+        likeUseCase: resolver.resolve(LikeUseCase.self),
+        reportContentUseCase: resolver.resolve(ReportContentUseCase.self),
+        userDefaultsManager: resolver.resolve(UserDefaultsManager.self)
       )
     }
     
@@ -163,6 +144,12 @@ extension CommunityDIContainer: CommunityWriteFactory {
   }
 }
 
+extension CommunityDIContainer: CommunityDetailFactory {
+  @MainActor
+  public func makeDetailViewModel() -> CommunityDetailViewModel {
+    return container.resolve(CommunityDetailViewModel.self)
+  }
+}
 // MARK: - Mock Setup
 private func setupURLProtocol() {
   let boardsData: [[String: Any]] = [

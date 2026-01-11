@@ -10,8 +10,6 @@ import Foundation
 // MARK: - Board Category
 public enum BoardCategory: String, Codable, Sendable, CaseIterable {
   case freeTalk = "FREE_TALK"
-  case franchise = "FRANCHISE"
-  case handmade = "HANDMADE"
   case review = "REVIEW"
   case recommendation = "RECOMMENDATION"
 
@@ -19,10 +17,6 @@ public enum BoardCategory: String, Codable, Sendable, CaseIterable {
     switch self {
     case .freeTalk:
       return "자유잡담"
-    case .franchise:
-      return "프랜차이즈"
-    case .handmade:
-      return "수제버거"
     case .review:
       return "햄버거리뷰"
     case .recommendation:
@@ -44,9 +38,9 @@ public struct Board: Identifiable, Equatable, Sendable {
   public let content: String
   public let category: BoardCategory
   public let imageUrls: [String]
-  public let authorNickname: String
+  public let authorNickname: String?
   public let authorProfileImageUrl: String?
-  public let authorId: Int
+  public let authorId: Int?
   public let createdAt: String
   public let updatedAt: String
   public let viewCount: Int
@@ -60,9 +54,9 @@ public struct Board: Identifiable, Equatable, Sendable {
     content: String,
     category: BoardCategory,
     imageUrls: [String],
-    authorNickname: String,
-    authorProfileImageUrl: String?,
-    authorId: Int,
+    authorNickname: String?,
+    authorProfileImageUrl: String? = nil,
+    authorId: Int?,
     createdAt: Date,
     updatedAt: Date,
     viewCount: Int,

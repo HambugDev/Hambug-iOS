@@ -11,6 +11,7 @@ public extension String {
     struct Storage {
         static let hasSeenOnboarding = "hasSeenOnboarding"
         static let userResponse = "userResponse"
+        static let currentUserId = "currentUserId"
     }
 }
 

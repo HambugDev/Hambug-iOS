@@ -37,11 +37,11 @@ public struct HomeView: View {
             .padding(.horizontal, 18)
 
         }
-        .safeAreaPadding(.bottom, 60)
+        .safeAreaPadding(.bottom, 100)
       }
       .padding(.top, 50)
     }
-    .ignoresSafeArea()
+    .ignoresSafeArea(.container, edges: .top)
     .tabBarHidden(false)
   }
 }

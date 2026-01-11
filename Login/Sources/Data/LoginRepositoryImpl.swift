@@ -10,14 +10,21 @@ import DataSources
 import LoginDomain
 import NetworkInterface
 import Util
+import Managers
 
 public final class LoginRepositoryImpl: LoginRepository {
   private let networkService: NetworkServiceInterface
   private let tokenStorage: TokenStorage
+  private let userDefaultsManager: UserDefaultsManager
 
-  public init(networkService: NetworkServiceInterface, tokenStorage: TokenStorage) {
+  public init(
+    networkService: NetworkServiceInterface,
+    tokenStorage: TokenStorage,
+    userDefaultsManager: UserDefaultsManager
+  ) {
     self.networkService = networkService
     self.tokenStorage = tokenStorage
+    self.userDefaultsManager = userDefaultsManager
   }
 
   public func login(request: SocialLoginRequest) async throws {
@@ -42,7 +49,12 @@ public final class LoginRepositoryImpl: LoginRepository {
       accessToken: apiResponse.data.token.accessToken,
       refreshToken: apiResponse.data.token.refreshToken
     )
+
+    // Save user ID to UserDefaults
+    userDefaultsManager.currentUserId = apiResponse.data.user.userId
+
     print("✅ Tokens saved to Keychain")
+    print("✅ User ID saved: \(apiResponse.data.user.userId)")
     print("✅ accessToken: \(apiResponse.data.token.accessToken,)")
     print("✅ refreshToken \(apiResponse.data.token.refreshToken)")
   }

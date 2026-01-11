@@ -34,14 +34,23 @@ struct ContentView: View {
   
   var body: some View {
     CustomTabView(selectedTab: $selectedTab) {
-      HomeView(viewModel: homeDIContainer.homeViewModel)
-        .tag(0)
-      
-      CommunityView(viewModel: communityDIContainer.makeCommunityViewModel())
+      Group {
+        HomeView(viewModel: homeDIContainer.homeViewModel)
+          .tag(0)
+        
+        NavigationStack {
+          CommunityView(
+            viewModel: communityDIContainer.makeCommunityViewModel(),
+            detailFactory: communityDIContainer
+          )
+        }
         .tag(1)
-      
-      MyPageView(viewModel: mypageDIContainer.makeMyPageViewModel())
-        .tag(2)
+        
+        
+        Text("MyPage")
+          .tag(2)
+      }
+      .toolbar(.hidden, for: .tabBar)
     }
   }
 }
