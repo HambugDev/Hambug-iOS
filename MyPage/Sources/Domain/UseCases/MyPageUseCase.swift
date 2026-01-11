@@ -6,18 +6,20 @@
 //
 
 import Foundation
+import Combine
+import UIKit
 import SharedDomain
+import Util
 
 public protocol MyPageUseCase {
-  func fetchProfile()
-  
-  func updateNickname(_ nickName: String)
-  func changeProfileImage()
-  func applyDefaultImage()
-  
-  func logout()
-  func deleteAccount()
   func fetchProfile() async throws -> User
+
+  func updateNickname(_ nickName: String) async
+  func changeProfileImage(_ image: UIImage?) async throws -> String
+  func applyDefaultImage() async
+
+  func logout() async
+  func deleteAccount(provider: String) async
 }
 
 // MARK: - MyPage UseCase 구현체
@@ -36,12 +38,29 @@ public final class MyPageUseCaseImpl: MyPageUseCase {
     }
     
   }
+  
+  public func updateNickname(_ nickName: String) async {
+    await repository.updateNickname(nickName)
   }
   
-  public func updateNickname(_ nickName: String) {}
-  public func changeProfileImage() {}
-  public func applyDefaultImage() {}
+  public func changeProfileImage(_ image: UIImage?) async throws -> String {
+    try await repository.changeProfileImage(image)
+  }
   
-  public func logout() {}
-  public func deleteAccount() {}
+  public func applyDefaultImage() async {
+    do {
+      try await repository.applyDefaultImage()
+    } catch {
+      print(error.localizedDescription)
+    }
+    
+  }
+  
+  public func logout() async {
+    await repository.logout()
+  }
+  
+  public func deleteAccount(provider: String) async {
+    await repository.deleteAccount(provider: provider)
+  }
 }
