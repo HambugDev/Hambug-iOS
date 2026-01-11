@@ -229,17 +229,4 @@ public final class CommunityDetailViewModel {
       print("❌ Toggle like error: \(error)")
     }
   }
-
-  // MARK: - Report Methods
-  public func reportContent(targetId: Int, targetType: ReportTargetType, reason: String) async {
-    let request = ReportRequest(targetId: targetId, targetType: targetType, reason: reason)
-
-    do {
-      try await reportContentUseCase.execute(request: request)
-      print("✅ Content reported")
-    } catch {
-      errorMessage = error.localizedDescription
-      print("❌ Report error: \(error)")
-    }
-  }
 }

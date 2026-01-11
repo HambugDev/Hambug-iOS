@@ -24,6 +24,10 @@ struct CommunityWriteAssembly: Assembly {
     container.register(CommunityWriteViewModel.self) { resolver in
       CommunityWriteViewModel(createBoardUseCase: resolver.resolve(CreateBoardUseCase.self))
     }
+    
+    container.register(UpdateBoardUseCase.self) { resolver in
+      UpdateBoardUseCaseImpl(repository: resolver.resolve(CommunityRepository.self))
+    }
   }
 }
 // MARK: - Community Assembly
@@ -97,10 +101,6 @@ struct CommunityAssembly: Assembly {
         userDefaultsManager: resolver.resolve(UserDefaultsManager.self)
       )
     }
-    
-//    container.register(CommunityReportViewModel.self) { resolver in
-//      CommunityReportViewModel.init
-//    }
   }
 }
 
@@ -122,25 +122,11 @@ public final class CommunityDIContainer {
   public func makeCommunityViewModel() -> CommunityViewModel {
     return container.resolve(CommunityViewModel.self)
   }
-
-  @MainActor
-  public func makeCommunityDetailViewModel() -> CommunityDetailViewModel {
-    return container.resolve(CommunityDetailViewModel.self)
-  }
-
-  @MainActor
-  public func makeCommunityReportViewModel() -> CommunityReportViewModel {
-    return container.resolve(CommunityReportViewModel.self)
-  }
-
-  public func resolve<T>(_ type: T.Type) -> T {
-    return container.resolve(type)
-  }
 }
 
 extension CommunityDIContainer: CommunityWriteFactory {
-  public func makeWriteViewModel() -> CommunityWriteViewModel {
-    return container.resolve(CommunityWriteViewModel.self)
+  public func makeWriteViewModel() -> any CommunityWriteViewModelProtocol {
+    container.resolve(CommunityWriteViewModel.self)
   }
 }
 
@@ -150,6 +136,25 @@ extension CommunityDIContainer: CommunityDetailFactory {
     return container.resolve(CommunityDetailViewModel.self)
   }
 }
+
+extension CommunityDIContainer: UpdateBoardFactory {
+  public func makeViewModel(boardId: Int) -> CommunityWriteViewModelProtocol {
+    return UpdateBoardViewModel(
+      boardId: boardId,
+      updateBoardUseCase: container.resolve(UpdateBoardUseCase.self)
+    )
+  }
+}
+
+extension CommunityDIContainer: ReportBoardFactory {
+  public func makeViewModel(req: ReportRequest) -> CommunityReportViewModel {
+    return CommunityReportViewModel(
+      usecase: container.resolve(ReportContentUseCase.self),
+      reportInfo: req
+    )
+  }
+}
+
 // MARK: - Mock Setup
 private func setupURLProtocol() {
   let boardsData: [[String: Any]] = [
