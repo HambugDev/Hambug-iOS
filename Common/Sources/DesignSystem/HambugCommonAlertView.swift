@@ -106,6 +106,34 @@ public struct AlertButton {
     self.title = title
     self.action = action
   }
+  
+  public init(
+    _ type: AlertButtonType,
+    action: @escaping @MainActor () -> Void
+  ) {
+    self.title = type.title
+    self.action = action
+  }
+  
+  public enum AlertButtonType {
+    case ok
+    case cancel
+    case save
+    case accountDelete
+    
+    var title: String {
+      switch self {
+      case .ok:
+        return "확인"
+      case .cancel:
+        return "취소"
+      case .save:
+        return "저장"
+      case .accountDelete:
+        return "탈퇴"
+      }
+    }
+  }
 }
 
 #Preview {
