@@ -92,10 +92,16 @@ public final class NetworkServiceImpl: NetworkServiceInterface {
     responseType: T.Type
   ) -> AnyPublisher<T, NetworkError> {
     do {
+      let urlRequest = try endpoint.createURLRequest()
+      
+#if DEBUG
+      logger?.requestLogger(request: urlRequest)
+#endif
+      
       guard let url = endpoint.createURL() else {
         throw NetworkError.invalidURL
       }
-
+      
       return session.upload(
         multipartFormData: { multipartFormData in
           // 1. JSON body의 텍스트 필드 추가 (title, content, category)
