@@ -45,14 +45,19 @@ struct ContentView: View {
             viewModel: communityDIContainer.makeCommunityViewModel(),
             writeFactory: communityDIContainer,
             detailFactory: communityDIContainer,
-            updateFactory: communityDIContainer
+            updateFactory: communityDIContainer,
+            reportFactory: communityDIContainer
           )
         }
         .tag(1)
         
         
-        Text("MyPage")
-          .tag(2)
+        NavigationStack {
+          MyPageView(
+            viewModel: mypageDIContainer.makeMyPageViewModel()
+          )
+        }
+        .tag(2)
       }
       .toolbar(.hidden, for: .tabBar)
     }
