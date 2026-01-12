@@ -31,7 +31,9 @@ let package = Package(
   ],
   dependencies: [
     .package(name: "Common", path: "../Common"),
-    .package(name: "Infrastructure", path: "../Infrastructure")
+    .package(name: "Infrastructure", path: "../Infrastructure"),
+    .package(name: "Community", path: "../Community"),
+    .package(name: "DI", path: "../DI"),
   ],
   targets: [
     .target(
@@ -41,7 +43,9 @@ let package = Package(
         .target(config: .data),
         .target(config: .presentation),
         .product(name: "NetworkInterface", package: "Infrastructure"),
-        .product(name: "NetworkImpl", package: "Infrastructure")
+        .product(name: "NetworkImpl", package: "Infrastructure"),
+        .product(name: "DIKit", package: "DI"),
+        .product(name: "AppDI", package: "DI"),
       ],
       path: Config.di.path
     ),
@@ -50,13 +54,18 @@ let package = Package(
       dependencies: [
         .target(config: .domain),
         .product(name: "SharedDomain", package: "Common"),
+        .product(name: "Util", package: "Common"),
         .product(name: "NetworkInterface", package: "Infrastructure"),
-        .product(name: "NetworkImpl", package: "Infrastructure")
+        .product(name: "NetworkImpl", package: "Infrastructure"),
+        .product(name: "CommunityDomain", package: "Community")
       ],
       path: Config.data.path
     ),
     .target(
       name: Config.domain.name,
+      dependencies: [
+        .product(name: "CommunityDomain", package: "Community")
+      ],
       path: Config.domain.path
     ),
     .target(
@@ -64,7 +73,8 @@ let package = Package(
       dependencies: [
         .target(config: .domain),
         .product(name: "LocalizedString", package: "Common"),
-        .product(name: "DesignSystem", package: "Common")
+        .product(name: "DesignSystem", package: "Common"),
+        .product(name: "CommunityDomain", package: "Community")
       ],
       path: Config.presentation.path
     ),

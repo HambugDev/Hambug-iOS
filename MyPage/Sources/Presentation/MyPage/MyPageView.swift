@@ -10,6 +10,10 @@ import PhotosUI
 import DesignSystem
 import Util
 
+public protocol ActivitesFactory {
+  func makeMyActivitiesViewModel() -> MyActivitiesViewModel
+}
+
 public struct MyPageView: View {
   @Bindable var viewModel: MyPageViewModel
   @State private var showMyActivitiesView: Bool = false
@@ -23,8 +27,14 @@ public struct MyPageView: View {
   @State private var selectedImageData: Data?
   @State private var showPhotoPicker: Bool = false
   
-  public init(viewModel: MyPageViewModel) {
+  private let activitesFactory: ActivitesFactory
+  
+  public init(
+    viewModel: MyPageViewModel,
+    activitesFactory: ActivitesFactory
+  ) {
     self._viewModel = Bindable(viewModel)
+    self.activitesFactory = activitesFactory
   }
   
   public var body: some View {
@@ -41,7 +51,7 @@ public struct MyPageView: View {
           Spacer()
         }
         .navigationDestination(isPresented: $showMyActivitiesView, destination: {
-          MyActivitiesView()
+          MyActivitiesView(viewModel: activitesFactory.makeMyActivitiesViewModel())
         })
       }
       .confirmationDialog("프로필 편집", isPresented: $showInfoActionSheet, actions: {
@@ -49,8 +59,10 @@ public struct MyPageView: View {
           showPhotoPicker = true
         }
         Button(Strings.ActionSheetTitle.defaultImage) {
-          viewModel.applyDefaultImage()
-          popupState = .none
+          Task {
+            await viewModel.applyDefaultImage()
+            popupState = .none
+          }
         }
         Button(Strings.ActionSheetTitle.changeNickname) {
           popupState = .changeNickname
@@ -80,8 +92,9 @@ public struct MyPageView: View {
             if let processedData = ImageProcessor.process(image) {
               // 처리 성공 - 압축된 이미지로 업로드
               selectedImageData = processedData
-              viewModel.changeProfileImage(processedData)
+              await viewModel.changeProfileImage(processedData)
               popupState = .none
+              
             } else {
               // 처리 실패 - 알림 표시
               viewModel.showImageSizeAlert = true
@@ -89,7 +102,7 @@ public struct MyPageView: View {
           } else {
             // 크기가 괜찮으면 원본 데이터로 업로드
             selectedImageData = imageData
-            viewModel.changeProfileImage(imageData)
+            await viewModel.changeProfileImage(imageData)
             popupState = .none
           }
         }
@@ -127,7 +140,9 @@ public struct MyPageView: View {
     }
     .navigationBarHidden(true)
     .onAppear {
-      viewModel.fetchProfile()
+      Task {
+        await viewModel.fetchProfile()
+      }
     }
     .onChange(of: viewModel.shouldNavigateToLogin) { _, shouldNavigate in
       if shouldNavigate {
@@ -257,7 +272,7 @@ public struct MyPageView: View {
       },
       primaryButton: AlertButton(.save) {
         print("저장")
-        viewModel.updateNickname()
+        Task { await viewModel.updateNickname() }
       }
     )
   }
@@ -284,7 +299,7 @@ public struct MyPageView: View {
       },
       primaryButton: AlertButton(.ok) {
         print("확인")
-        viewModel.logout()
+        Task { await viewModel.logout() }
       }
     )
   }
@@ -318,7 +333,7 @@ public struct MyPageView: View {
       },
       primaryButton: .init(.accountDelete) {
         print("탈퇴")
-        viewModel.deleteAccount()
+        Task { await viewModel.deleteAccount() }
       }
     )
   }

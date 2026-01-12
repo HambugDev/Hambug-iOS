@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import Combine
 import UIKit
 import SharedDomain
+import CommunityDomain
 
 // MARK: - MyPage Repository Interface
 public protocol MyPageRepository {
@@ -21,4 +21,8 @@ public protocol MyPageRepository {
 
   func logout() async
   func deleteAccount(provider: String) async
+
+  // Activities
+  func fetchMyBoards(lastId: Int?, limit: Int, order: String) async throws -> BoardListData
+  func fetchMyComments(lastId: Int?, limit: Int, order: String) async throws -> MyCommentActivityListData
 }

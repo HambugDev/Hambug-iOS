@@ -6,11 +6,11 @@
 //
 
 import Foundation
-import Combine
 import UIKit
 import MyPageDomain
 import NetworkInterface
 import SharedDomain
+import CommunityDomain
 
 // MARK: - MyPage Repository Implementation
 public final class MyPageRepositoryImpl: MyPageRepository {
@@ -45,12 +45,10 @@ public final class MyPageRepositoryImpl: MyPageRepository {
     
     let endpoint = MyPageEndpoint.updateNickname(userID: userId, nickname: nickName)
     do {
-      return try await networkService.request(
+      _ = try await networkService.request(
         endpoint,
         responseType: SuccessResponse<UserProfileDTO>.self
       )
-      .map { _ in () }
-      .catch { _ in Just(()) }
       .async()
     } catch {
       
@@ -104,12 +102,10 @@ public final class MyPageRepositoryImpl: MyPageRepository {
   public func logout() async {
     let endpoint = MyPageEndpoint.logout
     do {
-      return try await networkService.request(
+      _ = try await networkService.request(
         endpoint,
         responseType: SuccessResponse<Bool>.self
       )
-      .map { _ in () }
-      .catch { _ in Just(()) }
       .async()
     } catch {
       
@@ -120,18 +116,41 @@ public final class MyPageRepositoryImpl: MyPageRepository {
   public func deleteAccount(provider: String) async {
     let endpoint = MyPageEndpoint.deleteAccount(provider: provider)
     do {
-      return try await networkService.request(
+      _ = try await networkService.request(
         endpoint,
         responseType: SuccessResponse<Bool>.self
       )
-      .map { _ in () }
-      .catch { _ in Just(()) }
       .async()
     } catch {
-      
+
     }
-    
+
   }
-  
+
+  // MARK: - Activities
+  public func fetchMyBoards(lastId: Int?, limit: Int, order: String) async throws -> BoardListData {
+    let query = CursorPagingQuery(lastId: lastId, limit: limit, order: order)
+    let endpoint = MyPageEndpoint.getMyBoards(query: query)
+
+    let response = try await networkService.request(
+      endpoint,
+      responseType: SuccessResponse<MyBoardsResponseDTO>.self
+    ).async()
+
+    return response.data.toDomain()
+  }
+
+  public func fetchMyComments(lastId: Int?, limit: Int, order: String) async throws -> MyCommentActivityListData {
+    let query = CursorPagingQuery(lastId: lastId, limit: limit, order: order)
+    let endpoint = MyPageEndpoint.getMyComments(query: query)
+
+    let response = try await networkService.request(
+      endpoint,
+      responseType: SuccessResponse<MyCommentsResponseDTO>.self
+    ).async()
+
+    return response.data.toDomain()
+  }
+
   private var currentUserId: Int?
 }

@@ -17,6 +17,9 @@ enum MyPageEndpoint: Endpoint {
   case logout
   case deleteAccount(provider: String)
   
+  case getMyBoards(query: CursorPagingQuery)
+  case getMyComments(query: CursorPagingQuery)
+  
   var baseURL: String {
     NetworkConfig.baseURL
   }
@@ -33,12 +36,17 @@ enum MyPageEndpoint: Endpoint {
       return "/api/v1/auth/logout"
     case let .deleteAccount(provider):
       return "/api/v1/auth/unlink/\(provider)"
+      
+    case .getMyBoards:
+      return "/api/v1/my-pages/boards"
+    case .getMyComments:
+      return "/api/v1/my-pages/comments"
     }
   }
   
   var method: HTTPMethod {
     switch self {
-    case .authMe:
+    case .authMe, .getMyBoards, .getMyComments:
       return .GET
     case .updateProfile, .updateNickname:
       return .PUT
@@ -49,13 +57,13 @@ enum MyPageEndpoint: Endpoint {
   
   var headers: [String: String] {
     var headers: [String: String] = [:]
-    // TODO: Add Authorization header when auth is implemented
-    // headers["Authorization"] = "Bearer \(token)"
     return headers
   }
   
   var queryParameters: [String: Any] {
     switch self {
+    case let .getMyBoards(dto), let .getMyComments(dto):
+      return queryEncoder.encode(dto)
     default:
       return [:]
     }
