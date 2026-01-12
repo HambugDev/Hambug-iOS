@@ -60,6 +60,7 @@ public final class NetworkServiceImpl: NetworkServiceInterface {
           guard let self = self else { throw NetworkError.networkError(NSError()) }
           
           if let error = response.error {
+            print("❌ Network Error: \(error.localizedDescription)")
             throw self.mapAlamofireError(error)
           }
           

@@ -75,7 +75,9 @@ let package = Package(
         .product(name: "LocalizedString", package: "Common"),
         .product(name: "SharedUI", package: "Common"),
         .product(name: "DesignSystem", package: "Common"),
-        .product(name: "CommunityDomain", package: "Community")
+        .product(name: "CommunityDomain", package: "Community"),
+        .product(name: "CommunityPresentation", package: "Community"),
+        .product(name: "CommunityDI", package: "Community")
       ],
       path: Config.presentation.path
     ),
