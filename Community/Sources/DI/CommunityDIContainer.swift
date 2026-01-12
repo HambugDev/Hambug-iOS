@@ -34,17 +34,6 @@ struct CommunityWriteAssembly: Assembly {
 struct CommunityAssembly: Assembly {
 
   func assemble(container: GenericDIContainer) {
-    // NetworkService registration (only for mock mode)
-    // In normal mode, NetworkService comes from parent container
-//    if isMock {
-//      container.register(NetworkServiceInterface.self) { _ in
-//        let config = URLSessionConfiguration.ephemeral
-//        config.protocolClasses = [CommunityURLProtocol.self]
-//        setupURLProtocol()
-//        return NetworkServiceImpl(configuration: config)
-//      }
-//    }
-
     // APIClient registration
     container.register(CommunityAPIClientInterface.self) { resolver in
 //      if self.isMock {

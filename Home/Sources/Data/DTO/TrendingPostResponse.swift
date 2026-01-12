@@ -8,6 +8,7 @@
 import Foundation
 import HomeDomain
 import Util
+import CommunityDomain
 
 public struct TrendingPostResponse: Decodable, Sendable {
     public let id: Int
@@ -33,7 +34,7 @@ extension TrendingPostResponse {
       id: id,
       title: title,
       content: content,
-      category: category,
+      category: BoardCategory(rawValue: category) ?? .freeTalk,
       imageUrls: imageUrls,
       authorNickname: authorNickname,
       authorId: authorId,

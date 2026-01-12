@@ -7,9 +7,13 @@
 
 import Foundation
 
+public protocol NetworkLogable: Sendable {
+  func requestLogger(request: URLRequest)
+  func responseLogger(response: URLResponse, data: Data)
+}
 // MARK: - Logger
 #if DEBUG
-public final class NetworkLogger: Sendable {
+public final class NetworkLogger: NetworkLogable {
   public init() {}
 
   public func requestLogger(request: URLRequest) {
@@ -54,7 +58,7 @@ public final class NetworkLogger: Sendable {
   }
 }
 #else
-public final class Logger {
+public final class Logger: NetworkLogable {
   public init() {}
   public func requestLogger(request: URLRequest) {}
   public func responseLogger(response: URLResponse, data: Data) {}

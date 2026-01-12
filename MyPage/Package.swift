@@ -73,6 +73,7 @@ let package = Package(
       dependencies: [
         .target(config: .domain),
         .product(name: "LocalizedString", package: "Common"),
+        .product(name: "SharedUI", package: "Common"),
         .product(name: "DesignSystem", package: "Common"),
         .product(name: "CommunityDomain", package: "Community")
       ],

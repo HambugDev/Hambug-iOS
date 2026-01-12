@@ -26,7 +26,7 @@ public struct PostView: View {
             .foregroundColor(.textG800)
           
           HStack {
-            Text(post.category)
+            Text(post.category.displayName)
               .pretendard(.caption(.emphasis))
               .foregroundColor(.primaryHambugRed)
             
@@ -64,7 +64,7 @@ public struct PostView: View {
           Rectangle()
             .frame(width: 56, height: 56)
             .cornerRadius(8)
-            .foregroundColor(.gray)
+            .foregroundColor(.white)
         }
       }
     }
@@ -110,7 +110,7 @@ struct FeedPostView: View {
           id: 1,
           title: "글 제목입니다.",
           content: "글 내용입니다.",
-          category: "FREE_TALK",
+          category: .freeTalk,
           imageUrls: [],
           authorNickname: "테스트",
           authorId: 1,
