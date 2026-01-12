@@ -77,13 +77,6 @@ let package = Package(
         .target(config: .app),
         .product(name: "MyPage", package: "MyPage"),
       ]
-    ),
-    .target(
-      name: Config.community.name,
-      dependencies: [
-        .target(config: .app),
-        .product(name: "Community", package: "Community"),
-      ]
     )
   ]
 )

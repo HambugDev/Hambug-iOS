@@ -36,7 +36,7 @@ public struct HomeView: View {
             .padding(.horizontal, 18)
 
         }
-        .safeAreaPadding(.bottom, 100)
+        .safeAreaPadding(.bottom, 60)
       }
       .padding(.top, 50)
     }
