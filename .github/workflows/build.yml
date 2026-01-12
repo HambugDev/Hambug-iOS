@@ -2,9 +2,9 @@ name: Build App
 
 on:
   push:
-    branches: []
+    branches: [ "develop" ]
   pull_request:
-    branches: []
+    branches: [ "develop" ]
 
 jobs:
   build:
@@ -19,10 +19,26 @@ jobs:
       with:
         xcode-version: latest-stable
 
+    - name: Create xcconfig files
+      run: |
+        # Debug.xcconfig 생성
+        touch Common.xcconfig
+        
+        echo "✅ xcconfig files created"
+
     - name: Build project
       run: |
-        xcodebuild -project "Hambug.xcodeproj" \
-          -scheme "Hambug" \
+        # .xcodeproj 파일 찾기
+      
+        PROJECT=$(find . -maxdepth 2 -name "*.xcodeproj")
+        SCHEME=$(basename "$PROJECT" .xcodeproj)
+      
+        echo "Found Project: $PROJECT"
+        echo "Found Scheme: $SCHEME"
+      
+        xcodebuild -project "$PROJECT" \
+          -scheme "$SCHEME" \
           -configuration Debug \
+          -skipMacroValidation \
           -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.4" \
-          build
+          clean build
