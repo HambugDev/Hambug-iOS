@@ -15,6 +15,7 @@ import LoginDI
 import AppDI
 import IntroDI
 import NetworkImpl
+import Util
 
 struct RootView: View {
   @Environment(AppStateManager.self) var appStateManager

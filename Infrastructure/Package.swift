@@ -35,6 +35,7 @@ let package = Package(
       dependencies: [
         .target(name: Config.networkInterface),
         .product(name: "DataSources", package: "Common"),
+        .product(name: "Util", package: "Common"),
         "Alamofire",
       ]
     ),

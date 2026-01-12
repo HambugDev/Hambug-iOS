@@ -7,15 +7,18 @@
 
 import Foundation
 import Combine
+import UIKit
+import SharedDomain
 
 // MARK: - MyPage Repository Interface
 public protocol MyPageRepository {
-  func fetchProfile(userId: Int) -> AnyPublisher<User, Never>
-  
-  func updateNickname(_ nickName: String)
-  func changeProfileImage()
-  func applyDefaultImage()
-  
-  func logout()
-  func deleteAccount()
+  typealias ProfileURL = String
+  func fetchProfile() async throws -> User
+
+  func updateNickname(_ nickName: String) async
+  func changeProfileImage(_ image: UIImage?) async throws -> ProfileURL
+  func applyDefaultImage() async throws
+
+  func logout() async
+  func deleteAccount(provider: String) async
 }

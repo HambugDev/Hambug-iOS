@@ -10,7 +10,6 @@ enum Config: String, CaseIterable {
   case app = "App"
   case intro = "Intro"
   case login = "Login"
-  case myPage = "MyPage"
 
   var name: String {
     switch self {
@@ -42,7 +41,6 @@ let package = Package(
     .package(name: "Infrastructure", path: "../Infrastructure"),
     .package(name: "Intro", path: "../Intro"),
     .package(name: "Login", path: "../Login"),
-    .package(name: "MyPage", path: "../MyPage"),
   ],
   targets: [
     .target(name: Config.interface.name),
@@ -69,13 +67,6 @@ let package = Package(
       dependencies: [
         .target(config: .app),
         .product(name: "Login", package: "Login"),
-      ]
-    ),
-    .target(
-      name: Config.myPage.name,
-      dependencies: [
-        .target(config: .app),
-        .product(name: "MyPage", package: "MyPage"),
       ]
     )
   ]

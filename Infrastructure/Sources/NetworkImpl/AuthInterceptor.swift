@@ -9,7 +9,7 @@
 import Foundation
 import DataSources
 import NetworkInterface
-
+import Util
 import Alamofire
 
 // MARK: - Auth Interceptor
@@ -142,6 +142,3 @@ public final class AuthInterceptor: RequestInterceptor {
   
 }
 
-public extension NSNotification.Name {
-  static let userDidLogout = NSNotification.Name("userDidLogout")
-}

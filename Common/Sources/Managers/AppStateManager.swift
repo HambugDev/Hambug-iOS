@@ -66,10 +66,12 @@ public final class AppStateManager {
     state = .main
   }
   
-  // 로그아웃 (선택사항 - 나중에 구현 예정이지만 미리 추가)
+  // 로그아웃
   public func logout() {
     do {
       try tokenStorage.clear()
+      UserDefaultsManager.shared.clearAll()
+      // TODO: - push key 추가시 삭제 해야할듯 ?
       state = .login
     } catch {
       print("⚠️ Failed to logout: \(error)")

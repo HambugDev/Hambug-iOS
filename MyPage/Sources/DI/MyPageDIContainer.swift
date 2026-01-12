@@ -7,6 +7,7 @@
 
 import DIKit
 import AppDI
+import NetworkInterface
 import NetworkImpl
 import MyPageDomain
 import MyPageData
@@ -18,7 +19,7 @@ struct MyPageAssembly: Assembly {
     
     container.register(MyPageRepository.self) { resolver in
       MyPageRepositoryImpl(
-        networkService: NetworkServiceImpl()
+        networkService: resolver.resolve(NetworkServiceInterface.self)
       )
     }
     
@@ -46,7 +47,7 @@ public final class MyPageDIContainer {
   // MARK: - Initialization
   public init(appContainer: AppDIContainer? = nil) {
     let parent = appContainer ?? AppDIContainer.shared
-    self.container = GenericDIContainer(parent: parent.baseContainer)
+    self.container = AppDIContainer.shared.baseContainer
     MyPageAssembly().assemble(container: container)
   }
   

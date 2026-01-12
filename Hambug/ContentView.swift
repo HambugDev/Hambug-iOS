@@ -52,11 +52,16 @@ struct ContentView: View {
         .tag(1)
         
         
-        Text("MyPage")
-          .tag(2)
+        NavigationStack {
+          MyPageView(
+            viewModel: mypageDIContainer.makeMyPageViewModel()
+          )
+        }
+        .tag(2)
       }
       .toolbar(.hidden, for: .tabBar)
     }
+    .ignoresSafeArea(.keyboard)
   }
 }
 

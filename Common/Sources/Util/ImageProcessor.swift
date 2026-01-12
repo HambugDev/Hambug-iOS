@@ -13,10 +13,10 @@ public enum ImageProcessor {
   // MARK: - Constants
 
   /// 최대 파일 크기: 10MB
-  public static let maxFileSize: Int = 10 * 1024 * 1024
+  public static let maxFileSize: Int = 2 * 1024 * 1024
 
-  /// 최대 해상도: 1920px
-  public static let maxDimension: CGFloat = 1920
+  /// 최대 해상도: 1280px
+  public static let maxDimension: CGFloat = 1280
 
   /// 기본 압축 품질
   public static let compressionQuality: CGFloat = 0.85

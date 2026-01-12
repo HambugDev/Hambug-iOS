@@ -47,4 +47,14 @@ public final class UserDefaultsManager {
 
   @UDDefaultWrapper(key: .Storage.currentUserId, defaultValue: nil)
   public var currentUserId: Int64?
+  
+  func clearAll() {
+    let keys: [String] = [
+      .Storage.currentUserId,
+      
+    ]
+    keys.forEach {
+      UserDefaults.standard.removeObject(forKey: $0)
+    }
+  }
 }
