@@ -12,8 +12,8 @@ import HomeDI
 import CommunityPresentation
 import CommunityDI
 import SharedUI
-//import MyPagePresentation
-//import MyPageDI
+import MyPagePresentation
+import MyPageDI
 
 struct ContentView: View {
   @Environment(AppDIContainer.self) var appContainer
@@ -26,9 +26,9 @@ struct ContentView: View {
     CommunityDIContainer(appContainer: appContainer)
   }
   
-//  private var mypageDIContainer: MyPageDIContainer {
-//    MyPageDIContainer(appContainer: appContainer)
-//  }
+  private var mypageDIContainer: MyPageDIContainer {
+    MyPageDIContainer(appContainer: appContainer)
+  }
   
   @State private var selectedTab: Int = 0
   

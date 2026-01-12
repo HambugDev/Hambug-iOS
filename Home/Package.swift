@@ -33,6 +33,7 @@ let package = Package(
     .package(name: "Common", path: "../Common"),
     .package(name: "DI", path: "../DI"),
     .package(name: "Infrastructure", path: "../Infrastructure"),
+    .package(name: "Community", path: "../Community"),
   ],
   targets: [
     .target(
@@ -48,7 +49,12 @@ let package = Package(
       ],
     ),
     // Domain: 의존하지않음
-    .target(config: .domain),
+    .target(
+      config: .domain,
+      dependencies: [
+        .product(name: "CommunityDomain", package: "Community")
+      ]
+    ),
 
     // Data: Domain에 의존
     .target(
@@ -57,6 +63,8 @@ let package = Package(
         .target(config: .domain),
         .product(name: "NetworkInterface", package: "Infrastructure"),
         .product(name: "Util", package: "Common"),
+        .product(name: "SharedDomain", package: "Common"),
+        .product(name: "CommunityDomain", package: "Community"),
       ],
     ),
 
@@ -67,6 +75,7 @@ let package = Package(
         .target(config: .domain),
         .product(name: "DesignSystem", package: "Common"),
         .product(name: "SharedUI", package: "Common"),
+        .product(name: "Community", package: "Community"),
       ],
     ),
   ]
