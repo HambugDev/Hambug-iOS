@@ -11,8 +11,9 @@ import HomePresentation
 import HomeDI
 import CommunityPresentation
 import CommunityDI
-import MyPagePresentation
-import MyPageDI
+import SharedUI
+//import MyPagePresentation
+//import MyPageDI
 
 struct ContentView: View {
   @Environment(AppDIContainer.self) var appContainer
@@ -25,22 +26,36 @@ struct ContentView: View {
     CommunityDIContainer(appContainer: appContainer)
   }
   
-  private var mypageDIContainer: MyPageDIContainer {
-    MyPageDIContainer(appContainer: appContainer)
-  }
+//  private var mypageDIContainer: MyPageDIContainer {
+//    MyPageDIContainer(appContainer: appContainer)
+//  }
   
   @State private var selectedTab: Int = 0
   
   var body: some View {
     CustomTabView(selectedTab: $selectedTab) {
-      HomeView(viewModel: homeDIContainer.homeViewModel)
+      Group {
+        NavigationStack {
+          HomeView(viewModel: homeDIContainer.homeViewModel)
+        }
         .tag(0)
-      
-      CommunityView(viewModel: communityDIContainer.makeCommunityViewModel())
+        
+        NavigationStack {
+          CommunityView(
+            viewModel: communityDIContainer.makeCommunityViewModel(),
+            writeFactory: communityDIContainer,
+            detailFactory: communityDIContainer,
+            updateFactory: communityDIContainer,
+            reportFactory: communityDIContainer
+          )
+        }
         .tag(1)
-      
-      MyPageView(viewModel: mypageDIContainer.makeMyPageViewModel())
-        .tag(2)
+        
+        
+        Text("MyPage")
+          .tag(2)
+      }
+      .toolbar(.hidden, for: .tabBar)
     }
   }
 }

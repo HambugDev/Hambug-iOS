@@ -8,11 +8,45 @@
 import Foundation
 import Combine
 import NetworkInterface
+import CommunityDomain
+import UIKit
 
 // MARK: - Community API Client Interface
-public protocol CommunityAPIClientInterface {
-  func fetchBoards() -> AnyPublisher<[BoardListResponse], NetworkError>
-  func fetchBoardsByCategory(_ category: Category) -> AnyPublisher<[BoardResponse], NetworkError>
+public protocol CommunityAPIClientInterface: Sendable {
+  func fetchBoards(lastId: Int?, limit: Int, order: String) -> AnyPublisher<BoardListDataDTO, NetworkError>
+  func fetchBoardsByCategory(category: String, lastId: Int?, limit: Int, order: String) -> AnyPublisher<BoardListDataDTO, NetworkError>
+  func fetchBoardDetail(boardId: Int) -> AnyPublisher<BoardDetailResponseDTO, NetworkError>
+
+  // Board creation
+  func createBoard(
+    title: String,
+    content: String,
+    category: String,
+    images: [UIImage]
+  ) -> AnyPublisher<BoardResponseDTO, NetworkError>
+  
+  func updateBoard(
+    boardId: Int,
+    title: String,
+    content: String,
+    category: String,
+    images: [UIImage]
+  ) -> AnyPublisher<BoardResponseDTO, NetworkError>
+  
+  func deleteBoard(boardId: Int) -> AnyPublisher<Void, NetworkError>
+
+  // Comments
+  func fetchComments(boardId: Int, lastId: Int?, limit: Int, order: String) -> AnyPublisher<CommentListDataDTO, NetworkError>
+  func createComment(boardId: Int, content: String) -> AnyPublisher<CommentResponseDTO, NetworkError>
+  func updateComment(boardId: Int, commentId: Int, content: String) -> AnyPublisher<CommentResponseDTO, NetworkError>
+  func deleteComment(boardId: Int, commentId: Int) -> AnyPublisher<Void, NetworkError>
+
+  // Likes
+  func fetchLikeInfo(boardId: Int) -> AnyPublisher<LikeResponseDTO, NetworkError>
+  func toggleLike(boardId: Int) -> AnyPublisher<LikeResponseDTO, NetworkError>
+
+  // Report
+  func reportContent(request: ReportRequestDTO) -> AnyPublisher<Void, NetworkError>
 }
 
 // MARK: - Community API Client Implementation
@@ -24,72 +58,175 @@ public final class CommunityAPIClient: CommunityAPIClientInterface {
     self.networkService = networkService
   }
 
-  public func fetchBoards() -> AnyPublisher<[BoardListResponse], NetworkError> {
-    return networkService.request(BoardEndpoint.boards, responseType: [BoardListResponse].self)
+  public func fetchBoards(lastId: Int?, limit: Int, order: String) -> AnyPublisher<BoardListDataDTO, NetworkError> {
+    let query: CursorPagingQuery = .init(lastId: lastId, limit: limit, order: order)
+    return networkService.request(
+      BoardEndpoint.boards(query),
+      responseType: SuccessResponse<BoardListDataDTO>.self
+    )
+    .map(\.data)
+    .eraseToAnyPublisher()
   }
-  
-  public func fetchBoardsByCategory(_ category: Category) -> AnyPublisher<[BoardResponse], NetworkError> {
-    switch category {
-    case .all, .freeTalk:
-      return networkService.request(BoardEndpoint.boardsBy(category), responseType: [BoardListResponse].self)
-      
-    case .franchise, .handmade, .recommendation:
-      return networkService.request(BoardEndpoint.boardsBy(category), responseType: [BoardFeedResponse].self)
+
+  public func fetchBoardsByCategory(category: String, lastId: Int?, limit: Int, order: String) -> AnyPublisher<BoardListDataDTO, NetworkError> {
+    let query: CategoryPagingQuery = .init(category: category, cursor: .init(lastId: lastId, limit: limit, order: order))
+    return networkService.request(
+      BoardEndpoint.boardsByCategory(query),
+      responseType: SuccessResponse<BoardListDataDTO>.self
+    )
+    .map(\.data)
+    .eraseToAnyPublisher()
+  }
+
+  public func fetchBoardDetail(boardId: Int) -> AnyPublisher<BoardDetailResponseDTO, NetworkError> {
+    return networkService.request(
+      BoardEndpoint.boardDetail(boardId: boardId),
+      responseType: SuccessResponse<BoardDetailResponseDTO>.self
+    )
+    .map(\.data)
+    .eraseToAnyPublisher()
+  }
+
+  public func createBoard(
+    title: String,
+    content: String,
+    category: String,
+    images: [UIImage]
+  ) -> AnyPublisher<BoardResponseDTO, NetworkError> {
+    let dto = BoardRequestDTO(
+      title: title,
+      content: content,
+      category: category,
+      imageUrls: [] // multipart에서는 사용 안함
+    )
+
+    let endpoint = BoardEndpoint.createBoard(dto)
+
+    if images.isEmpty {
+      // 이미지 없으면 일반 JSON request
+      return networkService.request(endpoint, responseType: SuccessResponse<BoardResponseDTO>.self)
+        .map(\.data)
+        .eraseToAnyPublisher()
+    } else {
+      // 이미지 있으면 multipart upload
+      return networkService.uploadMultipart(
+        endpoint,
+        images: images,
+        responseType: SuccessResponse<BoardResponseDTO>.self
+      )
+      .map(\.data)
+      .eraseToAnyPublisher()
     }
-    
-  }
-}
-
-// MARK: - Mock API
-public final class MockCommunityAPIClient: CommunityAPIClientInterface {
-
-  public init() {}
-
-  public func fetchBoards() -> AnyPublisher<[BoardListResponse], NetworkError> {
-    let mockData = [
-      BoardListResponse(
-        id: 1,
-        imageURL: "https://example.com/image1.jpg",
-        title: "첫 번째 게시글",
-        nickName: "햄버거러버",
-        content: nil,
-        createdAt: Date(),
-        likeCount: "15",
-        commnetCount: "3"
-      ),
-      BoardListResponse(
-        id: 2,
-        imageURL: "https://example.com/image2.jpg",
-        title: "맛있는 햄버거 추천",
-        nickName: "음식탐험가",
-        content: nil,
-        createdAt: Date(),
-        likeCount: "23",
-        commnetCount: "7"
-      )
-    ]
-    
-    return Just(mockData)
-      .setFailureType(to: NetworkError.self)
-      .eraseToAnyPublisher()
   }
   
-  public func fetchBoardsByCategory(_ category: Category) -> AnyPublisher<[BoardFeedResponse], NetworkError> {
-    let mockData = [
-      BoardFeedResponse(
-        id: 1,
-        imageURL: "https://example.com/image1.jpg",
-        title: "첫 번째 게시글",
-        nickName: "햄버거러버",
-        content: "이것은 첫 번째 게시글의 상세 내용입니다.",
-        createdAt: Date(),
-        likeCount: "15",
-        commnetCount: "3"
+  public func updateBoard(
+    boardId: Int,
+    title: String,
+    content: String,
+    category: String,
+    images: [UIImage]
+  ) -> AnyPublisher<BoardResponseDTO, NetworkError> {
+    let dto = BoardRequestDTO(
+      title: title,
+      content: content,
+      category: category,
+      imageUrls: [] // multipart에서는 사용 안함
+    )
+
+    let endpoint = BoardEndpoint.updateBoard(boardId: boardId, body: dto)
+
+    if images.isEmpty {
+      // 이미지 없으면 일반 JSON request
+      return networkService.request(endpoint, responseType: SuccessResponse<BoardResponseDTO>.self)
+        .map(\.data)
+        .eraseToAnyPublisher()
+    } else {
+      // 이미지 있으면 multipart upload
+      return networkService.uploadMultipart(
+        endpoint,
+        images: images,
+        responseType: SuccessResponse<BoardResponseDTO>.self
       )
-    ]
-    
-    return Just(mockData)
-      .setFailureType(to: NetworkError.self)
+      .map(\.data)
       .eraseToAnyPublisher()
+    }
+  }
+  
+  public func deleteBoard(boardId: Int) -> AnyPublisher<Void, NetworkInterface.NetworkError> {
+    let endpoint = BoardEndpoint.deleteBoard(boardId: boardId)
+    
+    return networkService.request(
+      endpoint,
+      responseType: SuccessResponse<Bool>.self
+    )
+    .map { _ in () }
+    .eraseToAnyPublisher()
+  }
+
+  // MARK: - Comments
+  public func fetchComments(boardId: Int, lastId: Int?, limit: Int, order: String) -> AnyPublisher<CommentListDataDTO, NetworkError> {
+    let query: CursorPagingQuery = .init(lastId: lastId, limit: limit, order: order)
+    return networkService.request(
+      BoardEndpoint.comments(boardId: boardId, query: query),
+      responseType: SuccessResponse<CommentListDataDTO>.self
+    )
+    .map(\.data)
+    .eraseToAnyPublisher()
+  }
+
+  public func createComment(boardId: Int, content: String) -> AnyPublisher<CommentResponseDTO, NetworkError> {
+    return networkService.request(
+      BoardEndpoint.createComment(boardId: boardId, content: content),
+      responseType: SuccessResponse<CommentResponseDTO>.self
+    )
+    .map(\.data)
+    .eraseToAnyPublisher()
+  }
+
+  public func updateComment(boardId: Int, commentId: Int, content: String) -> AnyPublisher<CommentResponseDTO, NetworkError> {
+    return networkService.request(
+      BoardEndpoint.updateComment(boardId: boardId, commentId: commentId, content: content),
+      responseType: SuccessResponse<CommentResponseDTO>.self
+    )
+    .map(\.data)
+    .eraseToAnyPublisher()
+  }
+
+  public func deleteComment(boardId: Int, commentId: Int) -> AnyPublisher<Void, NetworkError> {
+    return networkService.request(
+      BoardEndpoint.deleteComment(boardId: boardId, commentId: commentId),
+      responseType: SuccessResponse<Bool>.self
+    )
+    .map { _ in () }
+    .eraseToAnyPublisher()
+  }
+
+  // MARK: - Likes
+  public func fetchLikeInfo(boardId: Int) -> AnyPublisher<LikeResponseDTO, NetworkError> {
+    return networkService.request(
+      BoardEndpoint.likeInfo(boardId: boardId),
+      responseType: SuccessResponse<LikeResponseDTO>.self
+    )
+    .map(\.data)
+    .eraseToAnyPublisher()
+  }
+
+  public func toggleLike(boardId: Int) -> AnyPublisher<LikeResponseDTO, NetworkError> {
+    return networkService.request(
+      BoardEndpoint.toggleLike(boardId: boardId),
+      responseType: SuccessResponse<LikeResponseDTO>.self
+    )
+    .map(\.data)
+    .eraseToAnyPublisher()
+  }
+
+  // MARK: - Report
+  public func reportContent(request: ReportRequestDTO) -> AnyPublisher<Void, NetworkError> {
+    return networkService.request(
+      BoardEndpoint.report(request),
+      responseType: SuccessResponse<EmptyResponse>.self
+    )
+    .map { _ in () }
+    .eraseToAnyPublisher()
   }
 }

@@ -31,7 +31,7 @@ let package = Package(
   ],
   dependencies: [
     .package(name: "Common", path: "../Common"),
-    .package(name: "DIKit", path: "../DI"),
+    .package(name: "DI", path: "../DI"),
     .package(name: "Infrastructure", path: "../Infrastructure"),
   ],
   targets: [
@@ -41,8 +41,8 @@ let package = Package(
         .target(config: .domain),
         .target(config: .data),
         .target(config: .presentation),
-        .product(name: "DI", package: "DIKit"),
-        .product(name: "AppDI", package: "DIKit"),
+        .product(name: "DI", package: "DI"),
+        .product(name: "AppDI", package: "DI"),
         .product(name: "Managers", package: "Common"),
         .product(name: "DataSources", package: "Common"),
       ],
@@ -60,12 +60,13 @@ let package = Package(
       ],
     ),
 
-    // Presentation: Domain, DesignSystem에 의존
+    // Presentation: Domain, DesignSystem, SharedUI에 의존
     .target(
       config: .presentation,
       dependencies: [
         .target(config: .domain),
         .product(name: "DesignSystem", package: "Common"),
+        .product(name: "SharedUI", package: "Common"),
       ],
     ),
   ]

@@ -8,6 +8,7 @@
 import SwiftUI
 import HomeDomain
 import DesignSystem
+import SharedUI
 
 public struct HomeView: View {
 
@@ -18,7 +19,6 @@ public struct HomeView: View {
   }
 
   public var body: some View {
-    
     ZStack {
       Color.bgG100
       
@@ -40,7 +40,8 @@ public struct HomeView: View {
       }
       .padding(.top, 50)
     }
-    .ignoresSafeArea()
+    .ignoresSafeArea(.container, edges: .top)
+    .tabBarHidden(false)
   }
 }
 

@@ -7,17 +7,19 @@
 
 import SwiftUI
 
-public struct BorderTextEditor: View {
+public struct BorderTextEditor<Field: Hashable>: View {
   private let contentPlaceholder = "자유롭게 이야기를 나눠보세요"
   private let maxCharacterCount: Int
 
   @State private var characterCount: Int = 0
   @Binding var content: String
+  var focusedField: FocusState<Field?>.Binding?
+  var field: Field?
 
   private var isCharacterMax: Bool {
     characterCount >= maxCharacterCount
   }
-  
+
   public var body: some View {
     VStack(spacing: 2) {
       if isCharacterMax {
@@ -28,14 +30,14 @@ public struct BorderTextEditor: View {
             .foregroundColor(.textR100)
         }
       }
-      
+
       ZStack(alignment: .topLeading) {
         RoundedRectangle(cornerRadius: 8)
           .stroke(isCharacterMax ? Color.borderR100 : Color.borderG400, lineWidth: 1)
           .background(Color.bgG75)
           .frame(minHeight: 234)
-        
-        TextEditor(text: $content)
+
+        let textEditor = TextEditor(text: $content)
           .pretendard(.body(.small))
           .padding(.horizontal, 12)
           .padding(.vertical, 10)
@@ -48,7 +50,13 @@ public struct BorderTextEditor: View {
               characterCount = maxCharacterCount
             }
           }
-        
+
+        if let focusedField = focusedField, let field = field {
+          textEditor.focused(focusedField, equals: field)
+        } else {
+          textEditor
+        }
+
         if content.isEmpty {
           Text(contentPlaceholder)
             .pretendard(.body(.small))
@@ -59,12 +67,16 @@ public struct BorderTextEditor: View {
       }
     }
   }
-  
+
   init(
     maxCharacterCount: Int = 300,
-    content: Binding<String>
+    content: Binding<String>,
+    focusedField: FocusState<Field?>.Binding? = nil,
+    field: Field? = nil
   ) {
     self.maxCharacterCount = maxCharacterCount
     self._content = content
+    self.focusedField = focusedField
+    self.field = field
   }
 }

@@ -7,28 +7,39 @@
 
 import SwiftUI
 import DesignSystem
-
+  
 public struct CommunityReportView: View {
+  @State var viewModel: CommunityReportViewModel
   @Environment(\.dismiss) private var dismiss
-  @State private var title: String = ""
-  @State private var content: String = ""
+  @FocusState private var focusedField: Field?
 
-  private let maxCharacterCount = 300
+  enum Field: Hashable {
+    case title
+    case content
+  }
 
-  public init() {}
+  public init(viewModel: CommunityReportViewModel) {
+    self._viewModel = State(initialValue: viewModel)
+  }
 
   public var body: some View {
-    NavigationView {
+    VStack(spacing: 0) {
+      navigationBar
+      
       VStack(spacing: 0) {
-        navigationBar
-        
         ScrollView {
           VStack(alignment: .leading, spacing: 24) {
             titleSection
             contentSection
           }
-          .padding(.horizontal, 16)
           .padding(.top, 20)
+          .background(
+            Color.clear
+              .contentShape(Rectangle())
+              .onTapGesture {
+                focusedField = nil
+              }
+          )
         }
         
         Spacer()
@@ -37,11 +48,15 @@ public struct CommunityReportView: View {
           title: "신고 등록",
           style: .body(.bEmphasis)
         ) {
+          focusedField = nil
           // Handle submit action
         }
+        .padding(.bottom, 20)
+        .disabled(!viewModel.canSubmit)
       }
-      .background(Color.bgWhite)
+      .padding(.horizontal, 18)
     }
+    .background(Color.bgWhite)
     .navigationBarHidden(true)
   }
   
@@ -73,38 +88,30 @@ public struct CommunityReportView: View {
   
   private var titleSection: some View {
     VStack(alignment: .leading, spacing: 12) {
-      HStack {
-        Text("제목")
-          .pretendard(.body(.bEmphasis))
-          .foregroundColor(.textG900)
-        Text("*")
-          .pretendard(.body(.bEmphasis))
-          .foregroundColor(.primaryHambugRed)
-      }
-      
-      BottomLineTextField(title: $title)
+      RequiredText("제목")
+
+      BottomLineTextField(
+        title: $viewModel.title,
+        focusedField: $focusedField,
+        field: .title
+      )
     }
   }
   
   private var contentSection: some View {
     VStack(alignment: .leading, spacing: 12) {
-      HStack {
-        Text("내용")
-          .pretendard(.body(.bEmphasis))
-          .foregroundColor(.textG900)
-        Text("*")
-          .pretendard(.body(.bEmphasis))
-          .foregroundColor(.primaryHambugRed)
-      }
-      
+      RequiredText("내용")
+
       BorderTextEditor(
-        maxCharacterCount: maxCharacterCount,
-        content: $content
+        maxCharacterCount: viewModel.maxCharacterCount,
+        content: $viewModel.content,
+        focusedField: $focusedField,
+        field: .content
       )
     }
   }
 }
 
-#Preview {
-  CommunityReportView()
-}
+//#Preview {
+//  CommunityReportView(viewModel: CommunityReportViewModel())
+//}
