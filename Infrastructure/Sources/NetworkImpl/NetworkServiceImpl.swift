@@ -17,9 +17,9 @@ public final class NetworkServiceImpl: NetworkServiceInterface {
   // MARK: - Properties
   private let session: Session
   private let decoder: JSONDecoder
-  private let logger: NetworkLogger?
+  private let logger: NetworkLogable?
   
-  public init(session: Session = AF, interceptor: RequestInterceptor? = nil, logger: NetworkLogger? = nil) {
+  public init(session: Session = AF, interceptor: RequestInterceptor? = nil, logger: NetworkLogable? = nil) {
     if let interceptor {
       self.session = Session(interceptor: Interceptor(interceptors: [interceptor]))
     } else {
@@ -34,7 +34,7 @@ public final class NetworkServiceImpl: NetworkServiceInterface {
     decoder.dateDecodingStrategy = .formatted(dateFormatter)
   }
   
-  public init(configuration: URLSessionConfiguration, logger: NetworkLogger? = nil) {
+  public init(configuration: URLSessionConfiguration, logger: NetworkLogable? = nil) {
     self.session = Session(configuration: configuration)
     self.logger = logger
     self.decoder = JSONDecoder()

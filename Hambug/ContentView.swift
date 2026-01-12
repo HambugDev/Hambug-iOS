@@ -54,7 +54,8 @@ struct ContentView: View {
         
         NavigationStack {
           MyPageView(
-            viewModel: mypageDIContainer.makeMyPageViewModel()
+            viewModel: mypageDIContainer.makeMyPageViewModel(),
+            activitesFactory: mypageDIContainer
           )
         }
         .tag(2)

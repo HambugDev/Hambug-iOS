@@ -5,7 +5,6 @@
 //  Created by 강동영 on 10/28/25.
 //
 
-import Combine
 import Foundation
 import Observation
 import UIKit
@@ -15,7 +14,6 @@ import SharedDomain
 @Observable
 public final class MyPageViewModel {
   private let usecase: MyPageUseCase
-  private var cancellables: Set<AnyCancellable> = []
 
   var currentNickName: String = ""
   var profileNickName: String = ""
@@ -32,19 +30,19 @@ public final class MyPageViewModel {
     self.usecase = usecase
   }
   
-  func fetchProfile() {
+  func fetchProfile() async {
     isLoading = true
-    usecase.fetchProfile()
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] user in
-        self?.isLoading = false
-        self?.user = user
-        self?.profileNickName = user.nickname
-      }
-      .store(in: &cancellables)
+    do {
+      let response = try await usecase.fetchProfile()
+      isLoading = false
+      user = user
+      profileNickName = response.nickname
+    } catch {
+      
+    }
   }
   
-  func updateNickname() {
+  func updateNickname() async {
     let trimmed = currentNickName.trimmingCharacters(in: .whitespacesAndNewlines)
     guard !trimmed.isEmpty else {
       isCorrectedNickName = false
@@ -53,16 +51,13 @@ public final class MyPageViewModel {
 
     isCorrectedNickName = true
     isLoading = true
-    usecase.updateNickname(trimmed)
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] in
-        self?.isLoading = false
-        self?.profileNickName = trimmed
-      }
-      .store(in: &cancellables)
+    
+    await usecase.updateNickname(trimmed)
+    isLoading = false
+    profileNickName = trimmed
   }
   
-  func changeProfileImage(_ imageData: Data) {
+  func changeProfileImage(_ imageData: Data) async {
     guard let image = UIImage(data: imageData) else {
       errorMessage = "이미지를 불러올 수 없습니다."
       showError = true
@@ -70,71 +65,39 @@ public final class MyPageViewModel {
     }
 
     isLoading = true
-    usecase.changeProfileImage(image)
-      .receive(on: DispatchQueue.main)
-      .sink(
-        receiveCompletion: { [weak self] completion in
-          self?.isLoading = false
-          
-          switch completion {
-          case .failure:
-            self?.errorMessage = "이미지 변경에 실패했습니다. 다시 시도해 주세요."
-            self?.showError = true
-          case .finished:
-//            self?.fetchProfile()
-            break
-          }
-        },
-        receiveValue: { [weak self] in
-          self?.user?.profileImageURL = $0
-        }
-      )
-      .store(in: &cancellables)
+    
+    do {
+      let profileURL = try await usecase.changeProfileImage(image)
+      user?.profileImageURL = profileURL
+    } catch {
+      errorMessage = "이미지 변경에 실패했습니다. 다시 시도해 주세요."
+      showError = true
+    }
+    
+    isLoading = false
   }
   
-  func applyDefaultImage() {
+  func applyDefaultImage() async {
     isLoading = true
-    usecase.applyDefaultImage()
-      .receive(on: DispatchQueue.main)
-      .sink(
-        receiveCompletion: { [weak self] completion in
-          self?.isLoading = false
-          
-          switch completion {
-          case .failure:
-            self?.errorMessage = "이미지 변경에 실패했습니다. 다시 시도해 주세요."
-            self?.showError = true
-          case .finished:
-//            self?.fetchProfile()
-            self?.user?.profileImageURL = ""
-          }
-        },
-        receiveValue: {}
-      )
-      .store(in: &cancellables)
+    await usecase.applyDefaultImage()
+    isLoading = false
+    user?.profileImageURL = ""
   }
   
-  func logout() {
+  func logout() async {
     isLoading = true
-    usecase.logout()
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] in
-        self?.isLoading = false
-        self?.shouldNavigateToLogin = true
-      }
-      .store(in: &cancellables)
+    await usecase.logout()
+    
+    isLoading = false
+    shouldNavigateToLogin = true
   }
 
-  func deleteAccount() {
+  func deleteAccount() async {
     guard let provider = user?.loginType.lowercased(), !provider.isEmpty else { return }
 
     isLoading = true
-    usecase.deleteAccount(provider: provider)
-      .receive(on: DispatchQueue.main)
-      .sink { [weak self] in
-        self?.isLoading = false
-        self?.shouldNavigateToLogin = true
-      }
-      .store(in: &cancellables)
+    await usecase.deleteAccount(provider: provider)
+    isLoading = false
+    shouldNavigateToLogin = true
   }
 }

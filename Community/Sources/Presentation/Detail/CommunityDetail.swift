@@ -312,7 +312,7 @@ public struct CommunityDetailView: View {
       }
 
       HStack(spacing: 4) {
-        Image(.communityComment)
+        Image(.communityCommentFill)
           .resizable()
           .frame(width: 20, height: 20)
 

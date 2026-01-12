@@ -103,11 +103,9 @@ public final class HomeViewModel {
             print("❌ 추천 버거 로드 실패: \(error.localizedDescription)")
 
             // Fallback: 샘플 데이터 제공
-            recommendedBurgers = RecommendedBurger.sampleData
             print("ℹ️ 추천 버거 샘플 데이터 사용")
         } catch {
             burgersError = .networkFailure(underlying: error)
-            recommendedBurgers = RecommendedBurger.sampleData
             print("❌ 추천 버거 로드 실패 (알 수 없는 에러): \(error)")
         }
     }
@@ -122,13 +120,8 @@ public final class HomeViewModel {
         } catch let error as HomeError {
             postsError = error
             print("❌ 트렌딩 포스트 로드 실패: \(error.localizedDescription)")
-
-            // Fallback: 샘플 데이터
-            trendingPosts = TrendingPost.sampleData
-            print("ℹ️ 트렌딩 포스트 샘플 데이터 사용")
         } catch {
             postsError = .networkFailure(underlying: error)
-            trendingPosts = TrendingPost.sampleData
             print("❌ 트렌딩 포스트 로드 실패 (알 수 없는 에러): \(error)")
         }
     }
@@ -137,9 +130,9 @@ public final class HomeViewModel {
         if !hasError {
             print("✅ 홈 데이터 전체 로드 성공")
         } else if burgersError != nil && postsError != nil {
-            print("❌ 홈 데이터 전체 로드 실패 (샘플 데이터 사용)")
+            print("❌ 홈 데이터 전체 로드 실패")
         } else {
-            print("⚠️ 홈 데이터 부분 로드 성공 (일부 샘플 데이터 사용)")
+            print("⚠️ 홈 데이터 부분 로드 성공")
         }
     }
 }

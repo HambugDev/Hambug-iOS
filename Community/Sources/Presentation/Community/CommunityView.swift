@@ -353,7 +353,7 @@ fileprivate struct CommunityPostListCard: View {
                 .pretendard(.caption(.base))
                 .foregroundColor(Color.textG600)
 
-              Image(.communityComment)
+              Image(.communityCommentFill)
                 .resizable()
                 .frame(width: 12, height: 12)
 
@@ -419,7 +419,7 @@ fileprivate struct CommunityPostFeedCard: View {
             .pretendard(.caption(.base))
             .foregroundColor(Color.textG600)
 
-          Image(.communityComment)
+          Image(.communityCommentFill)
             .resizable()
             .frame(width: 12, height: 12)
 
@@ -443,42 +443,4 @@ fileprivate struct CommunityPostFeedCard: View {
   }
 }
 
-struct AsyncThumbnailImage: View {
-  private let imageURL: String?
-  private let width: CGFloat?
-  private let height: CGFloat?
-  private let cornerRadius: CGFloat
-  
-  init(
-    imageURL: String?,
-    width: CGFloat? = nil,
-    height: CGFloat? = nil,
-    cornerRadius: CGFloat = 8
-  ) {
-    self.imageURL = imageURL
-    self.width = width
-    self.height = height
-    self.cornerRadius = cornerRadius
-  }
-  
-  var body: some View {
-    content
-      .frame(width: width, height: height)
-      .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-  }
-  
-  @ViewBuilder
-  private var content: some View {
-    if let imageURL = imageURL,
-       !imageURL.isEmpty,
-       let url = URL(string: imageURL) {
-      AsyncImage(url: url) { phase in
-        if case .success(let image) = phase {
-          image
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-        }
-      }
-    }
-  }
-}
+
