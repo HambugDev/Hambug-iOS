@@ -124,41 +124,6 @@ struct TabButton: View {
   }
 }
 
-// MARK: - 게시글 리스트 뷰
-struct MyBoardsListView: View {
-  let boards: [Board]
-  let isLoadingMore: Bool
-  let onLoadMore: (Int) -> Void
-
-  var body: some View {
-    ScrollView {
-      LazyVStack(spacing: 0) {
-        ForEach(Array(boards.enumerated()), id: \.element.id) { index, board in
-          NavigationLink(destination: Text("Board Detail \(board.id)")) {
-            MyBoardListCard(board: board)
-          }
-          .buttonStyle(PlainButtonStyle())
-          .onAppear { onLoadMore(index) }
-        }
-
-        if isLoadingMore {
-          HStack {
-            Spacer()
-            ProgressView()
-            Spacer()
-          }
-          .padding(.vertical, 16)
-        }
-      }
-    }
-    .background(
-      RoundedRectangle(cornerRadius: 8)
-        .fill(Color.white)
-        .shadow(color: Color.black.opacity(0.1), radius: 4.5, x: 0, y: 0)
-    )
-  }
-}
-
 // MARK: - 게시글 카드
 fileprivate struct MyBoardListCard: View {
   let board: Board

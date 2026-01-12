@@ -9,6 +9,8 @@ import SwiftUI
 import HomeDomain
 import DesignSystem
 import SharedUI
+import CommunityDI
+import CommunityPresentation
 
 public struct HomeView: View {
 
@@ -49,9 +51,11 @@ public struct HomeView: View {
 
 struct PopularPostsView: View {
   private let postItems: [TrendingPost]
-
+  private let communityDIContainer: CommunityDIContainer
+  
   init(postItems: [TrendingPost]) {
     self.postItems = postItems
+    self.communityDIContainer = .init(appContainer: .shared)
   }
 
   var body: some View {
@@ -60,7 +64,15 @@ struct PopularPostsView: View {
 
       VStack(spacing: 0) {
         ForEach(postItems) { post in
-          PostView(post: post)
+          NavigationLink(
+            destination: CommunityDetailView(
+              viewModel: communityDIContainer.makeDetailViewModel(),
+              boardId: post.id,
+              updateFactory: communityDIContainer,
+              reportFactory: communityDIContainer
+            )) {
+              PostView(post: post)
+          }
         }
       }
       .background(.white)
