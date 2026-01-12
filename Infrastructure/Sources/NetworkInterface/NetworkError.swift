@@ -37,7 +37,7 @@ public enum NetworkError: Error, LocalizedError {
     case .serverErrorWithMessage(let code, let message):
       return "서버 오류 (\(code)): \(message)"
     case .unauthorized:
-      return "인증이 필요합니다."
+      return "토큰이 만료되었습니다. 인증이 필요합니다."
     case .forbidden:
       return "접근이 금지되었습니다."
     case .notFound:

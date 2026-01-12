@@ -10,12 +10,17 @@ import DesignSystem
 import CommunityDomain
 import MyPageDomain
 import SharedUI
+import CommunityDI
+import CommunityPresentation
 
 public struct MyActivitiesView: View {
   @State private var viewModel: MyActivitiesViewModel
 
+  private let communityDIContainer: CommunityDIContainer
+  
   public init(viewModel: MyActivitiesViewModel) {
     self._viewModel = State(initialValue: viewModel)
+    self.communityDIContainer = .init(appContainer: .shared)
   }
 
   public var body: some View {
@@ -62,19 +67,18 @@ public struct MyActivitiesView: View {
   @ViewBuilder
   private var contentView: some View {
     if viewModel.selectedTab == .posts {
-      MyBoardsListView(
+      CommunityListView(
         boards: viewModel.myBoards,
-        isLoadingMore: viewModel.isLoadingMoreBoards,
-        onLoadMore: { index in
-          if index >= viewModel.myBoards.count - 3 {
-            Task { await viewModel.loadMoreBoards() }
-          }
-        }
+        detailFactory: communityDIContainer,
+        updateFactory: communityDIContainer,
+        reportFactory: communityDIContainer,
+        viewModel: communityDIContainer.makeCommunityViewModel()
       )
       .padding(.horizontal, 20)
       .padding(.vertical, 12)
     } else {
       MyCommentsListView(
+        communityDIContainer: communityDIContainer,
         comments: viewModel.myComments,
         isLoadingMore: viewModel.isLoadingMoreComments,
         onLoadMore: { index in
@@ -219,15 +223,22 @@ fileprivate struct MyBoardListCard: View {
 
 // MARK: - 댓글 리스트 뷰
 struct MyCommentsListView: View {
+  let communityDIContainer: CommunityDIContainer
   let comments: [MyCommentActivity]
   let isLoadingMore: Bool
   let onLoadMore: (Int) -> Void
-
+  
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 0) {
         ForEach(Array(comments.enumerated()), id: \.element.id) { index, comment in
-          NavigationLink(destination: Text("Board Detail \(comment.boardId)")) {
+          NavigationLink(
+            destination: CommunityDetailView(
+              viewModel: communityDIContainer.makeDetailViewModel(),
+              boardId: Int(comment.boardId),
+              updateFactory: communityDIContainer,
+              reportFactory: communityDIContainer
+            )) {
             MyCommentActivityCard(comment: comment)
           }
           .buttonStyle(PlainButtonStyle())
@@ -243,12 +254,12 @@ struct MyCommentsListView: View {
           .padding(.vertical, 16)
         }
       }
+      .cornerRadius(8)
+      .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
     }
-    .background(
-      RoundedRectangle(cornerRadius: 8)
-        .fill(Color.white)
-        .shadow(color: Color.black.opacity(0.1), radius: 4.5, x: 0, y: 0)
-    )
+    .scrollIndicators(.hidden)
+    .cornerRadius(8)
+    .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
   }
 }
 
@@ -273,9 +284,10 @@ fileprivate struct MyCommentActivityCard: View {
       }
 
       HStack(spacing: 4) {
-        Image("community_commnet", bundle: .main)
-          .foregroundColor(Color.textG600)
-          .font(.system(size: 12))
+        Image("community_comment", bundle: .main)
+          .resizable()
+          .foregroundColor(.white)
+          .frame(width: 12, height: 12)
 
         Text(comment.content)
           .pretendard(.caption(.base))
@@ -284,8 +296,7 @@ fileprivate struct MyCommentActivityCard: View {
           .truncationMode(.tail)
       }
     }
-    .padding(.horizontal, 16)
-    .padding(.vertical, 16)
+    .padding(16)
     .background(Color.white)
   }
 }

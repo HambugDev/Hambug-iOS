@@ -190,7 +190,7 @@ fileprivate struct CommunityFilterChip: View {
 }
 
 // MARK: - List View
-struct CommunityListView: View {
+public struct CommunityListView: View {
   let boards: [Board]
   let detailFactory: CommunityDetailFactory
   let updateFactory: UpdateBoardFactory
@@ -198,7 +198,7 @@ struct CommunityListView: View {
   
   @State private var viewModel: CommunityViewModel
 
-  init(
+  public init(
     boards: [Board],
     detailFactory: CommunityDetailFactory,
     updateFactory: UpdateBoardFactory,
@@ -212,7 +212,7 @@ struct CommunityListView: View {
     self._viewModel = State(initialValue: viewModel)
   }
 
-  var body: some View {
+  public var body: some View {
     ScrollView {
       LazyVStack(spacing: 0) {
         ForEach(Array(boards.enumerated()), id: \.element.id) { index, board in
