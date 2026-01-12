@@ -28,6 +28,10 @@ let package = Package(
       name: Config.name,
       targets: Config.allCases.map(\.name)
     ),
+    .library(
+      name: "CommunityDomain",
+      targets: ["CommunityDomain"]
+    ),
   ],
   dependencies: [
     .package(name: "DI", path: "../DI"),
