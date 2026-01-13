@@ -40,7 +40,7 @@ public final class AppStateManager {
   // Keychain으로 로그인 상태 확인
   public var isLoginCompleted: Bool {
     do {
-      return try tokenStorage.exists()
+      return try tokenStorage.exists(.accessToken)
     } catch {
       print("⚠️ Failed to check login status: \(error)")
       return false
@@ -69,9 +69,10 @@ public final class AppStateManager {
   // 로그아웃
   public func logout() {
     do {
-      try tokenStorage.clear()
+      try tokenStorage.clear(.accessToken)
+      try tokenStorage.clear(.refreshToken)
+      try tokenStorage.clear(.fcmToken)
       UserDefaultsManager.shared.clearAll()
-      // TODO: - push key 추가시 삭제 해야할듯 ?
       state = .login
     } catch {
       print("⚠️ Failed to logout: \(error)")

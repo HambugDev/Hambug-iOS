@@ -34,3 +34,4 @@ playground.xcworkspace
 **/Package.resolved
 
 *.xcconfig
+Hambug/GoogleService-Info.plist

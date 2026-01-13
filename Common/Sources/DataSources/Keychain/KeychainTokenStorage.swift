@@ -7,46 +7,38 @@
 
 import Foundation
 
-public protocol TokenStorage: Sendable {
-  func save(accessToken: String, refreshToken: String?) throws
-  func load() -> (accessToken: String?, refreshToken: String?)
-  func clear() throws
-  func exists() throws -> Bool
+public protocol TokenStorage {
+  func save(_ token: String, key: HambugKeychainKey) throws
+  func load(_ key: HambugKeychainKey) -> String?
+  func clear(_ key: HambugKeychainKey) throws
+  func exists(_ key: HambugKeychainKey) throws -> Bool
 }
 
-public final class KeychainTokenStorage: TokenStorage {
+public class KeychainTokenStorage: TokenStorage {
   private let service: String
 
   public init(service: String = HambugKeychainKey.serviceID) {
     self.service = service
   }
   
-  public func save(accessToken: String, refreshToken: String?) throws {
-    try set(accessToken, for: .accessToken)
-
-    if let refresh = refreshToken {
-      try set(refresh, for: .refreshToken)
-    }
+  public func save(_ token: String, key: HambugKeychainKey) throws {
+    try set(token, for: key)
   }
-
-  public func load() -> (accessToken: String?, refreshToken: String?) {
-    let access = try? string(for: .accessToken)
-    let refresh = try? string(for: .refreshToken)
-
-    return (access, refresh)
+  
+  public func load(_ key: HambugKeychainKey) -> String? {
+    try? string(for: key)
   }
-
-  public func exists() throws -> Bool {
-    try contains(.accessToken)
+  
+  public func clear(_ key: HambugKeychainKey) throws {
+    try delete(key)
   }
-
-  public func clear() throws {
-    try delete(.accessToken)
-    try delete(.refreshToken)
+  
+  public func exists(_ key: HambugKeychainKey) throws -> Bool {
+    try contains(key)
   }
 }
 
-private extension KeychainTokenStorage {
+extension KeychainTokenStorage {
   
   func set(_ value: String, for key: HambugKeychainKey) throws {
     let data = value.data(using: .utf8)!
@@ -140,45 +132,3 @@ private extension KeychainTokenStorage {
     }
   }
 }
-
-// MARK: - Supporting Types
-
-public enum HambugKeychainKey {
-  public static let serviceID = Bundle.main.bundleIdentifier ?? "com.hambug"
-
-  case accessToken
-  case refreshToken
-
-  var toString: String {
-    switch self {
-    case .accessToken: return "access_token"
-    case .refreshToken: return "refresh_token"
-    }
-  }
-}
-
-public enum KeychainError: Error {
-  case itemNotFound
-  case duplicateItem
-  case invalidData
-  case unexpectedPasswordData
-  case unexpected(OSStatus)
-}
-
-extension KeychainError: LocalizedError {
-  public var errorDescription: String? {
-    switch self {
-    case .itemNotFound:
-      return "아이템을 찾을 수 없습니다."
-    case .duplicateItem:
-      return "이미 존재하는 아이템입니다."
-    case .invalidData:
-      return "유효하지 않은 데이터입니다."
-    case .unexpectedPasswordData:
-      return "예상치 못한 패스워드 데이터입니다."
-    case .unexpected(let status):
-      return "Keychain 에러: \(status)"
-    }
-  }
-}
-
