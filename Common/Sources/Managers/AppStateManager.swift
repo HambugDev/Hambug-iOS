@@ -40,7 +40,8 @@ public final class AppStateManager {
   // Keychain으로 로그인 상태 확인
   public var isLoginCompleted: Bool {
     do {
-      return try tokenStorage.exists(.accessToken)
+      let hasLoggedInBefore = try tokenStorage.exists(.accessToken)
+      return hasLoggedInBefore && isOnboardingCompleted
     } catch {
       print("⚠️ Failed to check login status: \(error)")
       return false

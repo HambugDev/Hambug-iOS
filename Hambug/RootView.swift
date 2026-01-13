@@ -16,11 +16,17 @@ import AppDI
 import IntroDI
 import NetworkImpl
 import Util
+import FCMService
 
 struct RootView: View {
   @Environment(AppStateManager.self) var appStateManager
   @Environment(AppDIContainer.self) var appContainer
-
+  private let fcmManager: FCMManager
+  
+  init(fcmManager: FCMManager) {
+    self.fcmManager = fcmManager
+  }
+  
   var body: some View {
     let _ = Self._printChanges()
     Group {
@@ -51,6 +57,9 @@ struct RootView: View {
 
       case .main:
         ContentView()
+          .task {
+            await fcmManager.sendPendingTokenToServer()
+          }
       }
     }
     .environment(appContainer)

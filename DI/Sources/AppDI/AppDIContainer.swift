@@ -38,7 +38,7 @@ struct AppAssembly: Assembly {
 
     // Register NetworkServiceInterface as singleton
     container.register(NetworkServiceInterface.self, scope: .singleton) { resolver in
-      let tokenStorage = resolver.resolve(JWTokenStorage.self)
+      let tokenStorage = resolver.resolve(JWTTokenStorageable.self)
       
 #if DEBUG
       let logger = NetworkLogger()

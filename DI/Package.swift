@@ -37,6 +37,7 @@ let package = Package(
     )
   ],
   dependencies: [
+    .package(name: "3rdParty", path: "../3rdParty"),
     .package(name: "Common", path: "../Common"),
     .package(name: "Infrastructure", path: "../Infrastructure"),
     .package(name: "Intro", path: "../Intro"),
@@ -51,7 +52,8 @@ let package = Package(
         .product(name: "DataSources", package: "Common"),
         .product(name: "Managers", package: "Common"),
         .product(name: "NetworkInterface", package: "Infrastructure"),
-        .product(name: "NetworkImpl", package: "Infrastructure")
+        .product(name: "NetworkImpl", package: "Infrastructure"),
+        .product(name: "FCMService", package: "3rdParty"),
       ]
     ),
     .target(
