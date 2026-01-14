@@ -13,6 +13,7 @@ import DataSources
 import Managers
 import NetworkInterface
 import NetworkImpl
+import FCMService
 
 // MARK: - App Assembly
 struct AppAssembly: Assembly {
@@ -20,6 +21,14 @@ struct AppAssembly: Assembly {
     // Register TokenStorage as singleton
     container.register(TokenStorage.self, scope: .singleton) { _ in
       KeychainTokenStorage()
+    }
+    
+    container.register(JWTTokenStorageable.self, scope: .singleton) { _ in
+      JWTokenStorage()
+    }
+    
+    container.register(FCMTokenStorageable.self, scope: .singleton) { _ in
+      FCMTokenStorage()
     }
 
     // Register UserDefaultsManager as singleton
@@ -29,7 +38,7 @@ struct AppAssembly: Assembly {
 
     // Register NetworkServiceInterface as singleton
     container.register(NetworkServiceInterface.self, scope: .singleton) { resolver in
-      let tokenStorage = resolver.resolve(TokenStorage.self)
+      let tokenStorage = resolver.resolve(JWTTokenStorageable.self)
       
 #if DEBUG
       let logger = NetworkLogger()
@@ -44,7 +53,17 @@ struct AppAssembly: Assembly {
 #endif
     }
 
-
+    container.register(FCMManager.self, scope: .transient) { resolver in
+      FCMManager(
+        service: resolver.resolve(
+          NetworkServiceInterface.self
+        ),
+        storage: resolver.resolve(
+          FCMTokenStorageable.self
+        )
+      )
+    }
+    
     // Register AppStateManager as singleton
     container.register(AppStateManager.self, scope: .singleton) { resolver in
       AppStateManager(
@@ -80,6 +99,10 @@ public final class AppDIContainer: @unchecked Sendable {
   /// Direct access to AppStateManager for app initialization
   public func makeAppStateManager() -> AppStateManager {
     return container.resolve(AppStateManager.self)
+  }
+  
+  public func makeFCMManager() -> FCMManager {
+    return container.resolve(FCMManager.self)
   }
 
   /// Generic resolve for any registered type

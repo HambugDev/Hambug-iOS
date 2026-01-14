@@ -30,7 +30,7 @@ struct LoginAssembly: Assembly {
     container.register(LoginRepository.self) { resolver in
       LoginRepositoryImpl(
         networkService: resolver.resolve(NetworkServiceInterface.self),
-        tokenStorage: resolver.resolve(TokenStorage.self),
+        tokenStorage: resolver.resolve(JWTTokenStorageable.self),
         userDefaultsManager: resolver.resolve(UserDefaultsManager.self)
       )
     }

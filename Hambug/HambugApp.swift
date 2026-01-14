@@ -13,7 +13,7 @@ import AppDI
 
 @main
 struct HambugApp: App {
-  // Initialize AppDIContainer singleton first
+  @UIApplicationDelegateAdaptor(AppDelegate.self) var appdelegate
   private let appContainer = AppDIContainer.shared
 
   // Get AppStateManager from AppDIContainer
@@ -30,7 +30,7 @@ struct HambugApp: App {
 
   var body: some Scene {
     WindowGroup {
-      RootView()
+      RootView(fcmManager: appdelegate.fcmManager)
         .environment(appStateManager)
         .environment(appContainer)
         .onOpenURL { url in

@@ -14,12 +14,12 @@ import Managers
 
 public final class LoginRepositoryImpl: LoginRepository {
   private let networkService: NetworkServiceInterface
-  private let tokenStorage: TokenStorage
+  private let tokenStorage: JWTTokenStorageable
   private let userDefaultsManager: UserDefaultsManager
 
   public init(
     networkService: NetworkServiceInterface,
-    tokenStorage: TokenStorage,
+    tokenStorage: JWTTokenStorageable,
     userDefaultsManager: UserDefaultsManager
   ) {
     self.networkService = networkService

@@ -18,10 +18,10 @@ public final class AuthInterceptor: RequestInterceptor {
   private let refreshTokenKey = "Authorization"
   private let maxRetryCount = 1
 
-  private let tokenManager: TokenStorage
+  private let tokenManager: JWTTokenStorageable
   private let session: Session
 
-  public init(tokenManager: TokenStorage) {
+  public init(tokenManager: JWTTokenStorageable) {
     self.tokenManager = tokenManager
     self.session = Session()
   }
@@ -77,7 +77,8 @@ public final class AuthInterceptor: RequestInterceptor {
   ) {
     print(#function)
     guard let response = request.task?.response as? HTTPURLResponse,
-          response.statusCode == 403 else {
+          response.statusCode == 401
+    else {
       completion(.doNotRetryWithError(error))
       return
     }
