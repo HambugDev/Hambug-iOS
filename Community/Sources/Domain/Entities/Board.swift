@@ -38,7 +38,7 @@ public struct Board: Identifiable, Equatable, Sendable {
   public let content: String
   public let category: BoardCategory
   public let imageUrls: [String]
-  public let authorNickname: String?
+  public let authorNickname: String
   public let authorProfileImageUrl: String?
   public let authorId: Int?
   public let createdAt: String
@@ -54,7 +54,7 @@ public struct Board: Identifiable, Equatable, Sendable {
     content: String,
     category: BoardCategory,
     imageUrls: [String],
-    authorNickname: String?,
+    authorNickname: String,
     authorProfileImageUrl: String? = nil,
     authorId: Int?,
     createdAt: Date,

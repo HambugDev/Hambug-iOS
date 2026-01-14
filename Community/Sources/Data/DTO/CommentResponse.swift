@@ -38,7 +38,7 @@ public struct CommentListDataDTO: Decodable, Sendable {
 
   private enum CodingKeys: String, CodingKey {
     case content
-    case nextCursorId = "netCursorId"
+    case nextCursorId
     case nextPage
   }
 }

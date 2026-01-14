@@ -10,12 +10,12 @@
 public struct CursorPagingQuery: Encodable, Sendable {
   public let lastId: Int?
   public let limit: Int
-  public let order: String
+  public let order: String?
   
   public init(
-    lastId: Int?,
-    limit: Int,
-    order: String
+    lastId: Int? = nil,
+    limit: Int = 20,
+    order: String? = nil
   ) {
     self.lastId = lastId
     self.limit = limit
