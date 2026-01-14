@@ -50,9 +50,9 @@ public struct CommunityView: View {
         
         VStack(spacing: 0) {
           // 헤더
-          CommunityHeader()
-            .padding(.horizontal, 16)
-            .padding(.bottom, 20)
+          HeaderBar(type: .community)
+            .safeAreaPadding(.vertical, 18)
+            .safeAreaPadding(.horizontal, 15)
           
           VStack(spacing: 0) {
             // 카테고리 필터와 뷰 토글
@@ -122,30 +122,8 @@ public struct CommunityView: View {
       .refreshable {
         viewModel.refreshBoards()
       }
-      .navigationBarHidden(true)
+      .toolbar(.hidden, for: .navigationBar)
       .tabBarHidden(false)
-  }
-}
-
-// MARK: - Category Header
-struct CommunityHeader: View {
-  var body: some View {
-    HStack {
-      Text("커뮤니티")
-        .pretendard(.title(.t2))
-        .foregroundColor(.white)
-      
-      Spacer()
-      
-      Button(action: {
-        print("Notification tapped")
-      }) {
-        Image(.naviBell)
-          .resizable()
-          .foregroundColor(.white)
-          .frame(width: 20, height: 20)
-      }
-    }
   }
 }
 

@@ -16,8 +16,8 @@ public struct BoardResponseDTO: Decodable, Sendable {
   public let content: String
   public let category: String
   public let imageUrls: [String]
-  public let authorNickname: String?
-  public let authorId: Int?
+  public let authorNickname: String
+  public let authorId: Int
   public let createdAt: String
   public let updatedAt: String
   public let viewCount: Int
@@ -47,7 +47,7 @@ public struct BoardListDataDTO: Decodable, Sendable {
 
   private enum CodingKeys: String, CodingKey {
     case content
-    case nextCursorId = "netCursorId"
+    case nextCursorId
     case nextPage
   }
 }
