@@ -537,6 +537,7 @@
 		};
 		915BC5F62E3CB9B80062B78E /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B513799A2EE2ED8F00DAF2F7 /* Common.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

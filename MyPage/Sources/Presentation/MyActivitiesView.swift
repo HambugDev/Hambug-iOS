@@ -32,7 +32,7 @@ public struct MyActivitiesView: View {
       }
       .background(Color.bgG75)
     }
-    .navigationBarHidden(true)
+    .toolbar(.hidden, for: .navigationBar)
     .refreshable {
       viewModel.refreshCurrentTab()
     }

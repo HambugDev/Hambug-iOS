@@ -57,7 +57,7 @@ public struct CommunityReportView: View {
       .padding(.horizontal, 18)
     }
     .background(Color.bgWhite)
-    .navigationBarHidden(true)
+    .toolbar(.hidden, for: .navigationBar)
   }
   
   private var navigationBar: some View {
