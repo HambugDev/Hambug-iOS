@@ -23,13 +23,16 @@ public struct HomeView: View {
   public var body: some View {
     ZStack {
       Color.bgG100
+        .ignoresSafeArea(.container, edges: .top)
       
       VStack {
-        HeaderBar()
+        HeaderBar(type: .home)
+          .safeAreaPadding(18)
         
         ScrollView {
           SuggestView(burgers: viewModel.recommendedBurgers)
             .padding(.leading, 18)
+            .padding(.top, 10)
 
           Spacer()
             .frame(height: 30)
@@ -40,9 +43,8 @@ public struct HomeView: View {
         }
         .safeAreaPadding(.bottom, 60)
       }
-      .padding(.top, 50)
     }
-    .ignoresSafeArea(.container, edges: .top)
+    
     .tabBarHidden(false)
   }
 }

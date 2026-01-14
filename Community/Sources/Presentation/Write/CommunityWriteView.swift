@@ -108,7 +108,7 @@ public struct CommunityWriteView: View {
       }
       .tabBarHidden(true)
     }
-    .navigationBarHidden(true)
+    .toolbar(.hidden, for: .navigationBar)
   }
   
   private var navigationBar: some View {

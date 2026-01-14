@@ -41,6 +41,7 @@ public struct MyPageView: View {
     NavigationStack {
       ZStack {
         Color.white
+          .ignoresSafeArea(.container, edges: .vertical)
         
         VStack(spacing: 0) {
           headerSection
@@ -138,7 +139,7 @@ public struct MyPageView: View {
         Text("이미지 크기가 너무 큽니다. 10MB 이하의 이미지를 선택해주세요.")
       }
     }
-    .navigationBarHidden(true)
+    .toolbar(.hidden, for: .navigationBar)
     .onAppear {
       Task {
         await viewModel.fetchProfile()
@@ -153,14 +154,8 @@ public struct MyPageView: View {
   
   // MARK: - Sections
   private var headerSection: some View {
-    HStack {
-      Text(Strings.header)
-        .padding(.leading, 15)
-        .padding(.bottom, 15)
-        .pretendard(.title(.t2))
-        .foregroundStyle(Color.textG900)
-      Spacer()
-    }
+    HeaderBar(type: .myPage)
+      .safeAreaPadding(18)
   }
   
   private var imageSection: some View {
@@ -192,7 +187,7 @@ public struct MyPageView: View {
     .onTapGesture {
       showInfoActionSheet = true
     }
-    .padding(.top, 25)
+    .padding(.top, 20)
   }
   
   private var nicknameSection: some View {
@@ -414,8 +409,6 @@ struct MyPageBottomLineTextField: View {
 
 extension MyPageView {
   enum Strings {
-    static let header = "마이페이지"
-    
     enum ActionSheetTitle {
       static let profile = "프로필 설정"
       static let changeNickname = "닉네임 변경"

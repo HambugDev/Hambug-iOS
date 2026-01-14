@@ -26,7 +26,6 @@ extension String.LocalizedString {
   }
   
   public enum MyPage {
-    static let header: String = "마이페이지"
     struct ActionSheetTitle2 {
       static let profile = "프로필 설정"
     }

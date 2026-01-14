@@ -29,7 +29,7 @@ public struct SuggestView: View {
         }
       } else {
         ScrollView(.horizontal) {
-          HStack(spacing: 20) {
+          HStack(spacing: 8) {
             ForEach(burgers) { burger in
               SingleSuggestView(burger: burger)
             }

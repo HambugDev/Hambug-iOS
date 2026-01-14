@@ -112,7 +112,7 @@ public struct CommunityDetailView: View {
         }
       }
     }
-    .navigationBarHidden(true)
+    .toolbar(.hidden, for: .navigationBar)
     .confirmationDialog("댓글", isPresented: $showCommentActionSheet, presenting: selectedComment) { comment in
       // Only show edit/delete buttons if the current user is the author
       if let currentUserId = viewModel.currentUserId,
