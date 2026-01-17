@@ -7,7 +7,6 @@
 
 import Foundation
 import DIKit
-import AppDI
 import NetworkInterface
 import AlarmDomain
 import AlarmData

@@ -6,29 +6,22 @@
 //
 
 import DIKit
-import AppDI
 import Splash
 import Onboarding
 import Managers
 
 // MARK: - Login Assembly
 struct IntroAssembly: Assembly {
-  private let appStateManager: AppStateManager
-
-  init(appStateManager: AppStateManager) {
-    self.appStateManager = appStateManager
-  }
-
   func assemble(container: GenericDIContainer) {
     container.register(OnboardingViewModel.self) { resolver in
       OnboardingViewModel(
-        appStateManager: self.appStateManager
+        appStateManager: resolver.resolve(AppStateManager.self)
       )
     }
 
     container.register(SplashViewModel.self) { resolver in
       SplashViewModel(
-        appStateManager: self.appStateManager
+        appStateManager: resolver.resolve(AppStateManager.self)
       )
     }
   }
@@ -41,13 +34,17 @@ public final class IntroDIContainer {
   private let container: GenericDIContainer
 
   // MARK: - Initialization
-  public init(appContainer: AppDIContainer, appStateManager: AppStateManager) {
-    self.container = GenericDIContainer(parent: appContainer.baseContainer)
-    IntroAssembly(appStateManager: appStateManager).assemble(container: container)
+  public init(appContainer: GenericDIContainer) {
+    self.container = appContainer
+    IntroAssembly().assemble(container: container)
   }
 
-  // MARK: - Factory Methods
-  public func resolve<T>(_ type: T.Type) -> T {
-    return container.resolve(type)
+  // MARK: - Factory
+  public var onboardingViewModel: OnboardingViewModel {
+    return container.resolve(OnboardingViewModel.self)
+  }
+  
+  public var splashViewModel: SplashViewModel {
+    return container.resolve(SplashViewModel.self)
   }
 }

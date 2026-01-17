@@ -7,7 +7,6 @@
 
 import Foundation
 import DIKit
-import AppDI
 import LoginDomain
 import LoginData
 import LoginPresentation
@@ -17,12 +16,6 @@ import NetworkInterface
 
 // MARK: - Login Assembly
 struct LoginAssembly: Assembly {
-  private let appStateManager: AppStateManager
-
-  init(appStateManager: AppStateManager) {
-    self.appStateManager = appStateManager
-  }
-
   func assemble(container: GenericDIContainer) {
     // Note: NetworkService and TokenStorage come from parent container
 
@@ -46,7 +39,7 @@ struct LoginAssembly: Assembly {
     container.register(LoginViewModel.self) { resolver in
       LoginViewModel(
         useCase: resolver.resolve(LoginUseCase.self),
-        appStateManager: self.appStateManager
+        appStateManager: resolver.resolve(AppStateManager.self)
       )
     }
   }
@@ -59,17 +52,13 @@ public final class LoginDIContainer {
   private let container: GenericDIContainer
 
   // MARK: - Initialization
-  public init(appContainer: AppDIContainer, appStateManager: AppStateManager) {
-    self.container = GenericDIContainer(parent: appContainer.baseContainer)
-    LoginAssembly(appStateManager: appStateManager).assemble(container: container)
+  public init(appContainer: GenericDIContainer) {
+    self.container = appContainer
+    LoginAssembly().assemble(container: container)
   }
 
   // MARK: - Factory Methods
   public func makeLoginViewModel() -> LoginViewModel {
     return container.resolve(LoginViewModel.self)
-  }
-
-  public func resolve<T>(_ type: T.Type) -> T {
-    return container.resolve(type)
   }
 }

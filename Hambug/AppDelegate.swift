@@ -6,8 +6,8 @@
 //
 
 import UIKit
+import AppCoreDI
 import FCMService
-import AppDI
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   private let appDIContainer: AppDIContainer = .shared

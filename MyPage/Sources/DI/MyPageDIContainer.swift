@@ -6,7 +6,6 @@
 //
 
 import DIKit
-import AppDI
 import NetworkInterface
 import NetworkImpl
 import MyPageDomain
@@ -68,9 +67,8 @@ public final class MyPageDIContainer {
   private let container: GenericDIContainer
   
   // MARK: - Initialization
-  public init(appContainer: AppDIContainer? = nil) {
-    let parent = appContainer ?? AppDIContainer.shared
-    self.container = AppDIContainer.shared.baseContainer
+  public init(appContainer: GenericDIContainer) {
+    self.container = appContainer
     MyPageAssembly().assemble(container: container)
   }
   

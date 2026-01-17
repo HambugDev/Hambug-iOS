@@ -7,7 +7,6 @@
 
 import Foundation
 import DIKit
-import AppDI
 import Managers
 import DataSources
 import NetworkInterface
@@ -15,7 +14,12 @@ import HomeDomain
 import HomeData
 import HomePresentation
 
+import CommunityPresentation
+import AlarmPresentation
+
 import SwiftUI
+import CommunityDI
+import AlarmDI
 
 // MARK: - Home Assembly
 struct HomeAssembly: Assembly {
@@ -48,21 +52,26 @@ public final class HomeDIContainer {
   private let container: GenericDIContainer
 
   // MARK: - Initialization
-  public init(appContainer: AppDIContainer = .shared) {
-    self.container = GenericDIContainer(parent: appContainer.baseContainer)
+  public init(appContainer: GenericDIContainer) {
+    self.container = appContainer
     HomeAssembly().assemble(container: container)
   }
+}
 
-  // MARK: - Factory Methods
-  public var homeViewModel: HomeViewModel {
-    return container.resolve(HomeViewModel.self)
+extension HomeDIContainer: Homedependency {
+  public var component: any CommunityPresentation.CommunityDetailDependency {
+    container.resolve(CommunityDIContainer.self)
   }
-
-  public func resolve<T>(_ type: T.Type) -> T {
-    return container.resolve(type)
+  
+  public var alarmListComponent: any AlarmPresentation.AlarmListDependecy {
+    container.resolve(AlarmDIContainer.self)
+  }
+  
+  public func makeHomeViewModel() -> HomePresentation.HomeViewModel {
+    container.resolve(HomeViewModel.self)
   }
 }
 
-#Preview {
-  HomeView(viewModel: HomeDIContainer.init().homeViewModel)
-}
+//#Preview {
+//  HomeView(viewModel: HomeDIContainer.init().homeViewModel)
+//}

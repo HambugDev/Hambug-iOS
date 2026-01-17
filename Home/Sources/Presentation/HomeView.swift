@@ -9,25 +9,41 @@ import SwiftUI
 import HomeDomain
 import DesignSystem
 import SharedUI
-import CommunityDI
 import CommunityPresentation
+import AlarmPresentation
+
+public protocol Homedependency: HomeFactory {
+  var component: CommunityDetailDependency { get }
+  var alarmListComponent: AlarmListDependecy { get }
+}
+public protocol HomeFactory {
+  func makeHomeViewModel() -> HomeViewModel
+}
 
 public struct HomeView: View {
 
   @State private var viewModel: HomeViewModel
-
-  public init(viewModel: HomeViewModel) {
-    self._viewModel = State(initialValue: viewModel)
+  private let dependency: Homedependency
+  
+  public init(
+    dependency: Homedependency,
+  ) {
+    self.dependency = dependency
+    self._viewModel = State(initialValue: dependency.makeHomeViewModel())
   }
-
+  
   public var body: some View {
     ZStack {
       Color.bgG100
         .ignoresSafeArea(.container, edges: .top)
       
       VStack {
-        HeaderBar(type: .home)
-          .safeAreaPadding(18)
+        HeaderBar(type: .home) {
+          AlarmListView(
+            dependency: dependency.alarmListComponent
+          )
+        }
+        .safeAreaPadding(18)
         
         ScrollView {
           SuggestView(burgers: viewModel.recommendedBurgers)
@@ -37,7 +53,10 @@ public struct HomeView: View {
           Spacer()
             .frame(height: 30)
 
-          PopularPostsView(postItems: viewModel.trendingPosts)
+          PopularPostsView(
+            postItems: viewModel.trendingPosts,
+            dependency: dependency
+          )
             .padding(.horizontal, 18)
 
         }
@@ -53,11 +72,11 @@ public struct HomeView: View {
 
 struct PopularPostsView: View {
   private let postItems: [TrendingPost]
-  private let communityDIContainer: CommunityDIContainer
+  private let dependency: Homedependency
   
-  init(postItems: [TrendingPost]) {
+  init(postItems: [TrendingPost], dependency: Homedependency) {
     self.postItems = postItems
-    self.communityDIContainer = .init(appContainer: .shared)
+    self.dependency = dependency
   }
 
   var body: some View {
@@ -68,11 +87,10 @@ struct PopularPostsView: View {
         ForEach(postItems) { post in
           NavigationLink(
             destination: CommunityDetailView(
-              viewModel: communityDIContainer.makeDetailViewModel(),
-              boardId: post.id,
-              updateFactory: communityDIContainer,
-              reportFactory: communityDIContainer
-            )) {
+              dependency: dependency.component,
+              boardId: post.id
+            )
+          ) {
               PostView(post: post)
           }
         }

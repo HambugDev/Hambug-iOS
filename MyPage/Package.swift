@@ -28,12 +28,19 @@ let package = Package(
       name: Config.name,
       targets: Config.allCases.map(\.name)
     ),
+    .library(
+      name: Config.di.name,
+      targets: [Config.di.name]
+    ),
+    .library(
+      name: Config.presentation.name,
+      targets: [Config.presentation.name]
+    ),
   ],
   dependencies: [
     .package(name: "Common", path: "../Common"),
     .package(name: "Infrastructure", path: "../Infrastructure"),
     .package(name: "Community", path: "../Community"),
-    .package(name: "DI", path: "../DI"),
   ],
   targets: [
     .target(
@@ -44,8 +51,7 @@ let package = Package(
         .target(config: .presentation),
         .product(name: "NetworkInterface", package: "Infrastructure"),
         .product(name: "NetworkImpl", package: "Infrastructure"),
-        .product(name: "DIKit", package: "DI"),
-        .product(name: "AppDI", package: "DI"),
+        .product(name: "DIKit", package: "Common"),
       ],
       path: Config.di.path
     ),
@@ -77,6 +83,7 @@ let package = Package(
         .product(name: "DesignSystem", package: "Common"),
         .product(name: "Community", package: "Community"),
         .product(name: "CommunityDomain", package: "Community"),
+        .product(name: "CommunityDI", package: "Community"),
       ],
       path: Config.presentation.path
     ),

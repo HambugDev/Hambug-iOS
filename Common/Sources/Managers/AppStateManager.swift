@@ -49,8 +49,10 @@ public final class AppStateManager {
   }
   
   public func completeSplash() {
-    if isOnboardingCompleted {
-      state = isLoginCompleted ? .main : .login
+    if isLoginCompleted {
+      state = .main
+    } else if isOnboardingCompleted {
+      state = .main
     } else {
       state = .onboarding
     }
@@ -59,7 +61,7 @@ public final class AppStateManager {
   // 온보딩 완료
   public func completeOnboarding() {
     udManager.isOnboardingCompleted = true
-    state = isLoginCompleted ? .main : .login
+    state = .login
   }
   
   // 로그인 완료

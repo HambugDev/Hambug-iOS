@@ -6,29 +6,14 @@
 //
 
 import SwiftUI
-import AppDI
-import HomePresentation
-import HomeDI
-import CommunityPresentation
-import CommunityDI
+import AppCoreDI
 import SharedUI
+import HomePresentation
+import CommunityPresentation
 import MyPagePresentation
-import MyPageDI
 
 struct ContentView: View {
   @Environment(AppDIContainer.self) var appContainer
-  
-  private var homeDIContainer: HomeDIContainer {
-    HomeDIContainer(appContainer: appContainer)
-  }
-  
-  private var communityDIContainer: CommunityDIContainer {
-    CommunityDIContainer(appContainer: appContainer)
-  }
-  
-  private var mypageDIContainer: MyPageDIContainer {
-    MyPageDIContainer(appContainer: appContainer)
-  }
   
   @State private var selectedTab: Int = 0
   
@@ -36,26 +21,21 @@ struct ContentView: View {
     CustomTabView(selectedTab: $selectedTab) {
       Group {
         NavigationStack {
-          HomeView(viewModel: homeDIContainer.homeViewModel)
+          HomeView(dependency: appContainer.homeDIContainer)
         }
         .tag(0)
         
         NavigationStack {
-          CommunityView(
-            viewModel: communityDIContainer.makeCommunityViewModel(),
-            writeFactory: communityDIContainer,
-            detailFactory: communityDIContainer,
-            updateFactory: communityDIContainer,
-            reportFactory: communityDIContainer
-          )
+          CommunityView(dependency: appContainer.communityDIContainer)
         }
         .tag(1)
         
         
         NavigationStack {
           MyPageView(
-            viewModel: mypageDIContainer.makeMyPageViewModel(),
-            activitesFactory: mypageDIContainer
+            viewModel: appContainer.mypageDIContainer.makeMyPageViewModel(),
+            activitesFactory: appContainer.mypageDIContainer,
+            dependency: appContainer.communityDIContainer
           )
         }
         .tag(2)

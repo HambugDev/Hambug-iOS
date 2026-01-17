@@ -6,6 +6,7 @@ import PackageDescription
 enum Config: String, CaseIterable {
   static let name: String = "Login"
   
+  case di = "DI"
   case data = "Data"
   case domain = "Domain"
   case presentation = "Presentation"
@@ -25,10 +26,17 @@ let package = Package(
     .iOS(.v17)
   ],
   products: [
-    // Products define the executables and libraries a package produces, making them visible to other packages.
+    .library(
+      name: Config.di.name,
+      targets: [Config.di.name]
+    ),
     .library(
       name: Config.name,
-      targets: Config.allCases.map(\.name)
+      targets: [
+        Config.data.name,
+        Config.domain.name,
+        Config.presentation.name
+      ]
     ),
   ],
   dependencies: [
@@ -37,6 +45,17 @@ let package = Package(
     .package(name: "Infrastructure", path: "../Infrastructure")
   ],
   targets: [
+    // Domain: 독립적 (외부 SDK만 의존)
+    .target(
+      name: Config.di.name,
+      dependencies: [
+        .target(config: Config.domain),
+        .target(config: Config.data),
+        .target(config: Config.presentation),
+      ],
+      path: Config.di.path
+    ),
+    
     // Domain: 독립적 (외부 SDK만 의존)
     .target(
       name: Config.domain.name,
