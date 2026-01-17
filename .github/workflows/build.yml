@@ -35,10 +35,10 @@ jobs:
       
         echo "Found Project: $PROJECT"
         echo "Found Scheme: $SCHEME"
-      
+        
         xcodebuild -project "$PROJECT" \
           -scheme "$SCHEME" \
           -configuration Debug \
           -skipMacroValidation \
-          -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.4" \
+          -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=26.2" \
           clean build
