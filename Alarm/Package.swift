@@ -4,17 +4,17 @@
 import PackageDescription
 
 enum Config: String, CaseIterable {
-  static let name: String = "Home"
-
+  static let name: String = "Alarm"
+  
   case di = "DI"
   case data = "Data"
   case domain = "Domain"
   case presentation = "Presentation"
-
+  
   var name: String {
     Config.name + rawValue
   }
-
+  
   var path: String {
     "Sources/\(rawValue)"
   }
@@ -28,13 +28,18 @@ let package = Package(
       name: Config.name,
       targets: Config.allCases.map(\.name)
     ),
+    .library(
+      name: Config.di.name,
+      targets: [
+        Config.di.name,
+        Config.presentation.name
+      ]
+    )
   ],
   dependencies: [
-    .package(name: "Common", path: "../Common"),
     .package(name: "DI", path: "../DI"),
+    .package(name: "Common", path: "../Common"),
     .package(name: "Infrastructure", path: "../Infrastructure"),
-    .package(name: "Community", path: "../Community"),
-    .package(name: "Alarm", path: "../Alarm"),
   ],
   targets: [
     .target(
@@ -45,41 +50,31 @@ let package = Package(
         .target(config: .presentation),
         .product(name: "DI", package: "DI"),
         .product(name: "AppDI", package: "DI"),
-        .product(name: "Managers", package: "Common"),
-        .product(name: "DataSources", package: "Common"),
+        .product(name: "NetworkInterface", package: "Infrastructure"),
       ],
     ),
-    // Domain: 의존하지않음
-    .target(
-      config: .domain,
-      dependencies: [
-        .product(name: "CommunityDomain", package: "Community")
-      ]
-    ),
-
-    // Data: Domain에 의존
+    // Domain: 독립적 (외부 의존성 없음)
+    .target(config: .domain),
+    
+    // Data
     .target(
       config: .data,
       dependencies: [
         .target(config: .domain),
         .product(name: "NetworkInterface", package: "Infrastructure"),
         .product(name: "Util", package: "Common"),
-        .product(name: "SharedDomain", package: "Common"),
-        .product(name: "CommunityDomain", package: "Community"),
-      ],
+      ]
     ),
-
-    // Presentation: Domain, DesignSystem, SharedUI에 의존
+    
+    // Presentation: Domain, DesignSystem, Layout에 의존
     .target(
       config: .presentation,
       dependencies: [
         .target(config: .domain),
         .product(name: "DesignSystem", package: "Common"),
-        .product(name: "SharedUI", package: "Common"),
-        .product(name: "Community", package: "Community"),
-        .product(name: "AlarmDI", package: "Alarm"),
       ],
-    ),
+    )
+    
   ]
 )
 
