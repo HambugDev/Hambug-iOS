@@ -20,6 +20,10 @@ let package = Package(
       targets: ["DataSources"]
     ),
     .library(
+      name: "DIKit",
+      targets: ["DIKit"]
+    ),
+    .library(
       name: "LocalizedString",
       targets: ["LocalizedString"]
     ),
@@ -48,6 +52,7 @@ let package = Package(
       ]
     ),
     .target(name: "DataSources"),
+    .target(name: "DIKit"),
     .target(name: "LocalizedString"),
     .target(name: "Util"),
     .target(

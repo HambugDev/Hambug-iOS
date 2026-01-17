@@ -15,13 +15,13 @@
 		B54128772EF1CD3100CC4938 /* Login in Frameworks */ = {isa = PBXBuildFile; productRef = B54128762EF1CD3100CC4938 /* Login */; };
 		B5412A882EF277A200CC4938 /* NetworkImpl in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A872EF277A200CC4938 /* NetworkImpl */; };
 		B5412A8A2EF277A200CC4938 /* NetworkInterface in Frameworks */ = {isa = PBXBuildFile; productRef = B5412A892EF277A200CC4938 /* NetworkInterface */; };
-		B54134082EF535FC00CC4938 /* MyPage in Frameworks */ = {isa = PBXBuildFile; productRef = B54134072EF535FC00CC4938 /* MyPage */; };
-		B54134FD2EF5B09D00CC4938 /* Community in Frameworks */ = {isa = PBXBuildFile; productRef = B54134FC2EF5B09D00CC4938 /* Community */; };
-		B54134FF2EF5B0A400CC4938 /* Home in Frameworks */ = {isa = PBXBuildFile; productRef = B54134FE2EF5B0A400CC4938 /* Home */; };
 		B54135802EF5B4CC00CC4938 /* KakaoLogin in Frameworks */ = {isa = PBXBuildFile; productRef = B541357F2EF5B4CC00CC4938 /* KakaoLogin */; };
 		B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3402E92CB6100575CDA /* Onboarding */; };
 		B57DE3432E92CB6100575CDA /* Splash in Frameworks */ = {isa = PBXBuildFile; productRef = B57DE3422E92CB6100575CDA /* Splash */; };
-		B5EDA8F82F0B9C0C002F72B9 /* DIKit in Frameworks */ = {isa = PBXBuildFile; productRef = B5EDA8F72F0B9C0C002F72B9 /* DIKit */; };
+		B5C7D2112F1C09C100C20E14 /* AppCore in Frameworks */ = {isa = PBXBuildFile; productRef = B5C7D2102F1C09C100C20E14 /* AppCore */; };
+		B5C7D2132F1C0AD300C20E14 /* CommunityPresentation in Frameworks */ = {isa = PBXBuildFile; productRef = B5C7D2122F1C0AD300C20E14 /* CommunityPresentation */; };
+		B5C7D2152F1C0AD300C20E14 /* HomePresentation in Frameworks */ = {isa = PBXBuildFile; productRef = B5C7D2142F1C0AD300C20E14 /* HomePresentation */; };
+		B5C7D2172F1C0AD900C20E14 /* MyPagePresentation in Frameworks */ = {isa = PBXBuildFile; productRef = B5C7D2162F1C0AD900C20E14 /* MyPagePresentation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,12 +49,12 @@
 		B52285C62E8844BD00678ECC /* Common */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Common; sourceTree = "<group>"; };
 		B54125132EF161BF00CC4938 /* Login */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Login; sourceTree = "<group>"; };
 		B54126322EF1A99B00CC4938 /* Infrastructure */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Infrastructure; sourceTree = "<group>"; };
-		B5412CD62EF3C9EA00CC4938 /* DI */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = DI; sourceTree = "<group>"; };
 		B54134062EF5330A00CC4938 /* MyPage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = MyPage; sourceTree = "<group>"; };
 		B54134FA2EF57F4100CC4938 /* Home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Home; sourceTree = "<group>"; };
 		B54134FB2EF57F6400CC4938 /* Community */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Community; sourceTree = "<group>"; };
 		B54135972EF5B58100CC4938 /* 3rdParty */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = 3rdParty; sourceTree = "<group>"; };
 		B5C7D1B32F1B7B6600C20E14 /* Alarm */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Alarm; sourceTree = "<group>"; };
+		B5C7D20B2F1BEFAB00C20E14 /* AppCore */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = AppCore; sourceTree = "<group>"; };
 		B5E822EB2EA2791900F3E10E /* Intro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Intro; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -101,16 +101,16 @@
 			files = (
 				B57DE3432E92CB6100575CDA /* Splash in Frameworks */,
 				B52286032E884E5B00678ECC /* DesignSystem in Frameworks */,
-				B54134082EF535FC00CC4938 /* MyPage in Frameworks */,
-				B5EDA8F82F0B9C0C002F72B9 /* DIKit in Frameworks */,
-				B54134FF2EF5B0A400CC4938 /* Home in Frameworks */,
+				B5C7D2132F1C0AD300C20E14 /* CommunityPresentation in Frameworks */,
+				B5C7D2172F1C0AD900C20E14 /* MyPagePresentation in Frameworks */,
+				B5C7D2152F1C0AD300C20E14 /* HomePresentation in Frameworks */,
 				B57DE3412E92CB6100575CDA /* Onboarding in Frameworks */,
 				B52285C92E88469C00678ECC /* Managers in Frameworks */,
 				B54128772EF1CD3100CC4938 /* Login in Frameworks */,
+				B5C7D2112F1C09C100C20E14 /* AppCore in Frameworks */,
 				B54135802EF5B4CC00CC4938 /* KakaoLogin in Frameworks */,
 				B53088172F15712500586850 /* FCMService in Frameworks */,
 				B5412A882EF277A200CC4938 /* NetworkImpl in Frameworks */,
-				B54134FD2EF5B09D00CC4938 /* Community in Frameworks */,
 				B5412A8A2EF277A200CC4938 /* NetworkInterface in Frameworks */,
 				B53086D12F115A3800586850 /* SharedUI in Frameworks */,
 			);
@@ -136,12 +136,12 @@
 		915BC5C92E3CB9B50062B78E = {
 			isa = PBXGroup;
 			children = (
+				B5C7D20B2F1BEFAB00C20E14 /* AppCore */,
 				B5C7D1B32F1B7B6600C20E14 /* Alarm */,
 				B54135972EF5B58100CC4938 /* 3rdParty */,
 				B54134FB2EF57F6400CC4938 /* Community */,
 				B54134FA2EF57F4100CC4938 /* Home */,
 				B54134062EF5330A00CC4938 /* MyPage */,
-				B5412CD62EF3C9EA00CC4938 /* DI */,
 				B54126322EF1A99B00CC4938 /* Infrastructure */,
 				B54125132EF161BF00CC4938 /* Login */,
 				B513799A2EE2ED8F00DAF2F7 /* Common.xcconfig */,
@@ -209,13 +209,13 @@
 				B54128762EF1CD3100CC4938 /* Login */,
 				B5412A872EF277A200CC4938 /* NetworkImpl */,
 				B5412A892EF277A200CC4938 /* NetworkInterface */,
-				B54134072EF535FC00CC4938 /* MyPage */,
-				B54134FC2EF5B09D00CC4938 /* Community */,
-				B54134FE2EF5B0A400CC4938 /* Home */,
 				B541357F2EF5B4CC00CC4938 /* KakaoLogin */,
-				B5EDA8F72F0B9C0C002F72B9 /* DIKit */,
 				B53086D02F115A3800586850 /* SharedUI */,
 				B53088162F15712500586850 /* FCMService */,
+				B5C7D2102F1C09C100C20E14 /* AppCore */,
+				B5C7D2122F1C0AD300C20E14 /* CommunityPresentation */,
+				B5C7D2142F1C0AD300C20E14 /* HomePresentation */,
+				B5C7D2162F1C0AD900C20E14 /* MyPagePresentation */,
 			);
 			productName = Hambug;
 			productReference = 915BC5D22E3CB9B50062B78E /* Hambug.app */;
@@ -741,18 +741,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = NetworkInterface;
 		};
-		B54134072EF535FC00CC4938 /* MyPage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MyPage;
-		};
-		B54134FC2EF5B09D00CC4938 /* Community */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Community;
-		};
-		B54134FE2EF5B0A400CC4938 /* Home */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Home;
-		};
 		B541357F2EF5B4CC00CC4938 /* KakaoLogin */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = KakaoLogin;
@@ -765,9 +753,21 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Splash;
 		};
-		B5EDA8F72F0B9C0C002F72B9 /* DIKit */ = {
+		B5C7D2102F1C09C100C20E14 /* AppCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			productName = DIKit;
+			productName = AppCore;
+		};
+		B5C7D2122F1C0AD300C20E14 /* CommunityPresentation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CommunityPresentation;
+		};
+		B5C7D2142F1C0AD300C20E14 /* HomePresentation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HomePresentation;
+		};
+		B5C7D2162F1C0AD900C20E14 /* MyPagePresentation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MyPagePresentation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

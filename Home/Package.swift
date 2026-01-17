@@ -28,10 +28,17 @@ let package = Package(
       name: Config.name,
       targets: Config.allCases.map(\.name)
     ),
+    .library(
+      name: Config.di.name,
+      targets: [Config.di.name]
+    ),
+    .library(
+      name: Config.presentation.name,
+      targets: [Config.presentation.name]
+    ),
   ],
   dependencies: [
     .package(name: "Common", path: "../Common"),
-    .package(name: "DI", path: "../DI"),
     .package(name: "Infrastructure", path: "../Infrastructure"),
     .package(name: "Community", path: "../Community"),
     .package(name: "Alarm", path: "../Alarm"),
@@ -43,8 +50,7 @@ let package = Package(
         .target(config: .domain),
         .target(config: .data),
         .target(config: .presentation),
-        .product(name: "DI", package: "DI"),
-        .product(name: "AppDI", package: "DI"),
+        .product(name: "DIKit", package: "Common"),
         .product(name: "Managers", package: "Common"),
         .product(name: "DataSources", package: "Common"),
       ],

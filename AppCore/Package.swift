@@ -4,15 +4,12 @@
 import PackageDescription
 
 enum Config: String, CaseIterable {
-  static let name: String = "Alarm"
+  static let name: String = "AppCore"
   
   case di = "DI"
-  case data = "Data"
-  case domain = "Domain"
-  case presentation = "Presentation"
   
   var name: String {
-    Config.name + rawValue
+    return "\(Config.name)\(rawValue)"
   }
   
   var path: String {
@@ -25,18 +22,19 @@ let package = Package(
   platforms: [.iOS(.v17)],
   products: [
     .library(
-      name: Config.name,
+      name: "AppCore",
       targets: Config.allCases.map(\.name)
     ),
-    .library(
-      name: Config.di.name,
-      targets: [
-        Config.di.name,
-        Config.presentation.name
-      ]
-    )
   ],
   dependencies: [
+    .package(name: "Intro", path: "../Intro"),
+    .package(name: "Login", path: "../Login"),
+    .package(name: "Home", path: "../Home"),
+    .package(name: "Community", path: "../Community"),
+    .package(name: "MyPage", path: "../MyPage"),
+    .package(name: "Alarm", path: "../Alarm"),
+    
+    .package(name: "3rdParty", path: "../3rdParty"),
     .package(name: "Common", path: "../Common"),
     .package(name: "Infrastructure", path: "../Infrastructure"),
   ],
@@ -44,35 +42,20 @@ let package = Package(
     .target(
       config: .di,
       dependencies: [
-        .target(config: .domain),
-        .target(config: .data),
-        .target(config: .presentation),
-        .product(name: "DIKit", package: "Common"),
+        .product(name: "DataSources", package: "Common"),
+        .product(name: "Managers", package: "Common"),
         .product(name: "NetworkInterface", package: "Infrastructure"),
-      ],
-    ),
-    // Domain: 독립적 (외부 의존성 없음)
-    .target(config: .domain),
-    
-    // Data
-    .target(
-      config: .data,
-      dependencies: [
-        .target(config: .domain),
-        .product(name: "NetworkInterface", package: "Infrastructure"),
-        .product(name: "Util", package: "Common"),
+        .product(name: "NetworkImpl", package: "Infrastructure"),
+        .product(name: "FCMService", package: "3rdParty"),
+        
+        .product(name: "IntroDI", package: "Intro"),
+        .product(name: "LoginDI", package: "Login"),
+        .product(name: "HomeDI", package: "Home"),
+        .product(name: "CommunityDI", package: "Community"),
+        .product(name: "MyPageDI", package: "MyPage"),
+        .product(name: "AlarmDI", package: "Alarm"),
       ]
-    ),
-    
-    // Presentation: Domain, DesignSystem, Layout에 의존
-    .target(
-      config: .presentation,
-      dependencies: [
-        .target(config: .domain),
-        .product(name: "DesignSystem", package: "Common"),
-      ],
     )
-    
   ]
 )
 

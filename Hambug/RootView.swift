@@ -11,10 +11,7 @@ import Managers
 import Splash
 import Onboarding
 import LoginPresentation
-import LoginDI
-import AppDI
-import IntroDI
-import NetworkImpl
+import AppCoreDI
 import Util
 import FCMService
 
@@ -32,27 +29,19 @@ struct RootView: View {
     Group {
       switch appStateManager.currentState {
       case .splash:
+        
         SplashView(
-          viewModel: IntroDIContainer(
-            appContainer: appContainer,
-            appStateManager: appStateManager
-          ).resolve(SplashViewModel.self)
+          viewModel: appContainer.introDIContainer.splashViewModel
         )
 
       case .onboarding:
         OnboardingView(
-          viewModel: IntroDIContainer(
-            appContainer: appContainer,
-            appStateManager: appStateManager
-          ).resolve(OnboardingViewModel.self)
+          viewModel: appContainer.introDIContainer.onboardingViewModel
         )
 
       case .login:
         LoginView(
-          viewModel: LoginDIContainer(
-            appContainer: appContainer,
-            appStateManager: appStateManager
-          ).makeLoginViewModel()
+          viewModel: appContainer.loginDIContainer.makeLoginViewModel()
         )
 
       case .main:

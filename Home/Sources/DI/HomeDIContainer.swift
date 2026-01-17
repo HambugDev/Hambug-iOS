@@ -7,7 +7,6 @@
 
 import Foundation
 import DIKit
-import AppDI
 import Managers
 import DataSources
 import NetworkInterface
@@ -48,10 +47,11 @@ public final class HomeDIContainer {
   private let container: GenericDIContainer
 
   // MARK: - Initialization
-  public init(appContainer: AppDIContainer = .shared) {
-    self.container = GenericDIContainer(parent: appContainer.baseContainer)
+  public init(appContainer: GenericDIContainer) {
+    self.container = appContainer
     HomeAssembly().assemble(container: container)
   }
+}
 
   // MARK: - Factory Methods
   public var homeViewModel: HomeViewModel {

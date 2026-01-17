@@ -7,7 +7,6 @@
 
 import Foundation
 import DIKit
-import AppDI
 import NetworkInterface
 import NetworkImpl
 import CommunityDomain
@@ -100,11 +99,12 @@ public final class CommunityDIContainer {
   private let container: GenericDIContainer
 
   // MARK: - Initialization
-  public init(appContainer: AppDIContainer = .shared) {
-    self.container = GenericDIContainer(parent: appContainer.baseContainer)
+  public init(appContainer: GenericDIContainer) {
+    self.container = appContainer
     CommunityAssembly().assemble(container: container)
     CommunityWriteAssembly().assemble(container: container)
   }
+}
 
   // MARK: - Factory Methods
   @MainActor

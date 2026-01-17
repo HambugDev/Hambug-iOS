@@ -9,7 +9,7 @@ import SwiftUI
 import Managers
 import DesignSystem
 import KakaoLogin
-import AppDI
+import AppCoreDI
 
 @main
 struct HambugApp: App {
