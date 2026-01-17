@@ -9,6 +9,8 @@ import SwiftUI
 import PhotosUI
 import DesignSystem
 import Util
+import CommunityDI
+import CommunityPresentation
 
 public protocol ActivitesFactory {
   func makeMyActivitiesViewModel() -> MyActivitiesViewModel
@@ -28,13 +30,16 @@ public struct MyPageView: View {
   @State private var showPhotoPicker: Bool = false
   
   private let activitesFactory: ActivitesFactory
+  private let dependency: CommunityDependency
   
   public init(
     viewModel: MyPageViewModel,
-    activitesFactory: ActivitesFactory
+    activitesFactory: ActivitesFactory,
+    dependency: CommunityDependency
   ) {
     self._viewModel = Bindable(viewModel)
     self.activitesFactory = activitesFactory
+    self.dependency = dependency
   }
   
   public var body: some View {
@@ -52,7 +57,10 @@ public struct MyPageView: View {
           Spacer()
         }
         .navigationDestination(isPresented: $showMyActivitiesView, destination: {
-          MyActivitiesView(viewModel: activitesFactory.makeMyActivitiesViewModel())
+          MyActivitiesView(
+            viewModel: activitesFactory.makeMyActivitiesViewModel(),
+            dependency: dependency
+          )
         })
       }
       .confirmationDialog("프로필 편집", isPresented: $showInfoActionSheet, actions: {

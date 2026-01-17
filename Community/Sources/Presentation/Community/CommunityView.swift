@@ -9,6 +9,20 @@ import SwiftUI
 import DesignSystem
 import CommunityDomain
 import SharedUI
+import AlarmPresentation
+
+public protocol CommunityDependency: CommunityFactory,CommunityWriteFactory {
+  var component: CommunityDetailDependency { get }
+  var alarmListComponent: AlarmListDependecy { get }
+}
+
+public protocol CommunityDetailDependency: CommunityDetailFactory, UpdateBoardFactory, ReportBoardFactory {
+  
+}
+
+public protocol CommunityFactory {
+  func makeCommunityViewModel() -> CommunityViewModel
+}
 
 public protocol CommunityWriteFactory {
   func makeWriteViewModel() -> CommunityWriteViewModelProtocol
@@ -20,23 +34,13 @@ public protocol CommunityDetailFactory {
 
 public struct CommunityView: View {
   @State private var viewModel: CommunityViewModel
-  private let writeFactory: CommunityWriteFactory
-  private let detailFactory: CommunityDetailFactory
-  private let updateFactory: UpdateBoardFactory
-  private let reportFactory: ReportBoardFactory
+  private let dependency: CommunityDependency
   
   public init(
-    viewModel: CommunityViewModel,
-    writeFactory: CommunityWriteFactory,
-    detailFactory: CommunityDetailFactory,
-    updateFactory: UpdateBoardFactory,
-    reportFactory: ReportBoardFactory
+    dependency: CommunityDependency,
   ) {
-    self._viewModel = State(initialValue: viewModel)
-    self.writeFactory = writeFactory
-    self.detailFactory = detailFactory
-    self.updateFactory = updateFactory
-    self.reportFactory = reportFactory
+    self._viewModel = State(initialValue: dependency.makeCommunityViewModel())
+    self.dependency = dependency
   }
 
   public var body: some View {
@@ -50,9 +54,13 @@ public struct CommunityView: View {
         
         VStack(spacing: 0) {
           // 헤더
-          HeaderBar(type: .community)
-            .safeAreaPadding(.vertical, 18)
-            .safeAreaPadding(.horizontal, 15)
+          HeaderBar(type: .community) {
+            AlarmListView(
+              dependency: dependency.alarmListComponent
+            )
+          }
+          .safeAreaPadding(.vertical, 18)
+          .safeAreaPadding(.horizontal, 15)
           
           VStack(spacing: 0) {
             // 카테고리 필터와 뷰 토글
@@ -73,19 +81,15 @@ public struct CommunityView: View {
             ZStack {
               if viewModel.isListView {
                 CommunityListView(
-                  boards: viewModel.filteredBoards,
-                  detailFactory: detailFactory,
-                  updateFactory: updateFactory,
-                  reportFactory: reportFactory,
-                  viewModel: viewModel
+                  viewModel: viewModel,
+                  dependency: dependency,
+                  boards: viewModel.filteredBoards
                 )
               } else {
                 CommunityFeedView(
-                  boards: viewModel.filteredBoards,
-                  detailFactory: detailFactory,
-                  updateFactory: updateFactory,
-                  reportFactory: reportFactory,
-                  viewModel: viewModel
+                  viewModel: viewModel,
+                  dependency: dependency,
+                  boards: viewModel.filteredBoards
                 )
               }
             }
@@ -100,7 +104,7 @@ public struct CommunityView: View {
             Spacer()
             NavigationLink(
               destination: CommunityWriteView(
-                viewModel: writeFactory.makeWriteViewModel()
+                viewModel: dependency.makeWriteViewModel()
               )
             ) {
               Color.bgPencil
@@ -169,25 +173,18 @@ fileprivate struct CommunityFilterChip: View {
 
 // MARK: - List View
 public struct CommunityListView: View {
-  let boards: [Board]
-  let detailFactory: CommunityDetailFactory
-  let updateFactory: UpdateBoardFactory
-  let reportFactory: ReportBoardFactory
-  
   @State private var viewModel: CommunityViewModel
-
+  private let dependency: CommunityDependency
+  let boards: [Board]
+  
   public init(
+    viewModel: CommunityViewModel,
+    dependency: CommunityDependency,
     boards: [Board],
-    detailFactory: CommunityDetailFactory,
-    updateFactory: UpdateBoardFactory,
-    reportFactory: ReportBoardFactory,
-    viewModel: CommunityViewModel
   ) {
-    self.boards = boards
-    self.detailFactory = detailFactory
-    self.updateFactory = updateFactory
-    self.reportFactory = reportFactory
     self._viewModel = State(initialValue: viewModel)
+    self.dependency = dependency
+    self.boards = boards
   }
 
   public var body: some View {
@@ -196,11 +193,10 @@ public struct CommunityListView: View {
         ForEach(Array(boards.enumerated()), id: \.element.id) { index, board in
           NavigationLink(
             destination: CommunityDetailView(
-              viewModel: detailFactory.makeDetailViewModel(),
-              boardId: board.id,
-              updateFactory: updateFactory,
-              reportFactory: reportFactory
-            )) {
+              dependency: dependency.component,
+              boardId: board.id
+            )
+          ) {
             CommunityPostListCard(board: board)
           }
           .buttonStyle(PlainButtonStyle())
@@ -234,25 +230,18 @@ public struct CommunityListView: View {
 
 // MARK: - Feed View
 fileprivate struct CommunityFeedView: View {
-  let boards: [Board]
-  let detailFactory: CommunityDetailFactory
-  let updateFactory: UpdateBoardFactory
-  let reportFactory: ReportBoardFactory
-  
   @State private var viewModel: CommunityViewModel
+  private let dependency: CommunityDependency
+  let boards: [Board]
 
   init(
+    viewModel: CommunityViewModel,
+    dependency: CommunityDependency,
     boards: [Board],
-    detailFactory: CommunityDetailFactory,
-    updateFactory: UpdateBoardFactory,
-    reportFactory: ReportBoardFactory,
-    viewModel: CommunityViewModel
   ) {
-    self.boards = boards
-    self.detailFactory = detailFactory
-    self.updateFactory = updateFactory
-    self.reportFactory = reportFactory
     self._viewModel = State(initialValue: viewModel)
+    self.dependency = dependency
+    self.boards = boards
   }
 
   var body: some View {
@@ -261,10 +250,8 @@ fileprivate struct CommunityFeedView: View {
         ForEach(Array(boards.enumerated()), id: \.element.id) { index, board in
           NavigationLink(
             destination: CommunityDetailView(
-              viewModel: detailFactory.makeDetailViewModel(),
-              boardId: board.id,
-              updateFactory: updateFactory,
-              reportFactory: reportFactory
+              dependency: dependency.component,
+              boardId: board.id
             )
           ) {
             CommunityPostFeedCard(board: board)

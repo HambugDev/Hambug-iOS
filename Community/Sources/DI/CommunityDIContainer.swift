@@ -14,6 +14,9 @@ import CommunityData
 import CommunityPresentation
 import Managers
 
+import AlarmDI
+import AlarmPresentation
+
 struct CommunityWriteAssembly: Assembly {
   func assemble(container: GenericDIContainer) {
     container.register(CreateBoardUseCase.self) { resolver in
@@ -106,36 +109,38 @@ public final class CommunityDIContainer {
   }
 }
 
+
+extension CommunityDIContainer: CommunityDependency {
+  public var alarmListComponent: any AlarmPresentation.AlarmListDependecy {
+    container.resolve(AlarmDIContainer.self)
+  }
+  
+  public var component: any CommunityPresentation.CommunityDetailDependency {
+    self
+  }
+  
   // MARK: - Factory Methods
-  @MainActor
   public func makeCommunityViewModel() -> CommunityViewModel {
     return container.resolve(CommunityViewModel.self)
   }
-}
-
-extension CommunityDIContainer: CommunityWriteFactory {
-  public func makeWriteViewModel() -> any CommunityWriteViewModelProtocol {
+  
+  public func makeWriteViewModel() -> any CommunityPresentation.CommunityWriteViewModelProtocol {
     container.resolve(CommunityWriteViewModel.self)
   }
 }
 
-extension CommunityDIContainer: CommunityDetailFactory {
-  @MainActor
-  public func makeDetailViewModel() -> CommunityDetailViewModel {
-    return container.resolve(CommunityDetailViewModel.self)
+extension CommunityDIContainer: CommunityDetailDependency {
+  public func makeDetailViewModel() -> CommunityPresentation.CommunityDetailViewModel {
+    container.resolve(CommunityDetailViewModel.self)
   }
-}
-
-extension CommunityDIContainer: UpdateBoardFactory {
-  public func makeViewModel(boardId: Int) -> CommunityWriteViewModelProtocol {
-    return UpdateBoardViewModel(
+  
+  public func makeViewModel(boardId: Int) -> any CommunityPresentation.CommunityWriteViewModelProtocol {
+    UpdateBoardViewModel(
       boardId: boardId,
       updateBoardUseCase: container.resolve(UpdateBoardUseCase.self)
     )
   }
-}
-
-extension CommunityDIContainer: ReportBoardFactory {
+  
   public func makeViewModel(req: ReportRequest) -> CommunityReportViewModel {
     return CommunityReportViewModel(
       usecase: container.resolve(ReportContentUseCase.self),

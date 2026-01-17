@@ -39,19 +39,14 @@ public struct CommunityDetailView: View {
   @State private var reportReason: String = ""
 
   private let boardId: Int
-  private let updateFactory: UpdateBoardFactory
-  private let reportFactory: ReportBoardFactory
-  
+  private let dependency: CommunityDetailDependency
   public init(
-    viewModel: CommunityDetailViewModel,
-    boardId: Int,
-    updateFactory: UpdateBoardFactory,
-    reportFactory: ReportBoardFactory,
+    dependency: CommunityDetailDependency,
+    boardId: Int
   ) {
-    _viewModel = State(initialValue: viewModel)
+    _viewModel = State(initialValue: dependency.makeDetailViewModel())
     self.boardId = boardId
-    self.updateFactory = updateFactory
-    self.reportFactory = reportFactory
+    self.dependency = dependency
   }
   
   public var body: some View {
@@ -132,7 +127,7 @@ public struct CommunityDetailView: View {
          Int64(comment.authorId) != currentUserId {
         NavigationLink(
           destination: CommunityReportView(
-            viewModel: reportFactory.makeViewModel(
+            viewModel: dependency.makeViewModel(
               req: CommunityDomain.ReportRequest.init(
                 targetId: comment.id,
                 targetType: .comment,
@@ -154,7 +149,7 @@ public struct CommunityDetailView: View {
          Int64(authorId) == currentUserId {
         NavigationLink(
           destination: CommunityWriteView(
-            viewModel: updateFactory.makeViewModel(boardId: boardId),
+            viewModel: dependency.makeViewModel(boardId: boardId),
             title: viewModel.board?.title ?? "",
             content: viewModel.board?.content ?? ""
           )
@@ -174,7 +169,7 @@ public struct CommunityDetailView: View {
          Int64(authorId) != currentUserId {
         NavigationLink(
           destination: CommunityReportView(
-            viewModel: reportFactory.makeViewModel(
+            viewModel: dependency.makeViewModel(
               req: CommunityDomain.ReportRequest.init(
                 targetId: boardId,
                 targetType: .board,

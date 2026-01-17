@@ -16,11 +16,14 @@ import CommunityPresentation
 public struct MyActivitiesView: View {
   @State private var viewModel: MyActivitiesViewModel
 
-  private let communityDIContainer: CommunityDIContainer
+  private let dependency: CommunityDependency
   
-  public init(viewModel: MyActivitiesViewModel) {
+  public init(
+    viewModel: MyActivitiesViewModel,
+    dependency: CommunityDependency
+  ) {
     self._viewModel = State(initialValue: viewModel)
-    self.communityDIContainer = .init(appContainer: .shared)
+    self.dependency = dependency
   }
 
   public var body: some View {
@@ -68,17 +71,15 @@ public struct MyActivitiesView: View {
   private var contentView: some View {
     if viewModel.selectedTab == .posts {
       CommunityListView(
-        boards: viewModel.myBoards,
-        detailFactory: communityDIContainer,
-        updateFactory: communityDIContainer,
-        reportFactory: communityDIContainer,
-        viewModel: communityDIContainer.makeCommunityViewModel()
+        viewModel: dependency.makeCommunityViewModel(),
+        dependency: dependency,
+        boards: viewModel.myBoards
       )
       .padding(.horizontal, 20)
       .padding(.vertical, 12)
     } else {
       MyCommentsListView(
-        communityDIContainer: communityDIContainer,
+        dependency: dependency.component,
         comments: viewModel.myComments,
         isLoadingMore: viewModel.isLoadingMoreComments,
         onLoadMore: { index in
@@ -188,7 +189,7 @@ fileprivate struct MyBoardListCard: View {
 
 // MARK: - 댓글 리스트 뷰
 struct MyCommentsListView: View {
-  let communityDIContainer: CommunityDIContainer
+  let dependency: CommunityDetailDependency
   let comments: [MyCommentActivity]
   let isLoadingMore: Bool
   let onLoadMore: (Int) -> Void
@@ -198,12 +199,12 @@ struct MyCommentsListView: View {
       LazyVStack(spacing: 0) {
         ForEach(Array(comments.enumerated()), id: \.element.id) { index, comment in
           NavigationLink(
-            destination: CommunityDetailView(
-              viewModel: communityDIContainer.makeDetailViewModel(),
-              boardId: Int(comment.boardId),
-              updateFactory: communityDIContainer,
-              reportFactory: communityDIContainer
-            )) {
+            destination:
+              CommunityDetailView(
+                dependency: dependency,
+                boardId: Int(comment.boardId)
+              )
+             ) {
             MyCommentActivityCard(comment: comment)
           }
           .buttonStyle(PlainButtonStyle())
@@ -288,16 +289,6 @@ struct HambugNavigationView<Content: View>: View {
     }
     .padding(.vertical, 12)
   }
-}
-
-#Preview {
-  // Preview requires mocked dependencies
-  MyActivitiesView(
-    viewModel: MyActivitiesViewModel(
-      getMyBoardsUseCase: MockGetMyBoardsUseCase(),
-      getMyCommentsUseCase: MockGetMyCommentsUseCase()
-    )
-  )
 }
 
 // MARK: - Mock UseCases for Preview
