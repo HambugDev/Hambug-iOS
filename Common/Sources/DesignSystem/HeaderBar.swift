@@ -22,15 +22,33 @@ public enum HeaderType {
       return "마이페이지"
     }
   }
+  
+  var hasNotification: Bool {
+    switch self {
+    case .home, .community: return true
+    case .myPage: return false
+    }
+  }
 }
 // 상단 헤더 - 로고, 알림
-public struct HeaderBar: View {
+public struct HeaderBar<Destination: View>: View {
   private let fontStyle: FontStyle
   private let type: HeaderType
+  private let destination: Destination?
   
-  public init(type: HeaderType) {
+  public init(
+    type: HeaderType,
+    @ViewBuilder destination: () -> Destination
+  ) where Destination: View {
     fontStyle = .init(.custom("GeekbleMalang2"), size: 24.0)
     self.type = type
+    self.destination = destination()
+  }
+  
+  public init(type: HeaderType) where Destination == EmptyView {
+    fontStyle = .init(.custom("GeekbleMalang2"), size: 24.0)
+    self.type = type
+    self.destination = nil
   }
   
   @ViewBuilder
@@ -50,7 +68,6 @@ public struct HeaderBar: View {
       
     case .community, .myPage:
       Text(type.displayText)
-//        .padding(.bottom, 15)
         .pretendard(.title(.t2))
         .foregroundColor(type == .community ? .white : Color.textG900)
     }
@@ -58,11 +75,9 @@ public struct HeaderBar: View {
   
   @ViewBuilder
   var notificationSection: some View {
-    switch type {
-    case .home, .community:
+    if let destination {
       NavigationLink {
-        AlarmListView()
-        Text("asd")
+        destination
       } label: {
         Image("notification")
           .resizable()
@@ -70,10 +85,9 @@ public struct HeaderBar: View {
           .frame(width: 30, height: 30)
           .foregroundStyle(type == .home ? .black : .white)
       }
-    case .myPage:
-      EmptyView()
     }
   }
+  
   public var body: some View {
     HStack {
       titleSection
@@ -84,5 +98,9 @@ public struct HeaderBar: View {
 }
 
 #Preview {
-  HeaderBar(type: .home)
+  HeaderBar(type: .home) {
+    AnyView(Text("Destination"))
+  }
+  
+  HeaderBar(type: .myPage)
 }
