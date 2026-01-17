@@ -54,6 +54,7 @@
 		B54134FA2EF57F4100CC4938 /* Home */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Home; sourceTree = "<group>"; };
 		B54134FB2EF57F6400CC4938 /* Community */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Community; sourceTree = "<group>"; };
 		B54135972EF5B58100CC4938 /* 3rdParty */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = 3rdParty; sourceTree = "<group>"; };
+		B5C7D1B32F1B7B6600C20E14 /* Alarm */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Alarm; sourceTree = "<group>"; };
 		B5E822EB2EA2791900F3E10E /* Intro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Intro; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -135,6 +136,7 @@
 		915BC5C92E3CB9B50062B78E = {
 			isa = PBXGroup;
 			children = (
+				B5C7D1B32F1B7B6600C20E14 /* Alarm */,
 				B54135972EF5B58100CC4938 /* 3rdParty */,
 				B54134FB2EF57F6400CC4938 /* Community */,
 				B54134FA2EF57F4100CC4938 /* Home */,

@@ -37,6 +37,7 @@ let package = Package(
     .package(name: "DI", path: "../DI"),
     .package(name: "Common", path: "../Common"),
     .package(name: "Infrastructure", path: "../Infrastructure"),
+    .package(name: "Alarm", path: "../Alarm"),
   ],
   targets: [
     .target(
@@ -77,6 +78,7 @@ let package = Package(
         .target(config: .domain),
         .product(name: "DesignSystem", package: "Common"),
         .product(name: "SharedUI", package: "Common"),
+        .product(name: "AlarmDI", package: "Alarm"),
       ],
     ),
   ]
