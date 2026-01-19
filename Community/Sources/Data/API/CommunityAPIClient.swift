@@ -22,7 +22,8 @@ public protocol CommunityAPIClientInterface: Sendable {
     title: String,
     content: String,
     category: String,
-    images: [UIImage]
+    hasImage: Bool,
+    multiparts: [MultiPartFormType]
   ) -> AnyPublisher<BoardResponseDTO, NetworkError>
   
   func updateBoard(
@@ -30,7 +31,8 @@ public protocol CommunityAPIClientInterface: Sendable {
     title: String,
     content: String,
     category: String,
-    images: [UIImage]
+    hasImage: Bool,
+    multiparts: [MultiPartFormType]
   ) -> AnyPublisher<BoardResponseDTO, NetworkError>
   
   func deleteBoard(boardId: Int) -> AnyPublisher<Void, NetworkError>
@@ -91,31 +93,44 @@ public final class CommunityAPIClient: CommunityAPIClientInterface {
     title: String,
     content: String,
     category: String,
-    images: [UIImage]
+    hasImage: Bool,
+    multiparts: [MultiPartFormType]
   ) -> AnyPublisher<BoardResponseDTO, NetworkError> {
+    var multiparts: [MultiPartFormType] = multiparts
+    
     let dto = BoardRequestDTO(
       title: title,
       content: content,
       category: category,
-      imageUrls: [] // multipart에서는 사용 안함
+      hasImage: hasImage
     )
 
     let endpoint = BoardEndpoint.createBoard(dto)
 
-    if images.isEmpty {
-      // 이미지 없으면 일반 JSON request
-      return networkService.request(endpoint, responseType: SuccessResponse<BoardResponseDTO>.self)
-        .map(\.data)
-        .eraseToAnyPublisher()
-    } else {
-      // 이미지 있으면 multipart upload
-      return networkService.uploadMultipart(
+    if hasImage {
+      // 이미지 있으면 multipart upload (request 필드에 JSON, images 필드에 이미지)
+      if let body = endpoint.body {
+        let bodyPart = MultiPartFormType(
+          data: body,
+          fiedlName: "request",
+          mimeType: "application/json"
+        )
+        multiparts.append(bodyPart)
+      }
+      
+      
+      return networkService.uploadMultipartWithJsonRequest(
         endpoint,
-        images: images,
+        multiparts: multiparts,
         responseType: SuccessResponse<BoardResponseDTO>.self
       )
       .map(\.data)
       .eraseToAnyPublisher()
+    } else {
+      // 이미지 없으면 일반 JSON request
+      return networkService.request(endpoint, responseType: SuccessResponse<BoardResponseDTO>.self)
+        .map(\.data)
+        .eraseToAnyPublisher()
     }
   }
   
@@ -124,31 +139,43 @@ public final class CommunityAPIClient: CommunityAPIClientInterface {
     title: String,
     content: String,
     category: String,
-    images: [UIImage]
+    hasImage: Bool,
+    multiparts: [MultiPartFormType]
   ) -> AnyPublisher<BoardResponseDTO, NetworkError> {
+    var multiparts: [MultiPartFormType] = multiparts
+    
     let dto = BoardRequestDTO(
       title: title,
       content: content,
       category: category,
-      imageUrls: [] // multipart에서는 사용 안함
+      hasImage: hasImage
     )
 
     let endpoint = BoardEndpoint.updateBoard(boardId: boardId, body: dto)
 
-    if images.isEmpty {
-      // 이미지 없으면 일반 JSON request
-      return networkService.request(endpoint, responseType: SuccessResponse<BoardResponseDTO>.self)
-        .map(\.data)
-        .eraseToAnyPublisher()
-    } else {
-      // 이미지 있으면 multipart upload
-      return networkService.uploadMultipart(
+    if hasImage {
+      // 이미지 있으면 multipart upload (request 필드에 JSON, images 필드에 이미지)
+      if let body = endpoint.body {
+        let bodyPart = MultiPartFormType(
+          data: body,
+          fiedlName: "request",
+          mimeType: "application/json"
+        )
+        multiparts.append(bodyPart)
+      }
+      
+      return networkService.uploadMultipartWithJsonRequest(
         endpoint,
-        images: images,
+        multiparts: multiparts,
         responseType: SuccessResponse<BoardResponseDTO>.self
       )
       .map(\.data)
       .eraseToAnyPublisher()
+    } else {
+      // 이미지 없으면 일반 JSON request
+      return networkService.request(endpoint, responseType: SuccessResponse<BoardResponseDTO>.self)
+        .map(\.data)
+        .eraseToAnyPublisher()
     }
   }
   

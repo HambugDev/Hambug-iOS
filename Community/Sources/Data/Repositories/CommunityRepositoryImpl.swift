@@ -44,12 +44,33 @@ public final class CommunityRepositoryImpl: CommunityRepository {
     category: BoardCategory,
     images: [UIImage]
   ) async throws -> Board {
+    let hasImage = !images.isEmpty
+    var multiparts: [MultiPartFormType] = []
+    
+    if hasImage {
+      for (index, image) in images.enumerated() {
+        guard let imageData = image.jpegData(compressionQuality: 0.9) else {
+          throw NSError(domain: "", code: -0000)
+        }
+        let fileName = "image_\(index)_\(UUID().uuidString).jpg"
+        let part = MultiPartFormType(
+          data: imageData,
+          fiedlName: "images",
+          fileName: fileName,
+          mimeType: "image/jpeg"
+        )
+        
+        multiparts.append(part)
+      }
+    }
+    
     return try await apiClient
       .createBoard(
         title: title,
         content: content,
         category: category.rawValue,
-        images: images
+        hasImage: hasImage,
+        multiparts: multiparts
       )
       .map { $0.toDomain() }
       .mapError { $0 as Error }
@@ -71,13 +92,34 @@ public final class CommunityRepositoryImpl: CommunityRepository {
     category: CommunityDomain.BoardCategory,
     images: [UIImage]
   ) async throws -> CommunityDomain.Board {
+    let hasImage = !images.isEmpty
+    var multiparts: [MultiPartFormType] = []
+    
+    if hasImage {
+      for (index, image) in images.enumerated() {
+        guard let imageData = image.jpegData(compressionQuality: 0.9) else {
+          throw NSError(domain: "", code: -0000)
+        }
+        let fileName = "image_\(index)_\(UUID().uuidString).jpg"
+        let part = MultiPartFormType(
+          data: imageData,
+          fiedlName: "images",
+          fileName: fileName,
+          mimeType: "image/jpeg"
+        )
+        
+        multiparts.append(part)
+      }
+    }
+    
     return try await apiClient
       .updateBoard(
         boardId: boardId,
         title: title,
         content: content,
         category: category.rawValue,
-        images: images
+        hasImage: hasImage,
+        multiparts: multiparts
       )
       .map { $0.toDomain() }
       .mapError { $0 as Error }

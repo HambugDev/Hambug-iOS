@@ -8,11 +8,6 @@
 import SharedDomain
 
 // MARK: - Request DTOs
-struct UpdateProfileRequest: Codable {
-  let userId: Int
-  let profileImageURL: String?
-}
-
 struct UpdateNicknameRequest: Codable {
   let nickname: String
 }

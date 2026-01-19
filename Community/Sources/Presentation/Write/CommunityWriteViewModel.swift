@@ -13,6 +13,8 @@ import CommunityDomain
 import Util
 
 public protocol CommunityWriteViewModelProtocol {
+  var title: String { get set }
+  var content: String { get set }
   /// 선택된 이미지 목록
   var selectedImages: [SelectedImage] { get set }
   
@@ -54,6 +56,8 @@ public protocol CommunityWriteViewModelProtocol {
 
 @Observable
 public final class CommunityWriteViewModel: CommunityWriteViewModelProtocol {
+  public var title: String = ""
+  public var content: String = ""
   // MARK: - Published State (auto-tracked by @Observable)
   /// 선택된 이미지 목록
   public var selectedImages: [SelectedImage] = []
@@ -225,17 +229,56 @@ public final class CommunityWriteViewModel: CommunityWriteViewModelProtocol {
 
 @Observable
 public final class UpdateBoardViewModel: CommunityWriteViewModelProtocol {
+  public var title: String = ""
+  public var content: String = ""
+  
   /// 최대 이미지 개수
   private let maxImages: Int = 5
   
   // MARK: - Dependencies
-
-  private let updateBoardUseCase: UpdateBoardUseCase
   private let boardId: Int
+  private let boardDetailUseCase: BoardDetailUseCase
+  private let updateBoardUseCase: UpdateBoardUseCase
   
-  public init(boardId: Int, updateBoardUseCase: UpdateBoardUseCase) {
+  
+  public init(
+    boardId: Int,
+    boardDetailUseCase: BoardDetailUseCase,
+    updateBoardUseCase: UpdateBoardUseCase
+  ) {
     self.boardId = boardId
+    self.boardDetailUseCase = boardDetailUseCase
     self.updateBoardUseCase = updateBoardUseCase
+    
+    Task {
+      let board = try? await boardDetailUseCase.getBoard(boardId: boardId)
+      self.title = board?.title ?? ""
+      self.content = board?.content ?? ""
+      if let imageUrls = board?.imageUrls {
+        for imageUrl in imageUrls {
+          let url = URL(string: imageUrl)!
+          
+          guard
+            let imageData = try? Data(contentsOf: url),
+            let image = UIImage(data: imageData)
+          else { return }
+          
+          let originalSize = imageData.count
+          let fileName = "image_\(UUID().uuidString).jpg"
+          self.selectedImages.append(
+            SelectedImage(
+              image: image,
+              originalSize: originalSize,
+              fileName: fileName
+            )
+          )
+        }
+      }
+      
+      
+      
+    }
+    
   }
   
   public var selectedImages: [CommunityDomain.SelectedImage] = []

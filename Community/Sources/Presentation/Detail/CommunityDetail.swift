@@ -149,9 +149,7 @@ public struct CommunityDetailView: View {
          Int64(authorId) == currentUserId {
         NavigationLink(
           destination: CommunityWriteView(
-            viewModel: dependency.makeViewModel(boardId: boardId),
-            title: viewModel.board?.title ?? "",
-            content: viewModel.board?.content ?? ""
+            viewModel: dependency.makeViewModel(boardId: boardId)
           )
         ) {
           Button("수정") {

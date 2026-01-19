@@ -87,46 +87,32 @@ public final class NetworkServiceImpl: NetworkServiceInterface {
     }
   }
 
-  public func uploadMultipart<T: Decodable>(
+  public func uploadMultipartWithJsonRequest<T: Decodable>(
     _ endpoint: any Endpoint,
-    images: [UIImage],
+    multiparts: [MultiPartFormType],
     responseType: T.Type
   ) -> AnyPublisher<T, NetworkError> {
     do {
       let urlRequest = try endpoint.createURLRequest()
-      
+
 #if DEBUG
       logger?.requestLogger(request: urlRequest)
 #endif
-      
+
       guard let url = endpoint.createURL() else {
         throw NetworkError.invalidURL
       }
-      
+
       return session.upload(
         multipartFormData: { multipartFormData in
-          // 1. JSON body의 텍스트 필드 추가 (title, content, category)
-          if let body = endpoint.body,
-             let jsonObject = try? JSONSerialization.jsonObject(with: body) as? [String: Any] {
-            for (key, value) in jsonObject {
-              if let stringValue = "\(value)".data(using: .utf8) {
-                multipartFormData.append(stringValue, withName: key)
-              }
-            }
-          }
-
-          // 2. 이미지 파일 추가
-          for (index, image) in images.enumerated() {
-            // ImageProcessor는 Util 모듈에 있으므로 여기서는 기본 압축 사용
-            if let imageData = image.jpegData(compressionQuality: 0.85) {
-              let fileName = "image_\(index)_\(UUID().uuidString).jpg"
-              multipartFormData.append(
-                imageData,
-                withName: "images",
-                fileName: fileName,
-                mimeType: "image/jpeg"
-              )
-            }
+          // 1. JSON body를 'request' 필드에 application/json으로 추가
+          for multipart in multiparts {
+            multipartFormData.append(
+              multipart.data,
+              withName: multipart.fiedlName,
+              fileName: multipart.fileName,
+              mimeType: multipart.mimeType
+            )
           }
         },
         to: url,

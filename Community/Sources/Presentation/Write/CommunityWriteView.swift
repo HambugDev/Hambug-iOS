@@ -16,9 +16,6 @@ public struct CommunityWriteView: View {
   @State private var viewModel: CommunityWriteViewModelProtocol
   
   @State private var selectedCategory: BoardCategory = .freeTalk
-  @State private var title: String = ""
-  @State private var content: String = ""
-  @State private var characterCount: Int = 0
   @FocusState private var focusedField: Field?
   
   @State private var photosPickerItems: [PhotosPickerItem] = []
@@ -27,21 +24,14 @@ public struct CommunityWriteView: View {
 
   public init(
     viewModel: CommunityWriteViewModelProtocol,
-    title: String = "",
-    content: String = "",
-    characterCount: Int = 0,
     maxCharacterCount: Int = 300
   ) {
     self.viewModel = viewModel
-    
-    self.title = title
-    self.content = content
-    self.characterCount = content.count
     self.maxCharacterCount = maxCharacterCount
   }
 
   private var isCharacterMax: Bool {
-    characterCount >= maxCharacterCount
+    viewModel.content.count >= maxCharacterCount
   }
   
   enum Field: Hashable {
@@ -86,8 +76,8 @@ public struct CommunityWriteView: View {
             focusedField = nil
             Task {
               let success = await viewModel.writeBoard(
-                title: title,
-                content: content,
+                title: viewModel.title,
+                content: viewModel.content,
                 category: selectedCategory
               )
               if success {
@@ -169,7 +159,7 @@ public struct CommunityWriteView: View {
       RequiredText("제목")
 
       BottomLineTextField(
-        title: $title,
+        title: $viewModel.title,
         focusedField: $focusedField,
         field: .title
       )
@@ -183,7 +173,7 @@ public struct CommunityWriteView: View {
 
       BorderTextEditor(
         maxCharacterCount: maxCharacterCount,
-        content: $content,
+        content: $viewModel.content,
         focusedField: $focusedField,
         field: .content
       )

@@ -61,33 +61,35 @@ public final class MyPageRepositoryImpl: MyPageRepository {
       let error = NSError(domain: "incorrect user id", code: -1)
       throw error
     }
-
-    let request = UpdateProfileRequest(userId: userId, profileImageURL: nil)
-    let endpoint = MyPageEndpoint.updateProfile(request)
-
-    do {
-      if let image = image {
-        // Upload with multipart if image exists
-        return try await networkService.uploadMultipart(
-          endpoint,
-          images: [image],
-          responseType: SuccessResponse<UserProfileDTO>.self
-        )
-        .map { $0.data.profileImageUrl }
-        .async()
-      } else {
-        // Send null request for default image
-        return try await networkService.request(
-          endpoint,
-          responseType: SuccessResponse<UserProfileDTO>.self
-        )
-        .map { $0.data.profileImageUrl }
-        .async()
-      }
-    } catch {
-      throw error
-    }
     
+    let endpoint = MyPageEndpoint.updateProfile(userId: userId)
+    
+    if let image = image {
+      guard let imageData = image.jpegData(compressionQuality: 0.9) else {
+        throw NSError(domain: "", code: -0000)
+      }
+      let fileName = "image_\(UUID().uuidString).jpg"
+      let imagePart = MultiPartFormType(
+        data: imageData,
+        fiedlName: "file",
+        fileName: fileName,
+        mimeType: "image/jpeg"
+      )
+      
+      return try await networkService.uploadMultipartWithJsonRequest(
+        endpoint,
+        multiparts: [imagePart],
+        responseType: SuccessResponse<UserProfileDTO>.self
+      )
+      .map { $0.data.profileImageUrl }
+      .async()
+    } else {
+      return try await networkService.request(
+        endpoint, responseType: SuccessResponse<UserProfileDTO>.self
+      )
+      .map { $0.data.profileImageUrl }
+      .async()
+    }
   }
   
   public func applyDefaultImage() async throws {

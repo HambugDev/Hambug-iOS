@@ -32,9 +32,9 @@ public enum BoardEndpoint: Endpoint {
   public var path: String {
     switch self {
     case .createBoard(let dto):
-      return dto.imageUrls.isEmpty ? "/boards" : "/boards/with-image"
+      return dto.hasImage ? "/boards/with-images" : "/boards"
     case .updateBoard(let id, let dto):
-      return dto.imageUrls.isEmpty ? "/boards/\(id)" : "/boards/\(id)/with-image"
+      return dto.hasImage ? "/boards/\(id)/with-images" : "/boards/\(id)"
     case .boards:
       return "/boards"
     case .boardsByCategory:

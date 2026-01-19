@@ -12,17 +12,22 @@ public struct BoardRequestDTO: Encodable, Sendable {
   public let title: String
   public let content: String
   public let category: String
-  public let imageUrls: [String]
+  public let hasImage: Bool
+
+
+  private enum CodingKeys: String, CodingKey {
+    case title, content, category
+  }
 
   public init(
     title: String,
     content: String,
     category: String,
-    imageUrls: [String]
+    hasImage: Bool
   ) {
     self.title = title
     self.content = content
     self.category = category
-    self.imageUrls = imageUrls
+    self.hasImage = hasImage
   }
 }

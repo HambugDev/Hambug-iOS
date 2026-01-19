@@ -13,9 +13,9 @@ import UIKit
 public protocol NetworkServiceInterface: Sendable {
   func request<T: Decodable>(_ endpoint: any Endpoint, responseType: T.Type) -> AnyPublisher<T, NetworkError>
 
-  func uploadMultipart<T: Decodable>(
+  func uploadMultipartWithJsonRequest<T: Decodable>(
     _ endpoint: any Endpoint,
-    images: [UIImage],
+    multiparts: [MultiPartFormType],
     responseType: T.Type
   ) -> AnyPublisher<T, NetworkError>
 }
