@@ -35,7 +35,7 @@ public final class MyPageViewModel {
     do {
       let response = try await usecase.fetchProfile()
       isLoading = false
-      user = user
+      user = response
       profileNickName = response.nickname
     } catch {
       

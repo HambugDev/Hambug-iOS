@@ -24,7 +24,9 @@ public final class MyActivitiesViewModel {
   public var isLoadingMoreComments: Bool = false
 
   public var errorMessage: String? = nil
-  public var selectedTab: ActivityTab = .posts
+  public var selectedTab: ActivityTab = .posts {
+    didSet { refreshCurrentTab() }
+  }
 
   // MARK: - Dependencies
   private let getMyBoardsUseCase: GetMyBoardsUseCase
@@ -45,11 +47,6 @@ public final class MyActivitiesViewModel {
   ) {
     self.getMyBoardsUseCase = getMyBoardsUseCase
     self.getMyCommentsUseCase = getMyCommentsUseCase
-
-    Task {
-      await loadBoards()
-      await loadComments()
-    }
   }
 
   // MARK: - Public Methods - Boards
