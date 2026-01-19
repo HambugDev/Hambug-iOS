@@ -12,7 +12,7 @@ import NetworkImpl
 // MARK: - MyPage Endpoints
 enum MyPageEndpoint: Endpoint {
   case authMe
-  case updateProfile(UpdateProfileRequest)
+  case updateProfile(userId: Int)
   case updateNickname(userID: Int, nickname: String)
   case logout
   case deleteAccount(provider: String)
@@ -28,8 +28,8 @@ enum MyPageEndpoint: Endpoint {
     switch self {
     case .authMe:
       return "/api/v1/auth/me"
-    case let .updateProfile(param):
-      return "/api/v1/users/\(param.userId)/profile"
+    case let .updateProfile(userId):
+      return "/api/v1/users/\(userId)/profile"
     case let .updateNickname(id, _):
       return "/api/v1/users/\(id)/nickname"
     case .logout:
@@ -71,9 +71,6 @@ enum MyPageEndpoint: Endpoint {
   
   var body: Data? {
     switch self {
-    case .updateProfile(let request):
-      // TODO: multi-part
-      return try? JSONEncoder().encode(request.profileImageURL)
     case let .updateNickname(_, nickname):
       let request = UpdateNicknameRequest(nickname: nickname)
       return try? JSONEncoder().encode(request)

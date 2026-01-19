@@ -137,6 +137,7 @@ extension CommunityDIContainer: CommunityDetailDependency {
   public func makeViewModel(boardId: Int) -> any CommunityPresentation.CommunityWriteViewModelProtocol {
     UpdateBoardViewModel(
       boardId: boardId,
+      boardDetailUseCase: container.resolve(BoardDetailUseCase.self),
       updateBoardUseCase: container.resolve(UpdateBoardUseCase.self)
     )
   }
