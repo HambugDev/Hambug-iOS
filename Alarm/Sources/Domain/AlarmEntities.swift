@@ -39,18 +39,18 @@ extension [AlarmPayload] {
 
 public struct NotificationListData: Sendable {
   public let content: [AlarmPayload]
-  public let lastId: Int?
-  public let hasNext: Bool
+  public let netxCursorId: Int?
+  public let nextPage: Bool
 
   private enum CodingKeys: String, CodingKey {
     case content
-    case lastId
-    case hasNext
+    case netxCursorId
+    case nextPage
   }
   
-  public init(content: [AlarmPayload], lastId: Int?, hasNext: Bool) {
+  public init(content: [AlarmPayload], netxCursorId: Int?, nextPage: Bool) {
     self.content = content
-    self.lastId = lastId
-    self.hasNext = hasNext
+    self.netxCursorId = netxCursorId
+    self.nextPage = nextPage
   }
 }

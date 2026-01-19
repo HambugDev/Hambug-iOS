@@ -51,7 +51,7 @@ extension MyBoardsResponseDTO {
     return BoardListData(
       content: content.map { $0.toDomain() },
       nextCursorId: nextCursorId,
-      hasNextPage: nextPage
+      nextPage: nextPage
     )
   }
 }

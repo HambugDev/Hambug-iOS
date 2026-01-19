@@ -35,6 +35,9 @@ public struct MyActivitiesView: View {
       }
       .background(Color.bgG75)
     }
+    .task {
+      await viewModel.loadBoards()
+    }
     .toolbar(.hidden, for: .navigationBar)
     .refreshable {
       viewModel.refreshCurrentTab()
@@ -294,7 +297,7 @@ struct HambugNavigationView<Content: View>: View {
 // MARK: - Mock UseCases for Preview
 private final class MockGetMyBoardsUseCase: GetMyBoardsUseCase {
   func execute(lastId: Int?, limit: Int, order: String) async throws -> BoardListData {
-    return BoardListData(content: [], nextCursorId: nil, hasNextPage: false)
+    return BoardListData(content: [], nextCursorId: nil, nextPage: false)
   }
 }
 

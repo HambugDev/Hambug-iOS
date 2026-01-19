@@ -10,13 +10,13 @@ import AlarmDomain
 
 public struct NotificationListDataDTO: Decodable, Sendable {
   public let content: [NotificationResponseDTO]
-  public let lastId: Int?
-  public let hasNext: Bool
+  public let netxCursorId: Int?
+  public let nextPage: Bool
 
   private enum CodingKeys: String, CodingKey {
     case content
-    case lastId
-    case hasNext
+    case netxCursorId
+    case nextPage
   }
 }
 
@@ -24,8 +24,8 @@ extension NotificationListDataDTO {
   func toDomain() -> NotificationListData {
     return NotificationListData(
       content: content.map { $0.toDomain()},
-      lastId: lastId,
-      hasNext: hasNext
+      netxCursorId: netxCursorId,
+      nextPage: nextPage
     )
   }
 }

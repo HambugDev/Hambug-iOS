@@ -152,9 +152,9 @@ public struct BoardListData: Sendable {
   public let nextCursorId: Int?
   public let hasNextPage: Bool
 
-  public init(content: [Board], nextCursorId: Int?, hasNextPage: Bool) {
+  public init(content: [Board], nextCursorId: Int?, nextPage: Bool) {
     self.content = content
     self.nextCursorId = nextCursorId
-    self.hasNextPage = hasNextPage
+    self.hasNextPage = nextPage
   }
 }
