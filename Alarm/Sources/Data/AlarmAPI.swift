@@ -13,7 +13,7 @@ struct AlarmEndpoint: Endpoint {
   var path: String = "/notifications"
   var method: NetworkInterface.HTTPMethod = .GET
   var headers: [String : String] = [:]
-  var queryParameters: [String : Any] = [:]
+  var queryParameters: [String : String] = [:]
   var body: Data? = nil
 }
 public enum BoardEndpoint: Endpoint {
@@ -41,7 +41,7 @@ public enum BoardEndpoint: Endpoint {
     return [:]
   }
 
-  public var queryParameters: [String: Any] {
+  public var queryParameters: [String: String] {
     switch self {
     case let .fetchNotificaitons(dto):
       return queryEncoder.encode(dto)

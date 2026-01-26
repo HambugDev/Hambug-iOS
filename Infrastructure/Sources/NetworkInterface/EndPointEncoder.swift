@@ -8,16 +8,16 @@
 import Foundation
 
 public protocol EndPointEncoder {
-  func encode(_ value: Encodable) -> [String: Any]
+  func encode(_ value: Encodable) -> [String: String]
 }
 
 public struct DefaultQueryEncoder: EndPointEncoder {
   public init() {}
-  public func encode(_ value: Encodable) -> [String: Any] {
+  public func encode(_ value: Encodable) -> [String: String] {
     let encoder = JSONEncoder()
     guard
       let data = try? encoder.encode(value),
-      let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
+      let object = try? JSONSerialization.jsonObject(with: data) as? [String: String]
     else { return [:] }
     
     return object

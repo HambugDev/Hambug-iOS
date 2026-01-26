@@ -16,7 +16,7 @@ struct FCMEndpoint: Endpoint {
   
   var headers: [String : String] = [:]
   
-  let queryParameters: [String : Any] = [:]
+  let queryParameters: [String : String] = [:]
   
   let body: Data?
   

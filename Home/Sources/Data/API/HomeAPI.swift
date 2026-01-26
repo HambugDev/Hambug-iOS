@@ -33,7 +33,7 @@ public enum HomeEndpoint: Endpoint {
     return [:]
   }
   
-  public var queryParameters: [String: Any] {
+  public var queryParameters: [String: String] {
     return [:]
   }
   

@@ -125,7 +125,7 @@ extension Board {
     )] + _sampleData
   }
 
-  private static let _sampleData: [Board] = (2...18).map {
+  private static let _sampleData: [Board] = (2...200).map {
     let now = Date()
     return Board(
       id: $0,

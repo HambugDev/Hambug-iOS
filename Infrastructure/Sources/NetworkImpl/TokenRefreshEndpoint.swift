@@ -13,7 +13,7 @@ struct TokenRefreshEndpoint: Endpoint {
   let path: String = "/api/v1/auth/refresh"
   let method: NetworkInterface.HTTPMethod = .POST
   let headers: [String : String]
-  nonisolated(unsafe) let queryParameters: [String : Any] = [:]
+  let queryParameters: [String : String] = [:]
   let body: Data? = nil
   
   init(headers: [String : String]) {

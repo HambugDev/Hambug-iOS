@@ -10,7 +10,7 @@ import UIKit
 import SharedDomain
 import Util
 
-public protocol MyPageUseCase {
+public protocol MyPageUseCase: Sendable {
   func fetchProfile() async throws -> User
 
   func updateNickname(_ nickName: String) async

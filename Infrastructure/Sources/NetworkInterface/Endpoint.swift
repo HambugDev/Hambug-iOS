@@ -22,7 +22,7 @@ public protocol Endpoint: Sendable {
   var path: String { get }
   var method: HTTPMethod { get }
   var headers: [String: String] { get }
-  var queryParameters: [String: Any] { get }
+  var queryParameters: [String: String] { get }
   var queryEncoder: EndPointEncoder { get }
   var body: Data? { get }
 }

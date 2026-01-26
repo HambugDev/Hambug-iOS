@@ -6,7 +6,7 @@
 //
 
 
-public protocol JWTTokenStorageable {
+public protocol JWTTokenStorageable: Sendable {
   func save(accessToken: String, refreshToken: String?) throws
   func load() -> (accessToken: String?, refreshToken: String?)
   func clear() throws

@@ -7,6 +7,7 @@
 
 import DIKit
 import NetworkInterface
+import Managers
 import NetworkImpl
 import MyPageDomain
 import MyPageData
@@ -19,7 +20,8 @@ struct MyPageAssembly: Assembly {
     // Repository (singleton)
     container.register(MyPageRepository.self) { resolver in
       MyPageRepositoryImpl(
-        networkService: resolver.resolve(NetworkServiceInterface.self)
+        networkService: resolver.resolve(NetworkServiceInterface.self),
+        userDefaultsManager: resolver.resolve(UserDefaultsManager.self)
       )
     }
 
@@ -50,7 +52,7 @@ struct MyPageAssembly: Assembly {
       )
     }
 
-    container.register(MyActivitiesViewModel.self) { @MainActor resolver in
+    container.register(MyActivitiesViewModel.self) { resolver in
       MyActivitiesViewModel(
         getMyBoardsUseCase: resolver.resolve(GetMyBoardsUseCase.self),
         getMyCommentsUseCase: resolver.resolve(GetMyCommentsUseCase.self)

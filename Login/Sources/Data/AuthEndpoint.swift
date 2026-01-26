@@ -36,7 +36,7 @@ enum AuthEndpoint: Endpoint {
     }
   }
   
-  var queryParameters: [String : Any] {
+  var queryParameters: [String : String] {
     switch self {
     default: [:]
     }

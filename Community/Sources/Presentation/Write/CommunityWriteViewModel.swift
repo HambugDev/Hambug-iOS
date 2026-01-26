@@ -12,6 +12,7 @@ import Observation
 import CommunityDomain
 import Util
 
+@MainActor
 public protocol CommunityWriteViewModelProtocol {
   var title: String { get set }
   var content: String { get set }
@@ -107,7 +108,7 @@ public final class CommunityWriteViewModel: CommunityWriteViewModelProtocol {
 
   // MARK: - Initialization
 
-  public init(createBoardUseCase: CreateBoardUseCase) {
+  nonisolated public init(createBoardUseCase: CreateBoardUseCase) {
     self.createBoardUseCase = createBoardUseCase
   }
 
@@ -241,7 +242,7 @@ public final class UpdateBoardViewModel: CommunityWriteViewModelProtocol {
   private let updateBoardUseCase: UpdateBoardUseCase
   
   
-  public init(
+  nonisolated public init(
     boardId: Int,
     boardDetailUseCase: BoardDetailUseCase,
     updateBoardUseCase: UpdateBoardUseCase
@@ -252,8 +253,10 @@ public final class UpdateBoardViewModel: CommunityWriteViewModelProtocol {
     
     Task {
       let board = try? await boardDetailUseCase.getBoard(boardId: boardId)
-      self.title = board?.title ?? ""
-      self.content = board?.content ?? ""
+      let title = board?.title ?? ""
+      let content = board?.content ?? ""
+      var images: [SelectedImage] = []
+      
       if let imageUrls = board?.imageUrls {
         for imageUrl in imageUrls {
           let url = URL(string: imageUrl)!
@@ -265,7 +268,8 @@ public final class UpdateBoardViewModel: CommunityWriteViewModelProtocol {
           
           let originalSize = imageData.count
           let fileName = "image_\(UUID().uuidString).jpg"
-          self.selectedImages.append(
+          
+          images.append(
             SelectedImage(
               image: image,
               originalSize: originalSize,
@@ -275,7 +279,11 @@ public final class UpdateBoardViewModel: CommunityWriteViewModelProtocol {
         }
       }
       
-      
+      await MainActor.run {
+        self.title = title
+        self.content = content
+        self.selectedImages.append(contentsOf: images)
+      }
       
     }
     

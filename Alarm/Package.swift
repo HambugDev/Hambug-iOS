@@ -1,4 +1,4 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -7,7 +7,7 @@ enum Config: String, CaseIterable {
   static let name: String = "Alarm"
   
   case di = "DI"
-  case data = "Data"
+  case data = "Data"// swift-tools-version:
   case domain = "Domain"
   case presentation = "Presentation"
   

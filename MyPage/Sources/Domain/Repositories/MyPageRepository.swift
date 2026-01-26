@@ -11,7 +11,7 @@ import SharedDomain
 import CommunityDomain
 
 // MARK: - MyPage Repository Interface
-public protocol MyPageRepository {
+public protocol MyPageRepository: Sendable {
   typealias ProfileURL = String
   func fetchProfile() async throws -> User
 

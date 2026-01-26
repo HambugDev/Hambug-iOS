@@ -12,6 +12,7 @@ import MyPageDomain
 import SharedDomain
 
 @Observable
+@MainActor
 public final class MyPageViewModel {
   private let usecase: MyPageUseCase
 
@@ -26,7 +27,7 @@ public final class MyPageViewModel {
   var shouldNavigateToLogin: Bool = false
   var showImageSizeAlert: Bool = false
 
-  public init(usecase: MyPageUseCase) {
+  nonisolated public init(usecase: MyPageUseCase) {
     self.usecase = usecase
   }
   
