@@ -41,7 +41,7 @@ public final class MyActivitiesViewModel {
   private var commentsHasNextPage: Bool = true
 
   // MARK: - Initialization
-  public init(
+  nonisolated public init(
     getMyBoardsUseCase: GetMyBoardsUseCase,
     getMyCommentsUseCase: GetMyCommentsUseCase
   ) {

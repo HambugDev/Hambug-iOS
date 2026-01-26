@@ -37,7 +37,8 @@ public struct UDDefaultWrapper<T> {
   }
 }
 
-public final class UserDefaultsManager {
+// UserDefaults 자체가 thread-safe 하게 설계되어있기 때문에 @unchecked 사용
+public final class UserDefaultsManager: @unchecked Sendable {
   public static let shared = UserDefaultsManager()
 
   private init() {}

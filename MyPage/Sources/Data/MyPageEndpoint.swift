@@ -60,7 +60,7 @@ enum MyPageEndpoint: Endpoint {
     return headers
   }
   
-  var queryParameters: [String: Any] {
+  var queryParameters: [String: String] {
     switch self {
     case let .getMyBoards(dto), let .getMyComments(dto):
       return queryEncoder.encode(dto)

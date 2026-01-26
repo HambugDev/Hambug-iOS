@@ -77,7 +77,7 @@ public enum BoardEndpoint: Endpoint {
     return [:]
   }
 
-  public var queryParameters: [String: Any] {
+  public var queryParameters: [String: String] {
     switch self {
     case let .boards(dto):
       return queryEncoder.encode(dto)

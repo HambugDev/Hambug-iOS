@@ -9,11 +9,12 @@ import Observation
 import AlarmDomain
 
 @Observable
+@MainActor
 public class AlarmListViewModel {
   private let usecase: GetAlarmListUseCase
   var palyload: [AlarmPayload] = []
   
-  public init(usecase: GetAlarmListUseCase) {
+  nonisolated public init(usecase: GetAlarmListUseCase) {
     self.usecase = usecase
   }
   

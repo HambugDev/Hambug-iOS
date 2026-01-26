@@ -42,7 +42,7 @@ public final class CommunityDetailViewModel {
   }
 
   // MARK: - Initialization
-  public init(
+  nonisolated public init(
     boardDetailUseCase: BoardDetailUseCase,
     commentUseCase: CommentUseCase,
     likeUseCase: LikeUseCase,
@@ -230,3 +230,4 @@ public final class CommunityDetailViewModel {
     }
   }
 }
+

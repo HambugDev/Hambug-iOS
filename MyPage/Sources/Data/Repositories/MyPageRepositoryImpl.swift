@@ -11,14 +11,20 @@ import MyPageDomain
 import NetworkInterface
 import SharedDomain
 import CommunityDomain
+import Managers
 
 // MARK: - MyPage Repository Implementation
 public final class MyPageRepositoryImpl: MyPageRepository {
   
   private let networkService: NetworkServiceInterface
+  /*nonisolated(unsafe) */private let userDefaultsManager: UserDefaultsManager
   
-  public init(networkService: NetworkServiceInterface) {
+  public init(
+    networkService: NetworkServiceInterface,
+    userDefaultsManager: UserDefaultsManager
+  ) {
     self.networkService = networkService
+    self.userDefaultsManager = userDefaultsManager
   }
   
   public func fetchProfile() async throws -> SharedDomain.User {
@@ -30,7 +36,7 @@ public final class MyPageRepositoryImpl: MyPageRepository {
       )
         .async()
       
-      self.currentUserId = response.data.userId
+      userDefaultsManager.currentUserId = Int64(response.data.userId)
       return response.data.toDomain()
     } catch {
       print(error.localizedDescription)
@@ -39,11 +45,11 @@ public final class MyPageRepositoryImpl: MyPageRepository {
   }
   
   public func updateNickname(_ nickName: String) async {
-    guard let userId = currentUserId else {
+    guard let userId = userDefaultsManager.currentUserId else {
       return
     }
     
-    let endpoint = MyPageEndpoint.updateNickname(userID: userId, nickname: nickName)
+    let endpoint = MyPageEndpoint.updateNickname(userID: Int(userId), nickname: nickName)
     do {
       _ = try await networkService.request(
         endpoint,
@@ -57,39 +63,41 @@ public final class MyPageRepositoryImpl: MyPageRepository {
   }
   
   public func changeProfileImage(_ image: UIImage?) async throws -> ProfileURL {
-    guard let userId = currentUserId else {
+    guard let userId = userDefaultsManager.currentUserId else {
       let error = NSError(domain: "incorrect user id", code: -1)
       throw error
     }
-    
-    let endpoint = MyPageEndpoint.updateProfile(userId: userId)
-    
+
+    let endpoint = MyPageEndpoint.updateProfile(userId: Int(userId))
+
+    let filePart: MultiPartFormType
     if let image = image {
       guard let imageData = image.jpegData(compressionQuality: 0.9) else {
         throw NSError(domain: "", code: -0000)
       }
       let fileName = "image_\(UUID().uuidString).jpg"
-      let imagePart = MultiPartFormType(
+      filePart = MultiPartFormType(
         data: imageData,
         fiedlName: "file",
         fileName: fileName,
         mimeType: "image/jpeg"
       )
-      
-      return try await networkService.uploadMultipartWithJsonRequest(
-        endpoint,
-        multiparts: [imagePart],
-        responseType: SuccessResponse<UserProfileDTO>.self
-      )
-      .map { $0.data.profileImageUrl }
-      .async()
     } else {
-      return try await networkService.request(
-        endpoint, responseType: SuccessResponse<UserProfileDTO>.self
+      // 빈 file 필드 전송 (기본 이미지 적용)
+      // curl: -F 'file='
+      filePart = MultiPartFormType(
+        data: Data(),
+        fiedlName: "file"
       )
-      .map { $0.data.profileImageUrl }
-      .async()
     }
+
+    return try await networkService.uploadMultipartWithJsonRequest(
+      endpoint,
+      multiparts: [filePart],
+      responseType: SuccessResponse<UserProfileDTO>.self
+    )
+    .map { $0.data.profileImageUrl }
+    .async()
   }
   
   public func applyDefaultImage() async throws {
@@ -154,5 +162,4 @@ public final class MyPageRepositoryImpl: MyPageRepository {
     return response.data.toDomain()
   }
 
-  private var currentUserId: Int?
 }
