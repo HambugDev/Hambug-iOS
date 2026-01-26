@@ -222,6 +222,9 @@ public struct CommunityListView: View {
       .cornerRadius(8)
       .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
     }
+    .task {
+      await viewModel.loadBoards()
+    }
     .scrollIndicators(.hidden)
     .cornerRadius(8)
     .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
