@@ -81,15 +81,12 @@ public final class CommunityViewModel {
   private let pageSize: Int = 10
 
   // MARK: - Initialization
-  public init(
+  nonisolated public init(
     getBoardsUseCase: GetBoardsUseCase,
     getBoardsByCategoryUseCase: GetBoardsByCategoryUseCase
   ) {
     self.getBoardsUseCase = getBoardsUseCase
     self.getBoardsByCategoryUseCase = getBoardsByCategoryUseCase
-    Task {
-      await loadBoards()
-    }
   }
 
   // MARK: - Public Methods
