@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 public enum TextStyle {
     case heading(TextStyle.Heading)
     case title(TextStyle.Title)

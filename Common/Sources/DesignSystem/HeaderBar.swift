@@ -32,7 +32,6 @@ public enum HeaderType {
 }
 // 상단 헤더 - 로고, 알림
 public struct HeaderBar<Destination: View>: View {
-  private let fontStyle: FontStyle
   private let type: HeaderType
   private let destination: Destination?
   
@@ -40,13 +39,11 @@ public struct HeaderBar<Destination: View>: View {
     type: HeaderType,
     @ViewBuilder destination: () -> Destination
   ) where Destination: View {
-    fontStyle = .init(.custom("GeekbleMalang2"), size: 24.0)
     self.type = type
     self.destination = destination()
   }
   
   public init(type: HeaderType) where Destination == EmptyView {
-    fontStyle = .init(.custom("GeekbleMalang2"), size: 24.0)
     self.type = type
     self.destination = nil
   }
@@ -61,8 +58,7 @@ public struct HeaderBar<Destination: View>: View {
           .frame(width: 28, height: 26)
         
         Text(type.displayText)
-          .font(fontStyle.font)
-          .lineSpacing(fontStyle.lineHeight)
+          .geekbleMalang2()
           .foregroundColor(.primaryHambugRed)
       }
       

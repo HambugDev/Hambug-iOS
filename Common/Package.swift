@@ -48,8 +48,9 @@ let package = Package(
     .target(
       name: "DesignSystem",
       resources: [
-        .process("Resources/Font")
-      ]
+        .process("Resources")
+      ],
+      plugins: ["AssetContants"]
     ),
     .target(name: "DataSources"),
     .target(name: "DIKit"),
@@ -60,18 +61,7 @@ let package = Package(
       dependencies: ["DesignSystem"]
     ),
     .target(name: "SharedDomain"),
-    
-    .plugin(
-      name: "ColorGenerator",
-      capability: .command(
-        intent: .custom(
-          verb: "generate-colors",
-          description: "Generate color constants from xcassets"
-        ),
-        permissions: [
-          .writeToPackageDirectory(reason: "Generate DesignSystem+Color.swift file")
-        ]
-      )
-    ),
+    .executableTarget(name: "AssetContantsExec", path: "Plugins/AssetContantsExec"),
+    .plugin(name: "AssetContants", capability: .buildTool(), dependencies: ["AssetContantsExec"])
   ]
 )
