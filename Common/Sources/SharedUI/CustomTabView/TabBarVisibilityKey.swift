@@ -32,8 +32,8 @@ public extension View {
   }
 }
 
-private struct TabBarVisibilityPreference: PreferenceKey {
-  static var defaultValue: Bool = false
+private struct TabBarVisibilityPreference: @MainActor PreferenceKey {
+  @MainActor static var defaultValue: Bool = false
 
   static func reduce(value: inout Bool, nextValue: () -> Bool) {
     // 자식 View의 preference가 우선

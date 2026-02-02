@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol HomeViewRepository {
+public protocol HomeViewRepository: Sendable {
   func fetchRecommendedBurgers() async throws -> [RecommendedBurger]
   func fetchTrendingPosts() async throws -> [TrendingPost]
 }

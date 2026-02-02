@@ -61,7 +61,7 @@ public final class HomeViewModel {
     }
 
     // MARK: - Initialization
-    public init(homeUseCase: HomeUseCase) {
+    nonisolated public init(homeUseCase: HomeUseCase) {
         self.homeUseCase = homeUseCase
 
         Task {

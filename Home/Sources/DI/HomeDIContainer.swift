@@ -38,9 +38,7 @@ struct HomeAssembly: Assembly {
 
     // ViewModel - UseCase 의존
     container.register(HomeViewModel.self) { resolver in
-      MainActor.assumeIsolated {
-        HomeViewModel(homeUseCase: resolver.resolve(HomeUseCase.self))
-      }
+      HomeViewModel(homeUseCase: resolver.resolve(HomeUseCase.self))
     }
   }
 }

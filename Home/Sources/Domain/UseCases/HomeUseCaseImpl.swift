@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - Home UseCase Interface
-public protocol HomeUseCase {
+public protocol HomeUseCase: Sendable {
     /// 추천 버거 목록을 가져옵니다.
     /// - Returns: 검증된 추천 버거 배열
     /// - Throws: HomeError (빈 데이터, 유효하지 않은 데이터 등)
