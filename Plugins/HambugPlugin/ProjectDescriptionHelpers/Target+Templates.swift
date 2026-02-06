@@ -30,4 +30,27 @@ public extension Target {
       )
     )
   }
+  
+  /// Create a UITest target with common settings
+  static func makeUITestTarget(
+    name: String,
+    bundleId: String? = nil,
+    sources: SourceFilesList,
+    resources: ResourceFileElements? = nil,
+    dependencies: [TargetDependency] = []
+  ) -> Target {
+    .target(
+      name: "\(name)UITests",
+      destinations: HambugConfig.destinations,
+      product: .uiTests,
+      bundleId: bundleId ?? "\(HambugConfig.bundleIdPrefix).\(name.lowercased())",
+      deploymentTargets: HambugConfig.deploymentTargets,
+      sources: sources,
+      resources: resources,
+      dependencies: dependencies,
+      settings: .settings(
+        base: ["SWIFT_VERSION": "\(HambugConfig.swiftVersion)"]
+      )
+    )
+  }
 }

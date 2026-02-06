@@ -89,5 +89,9 @@ let project = Project(
         ]
       )
     ),
+    .makeUITestTarget(
+      name: "Hambug",
+      sources: ["Tests/HambugUITests/**"]
+    )
   ]
 )
