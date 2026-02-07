@@ -34,4 +34,10 @@ playground.xcworkspace
 **/Package.resolved
 
 *.xcconfig
-Hambug/GoogleService-Info.plist
+Projects/App/Resources/GoogleService-Info.plist
+
+# Tuist
+Derived/
+*.xcodeproj
+*.xcworkspace
+Tuist/.build
