@@ -2,27 +2,27 @@ import ProjectDescription
 import HambugPlugin
 
 let project = Project(
-  name: "ThirdParty",
+  name: Module.thirdParty.rawValue,
   targets: [
     .makeFrameworkTarget(
-      name: "KakaoLogin",
+      name: Module.ThirdParty.kakaoLogin.name,
       sources: ["Sources/KakaoLogin/**"],
       dependencies: [
-        .external(name: "KakaoSDKCommon"),
-        .external(name: "KakaoSDKAuth"),
-        .external(name: "KakaoSDKUser"),
+        ExternalDependency.kakaoSDKCommon.dependency,
+        ExternalDependency.kakaoSDKAuth.dependency,
+        ExternalDependency.kakaoSDKUser.dependency,
       ]
     ),
     .makeFrameworkTarget(
-      name: "FCMService",
+      name: Module.ThirdParty.fcmService.name,
       sources: ["Sources/FCMService/**"],
       dependencies: [
-        .external(name: "FirebaseAnalytics"),
-        .external(name: "FirebaseCore"),
-        .external(name: "FirebaseMessaging"),
-        .project(target: "NetworkInterface", path: .relativeToRoot("Projects/Infrastructure")),
-        .project(target: "DataSources", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Util", path: .relativeToRoot("Projects/Core")),
+        ExternalDependency.firebaseAnalytics.dependency,
+        ExternalDependency.firebaseCore.dependency,
+        ExternalDependency.firebaseMessaging.dependency,
+        Module.Infrastructure.networkInterface.dependency,
+        Module.Core.dataSources.dependency,
+        Module.Core.util.dependency,
       ]
     ),
   ]

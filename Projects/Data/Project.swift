@@ -2,58 +2,58 @@ import ProjectDescription
 import HambugPlugin
 
 let project = Project(
-  name: "Data",
+  name: Module.data.rawValue,
   targets: [
     .makeFrameworkTarget(
-      name: "HomeData",
+      name: Module.Data.home.name,
       sources: ["Sources/Home/**"],
       dependencies: [
-        .project(target: "HomeDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "CommunityDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "SharedDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "NetworkInterface", path: .relativeToRoot("Projects/Infrastructure")),
-        .project(target: "Util", path: .relativeToRoot("Projects/Core")),
+        Module.Domain.home.dependency,
+        Module.Domain.community.dependency,
+        Module.Domain.shared.dependency,
+        Module.Infrastructure.networkInterface.dependency,
+        Module.Core.util.dependency,
       ]
     ),
     .makeFrameworkTarget(
-      name: "CommunityData",
+      name: Module.Data.community.name,
       sources: ["Sources/Community/**"],
       dependencies: [
-        .project(target: "CommunityDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "NetworkInterface", path: .relativeToRoot("Projects/Infrastructure")),
-        .project(target: "Util", path: .relativeToRoot("Projects/Core")),
+        Module.Domain.community.dependency,
+        Module.Infrastructure.networkInterface.dependency,
+        Module.Core.util.dependency,
       ]
     ),
     .makeFrameworkTarget(
-      name: "MyPageData",
+      name: Module.Data.myPage.name,
       sources: ["Sources/MyPage/**"],
       dependencies: [
-        .project(target: "MyPageDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "CommunityDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "SharedDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "NetworkInterface", path: .relativeToRoot("Projects/Infrastructure")),
-        .project(target: "Util", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Managers", path: .relativeToRoot("Projects/Core")),
+        Module.Domain.myPage.dependency,
+        Module.Domain.community.dependency,
+        Module.Domain.shared.dependency,
+        Module.Infrastructure.networkInterface.dependency,
+        Module.Core.util.dependency,
+        Module.Core.managers.dependency,
       ]
     ),
     .makeFrameworkTarget(
-      name: "LoginData",
+      name: Module.Data.login.name,
       sources: ["Sources/Login/**"],
       dependencies: [
-        .project(target: "LoginDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "DataSources", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Util", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Managers", path: .relativeToRoot("Projects/Core")),
-        .project(target: "NetworkInterface", path: .relativeToRoot("Projects/Infrastructure")),
+        Module.Domain.login.dependency,
+        Module.Core.dataSources.dependency,
+        Module.Core.util.dependency,
+        Module.Core.managers.dependency,
+        Module.Infrastructure.networkInterface.dependency,
       ]
     ),
     .makeFrameworkTarget(
-      name: "AlarmData",
+      name: Module.Data.alarm.name,
       sources: ["Sources/Alarm/**"],
       dependencies: [
-        .project(target: "AlarmDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "NetworkInterface", path: .relativeToRoot("Projects/Infrastructure")),
-        .project(target: "Util", path: .relativeToRoot("Projects/Core")),
+        Module.Domain.alarm.dependency,
+        Module.Infrastructure.networkInterface.dependency,
+        Module.Core.util.dependency,
       ]
     ),
   ]

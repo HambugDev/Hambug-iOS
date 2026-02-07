@@ -5,6 +5,9 @@ import PackageDescription
 import ProjectDescription
 
 let packageSettings = PackageSettings(
+  productTypes: [
+    "Alamofire": .framework,
+  ],
   baseSettings: .settings(base: [
     "SWIFT_VERSION": "6",
   ])

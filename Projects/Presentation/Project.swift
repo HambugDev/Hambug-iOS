@@ -2,71 +2,71 @@ import ProjectDescription
 import HambugPlugin
 
 let project = Project(
-  name: "Presentation",
+  name: Module.presentation.rawValue,
   targets: [
     .makeFrameworkTarget(
-      name: "AlarmPresentation",
+      name: Module.Presentation.alarm.name,
       sources: ["Sources/Alarm/**"],
       dependencies: [
-        .project(target: "AlarmDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "DesignSystem", path: .relativeToRoot("Projects/Core")),
+        Module.Domain.alarm.dependency,
+        Module.Core.designSystem.dependency,
       ]
     ),
     .makeFrameworkTarget(
-      name: "CommunityPresentation",
+      name: Module.Presentation.community.name,
       sources: ["Sources/Community/**"],
       resources: ["Sources/Community/Assets.xcassets"],
       dependencies: [
-        .project(target: "CommunityDomain", path: .relativeToRoot("Projects/Domain")),
-        .target(name: "AlarmPresentation"),
-        .project(target: "DesignSystem", path: .relativeToRoot("Projects/Core")),
-        .project(target: "SharedUI", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Managers", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Util", path: .relativeToRoot("Projects/Core")),
+        Module.Domain.community.dependency,
+        Module.Presentation.alarm.target,
+        Module.Core.designSystem.dependency,
+        Module.Core.sharedUI.dependency,
+        Module.Core.managers.dependency,
+        Module.Core.util.dependency,
       ]
     ),
     .makeFrameworkTarget(
-      name: "HomePresentation",
+      name: Module.Presentation.home.name,
       sources: ["Sources/Home/**"],
       dependencies: [
-        .project(target: "HomeDomain", path: .relativeToRoot("Projects/Domain")),
-        .target(name: "CommunityPresentation"),
-        .target(name: "AlarmPresentation"),
-        .project(target: "DesignSystem", path: .relativeToRoot("Projects/Core")),
-        .project(target: "SharedUI", path: .relativeToRoot("Projects/Core")),
+        Module.Domain.home.dependency,
+        Module.Presentation.community.target,
+        Module.Presentation.alarm.target,
+        Module.Core.designSystem.dependency,
+        Module.Core.sharedUI.dependency,
       ]
     ),
     .makeFrameworkTarget(
-      name: "MyPagePresentation",
+      name: Module.Presentation.myPage.name,
       sources: ["Sources/MyPage/**"],
       resources: ["Sources/MyPage/Assets.xcassets"],
       dependencies: [
-        .project(target: "MyPageDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "CommunityDomain", path: .relativeToRoot("Projects/Domain")),
-        .target(name: "CommunityPresentation"),
-        .project(target: "DesignSystem", path: .relativeToRoot("Projects/Core")),
-        .project(target: "SharedUI", path: .relativeToRoot("Projects/Core")),
-        .project(target: "LocalizedString", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Util", path: .relativeToRoot("Projects/Core")),
+        Module.Domain.myPage.dependency,
+        Module.Domain.community.dependency,
+        Module.Presentation.community.target,
+        Module.Core.designSystem.dependency,
+        Module.Core.sharedUI.dependency,
+        Module.Core.localizedString.dependency,
+        Module.Core.util.dependency,
       ]
     ),
     .makeFrameworkTarget(
-      name: "LoginPresentation",
+      name: Module.Presentation.login.name,
       sources: ["Sources/Login/**"],
       dependencies: [
-        .project(target: "LoginDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "DesignSystem", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Managers", path: .relativeToRoot("Projects/Core")),
-        .project(target: "LocalizedString", path: .relativeToRoot("Projects/Core")),
+        Module.Domain.login.dependency,
+        Module.Core.designSystem.dependency,
+        Module.Core.managers.dependency,
+        Module.Core.localizedString.dependency,
       ]
     ),
     .makeFrameworkTarget(
-      name: "IntroPresentation",
+      name: Module.Presentation.intro.name,
       sources: ["Sources/Intro/**"],
       resources: ["Sources/Intro/Image.xcassets"],
       dependencies: [
-        .project(target: "Managers", path: .relativeToRoot("Projects/Core")),
-        .project(target: "DesignSystem", path: .relativeToRoot("Projects/Core")),
+        Module.Core.managers.dependency,
+        Module.Core.designSystem.dependency,
       ]
     ),
   ]

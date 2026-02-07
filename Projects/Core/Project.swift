@@ -2,41 +2,41 @@ import ProjectDescription
 import HambugPlugin
 
 let project = Project(
-  name: "Core",
+  name: Module.core.rawValue,
   targets: [
     .makeFrameworkTarget(
-      name: "DesignSystem",
+      name: Module.Core.designSystem.name,
       sources: ["Sources/DesignSystem/**"],
       resources: ["Sources/DesignSystem/Resources/**"]
     ),
     .makeFrameworkTarget(
-      name: "DIKit",
+      name: Module.Core.diKit.name,
       sources: ["Sources/DIKit/**"]
     ),
     .makeFrameworkTarget(
-      name: "SharedUI",
+      name: Module.Core.sharedUI.name,
       sources: ["Sources/SharedUI/**"],
       dependencies: [
-        .target(name: "DesignSystem"),
+        Module.Core.designSystem.target,
       ]
     ),
     .makeFrameworkTarget(
-      name: "Managers",
+      name: Module.Core.managers.name,
       sources: ["Sources/Managers/**"],
       dependencies: [
-        .target(name: "DataSources"),
+        Module.Core.dataSources.target,
       ]
     ),
     .makeFrameworkTarget(
-      name: "DataSources",
+      name: Module.Core.dataSources.name,
       sources: ["Sources/DataSources/**"]
     ),
     .makeFrameworkTarget(
-      name: "Util",
+      name: Module.Core.util.name,
       sources: ["Sources/Util/**"]
     ),
     .makeFrameworkTarget(
-      name: "LocalizedString",
+      name: Module.Core.localizedString.name,
       sources: ["Sources/LocalizedString/**"]
     ),
   ]

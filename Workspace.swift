@@ -1,14 +1,7 @@
 import ProjectDescription
+import HambugPlugin
 
 let workspace = Workspace(
   name: "Hambug",
-  projects: [
-    "Projects/App",
-    "Projects/Domain",
-    "Projects/Data",
-    "Projects/Presentation",
-    "Projects/Core",
-    "Projects/Infrastructure",
-    "Projects/ThirdParty",
-  ]
+  projects: Module.allCases.map(\.projectPath)
 )

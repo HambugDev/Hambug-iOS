@@ -24,7 +24,7 @@ let infoPlist: [String: Plist.Value] = [
 ]
 
 let project = Project(
-  name: "App",
+  name: Module.app.rawValue,
   targets: [
     .target(
       name: "Hambug",
@@ -40,43 +40,43 @@ let project = Project(
       entitlements: .file(path: "Hambug.entitlements"),
       dependencies: [
         // Domain
-        .project(target: "SharedDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "HomeDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "CommunityDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "MyPageDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "LoginDomain", path: .relativeToRoot("Projects/Domain")),
-        .project(target: "AlarmDomain", path: .relativeToRoot("Projects/Domain")),
+        Module.Domain.shared.dependency,
+        Module.Domain.home.dependency,
+        Module.Domain.community.dependency,
+        Module.Domain.myPage.dependency,
+        Module.Domain.login.dependency,
+        Module.Domain.alarm.dependency,
 
         // Data
-        .project(target: "HomeData", path: .relativeToRoot("Projects/Data")),
-        .project(target: "CommunityData", path: .relativeToRoot("Projects/Data")),
-        .project(target: "MyPageData", path: .relativeToRoot("Projects/Data")),
-        .project(target: "LoginData", path: .relativeToRoot("Projects/Data")),
-        .project(target: "AlarmData", path: .relativeToRoot("Projects/Data")),
+        Module.Data.home.dependency,
+        Module.Data.community.dependency,
+        Module.Data.myPage.dependency,
+        Module.Data.login.dependency,
+        Module.Data.alarm.dependency,
 
         // Presentation
-        .project(target: "HomePresentation", path: .relativeToRoot("Projects/Presentation")),
-        .project(target: "CommunityPresentation", path: .relativeToRoot("Projects/Presentation")),
-        .project(target: "MyPagePresentation", path: .relativeToRoot("Projects/Presentation")),
-        .project(target: "LoginPresentation", path: .relativeToRoot("Projects/Presentation")),
-        .project(target: "AlarmPresentation", path: .relativeToRoot("Projects/Presentation")),
-        .project(target: "IntroPresentation", path: .relativeToRoot("Projects/Presentation")),
+        Module.Presentation.home.dependency,
+        Module.Presentation.community.dependency,
+        Module.Presentation.myPage.dependency,
+        Module.Presentation.login.dependency,
+        Module.Presentation.alarm.dependency,
+        Module.Presentation.intro.dependency,
 
         // Core
-        .project(target: "DIKit", path: .relativeToRoot("Projects/Core")),
-        .project(target: "DesignSystem", path: .relativeToRoot("Projects/Core")),
-        .project(target: "SharedUI", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Managers", path: .relativeToRoot("Projects/Core")),
-        .project(target: "DataSources", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Util", path: .relativeToRoot("Projects/Core")),
+        Module.Core.diKit.dependency,
+        Module.Core.designSystem.dependency,
+        Module.Core.sharedUI.dependency,
+        Module.Core.managers.dependency,
+        Module.Core.dataSources.dependency,
+        Module.Core.util.dependency,
 
         // Infrastructure
-        .project(target: "NetworkInterface", path: .relativeToRoot("Projects/Infrastructure")),
-        .project(target: "NetworkImpl", path: .relativeToRoot("Projects/Infrastructure")),
+        Module.Infrastructure.networkInterface.dependency,
+        Module.Infrastructure.networkImpl.dependency,
 
         // ThirdParty
-        .project(target: "KakaoLogin", path: .relativeToRoot("Projects/ThirdParty")),
-        .project(target: "FCMService", path: .relativeToRoot("Projects/ThirdParty")),
+        Module.ThirdParty.kakaoLogin.dependency,
+        Module.ThirdParty.fcmService.dependency,
       ],
       settings: .settings(
         base: [

@@ -2,20 +2,20 @@ import ProjectDescription
 import HambugPlugin
 
 let project = Project(
-  name: "Infrastructure",
+  name: Module.infrastructure.rawValue,
   targets: [
     .makeFrameworkTarget(
-      name: "NetworkInterface",
+      name: Module.Infrastructure.networkInterface.name,
       sources: ["Sources/NetworkInterface/**"]
     ),
     .makeFrameworkTarget(
-      name: "NetworkImpl",
+      name: Module.Infrastructure.networkImpl.name,
       sources: ["Sources/NetworkImpl/**"],
       dependencies: [
-        .target(name: "NetworkInterface"),
-        .project(target: "DataSources", path: .relativeToRoot("Projects/Core")),
-        .project(target: "Util", path: .relativeToRoot("Projects/Core")),
-        .external(name: "Alamofire"),
+        Module.Infrastructure.networkInterface.target,
+        Module.Core.dataSources.dependency,
+        Module.Core.util.dependency,
+        ExternalDependency.alamofire.dependency,
       ]
     ),
   ]
